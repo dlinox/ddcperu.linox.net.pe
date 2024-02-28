@@ -1,7 +1,7 @@
 <template>
     <v-app id="inspire">
         <v-app-bar class="border-0" color="primary" elevation="0">
-            <v-btn class="me-2" icon="mdi-menu" @click="drawer = !drawer">
+            <v-btn class="me-2" icon="mdi-menu" color="dark" @click="drawer = !drawer">
             </v-btn>
             <v-spacer></v-spacer>
             <v-menu transition="scale-transition">
