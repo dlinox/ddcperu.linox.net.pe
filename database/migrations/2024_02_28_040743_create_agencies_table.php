@@ -31,9 +31,9 @@ return new class extends Migration
             //fecha de fin de la licencia
             $table->date('license_end');
             //direccion de la agencia
-            $table->string('address');
+            $table->string('address')->nullable();
             //pais de la agencia
-            $table->string('country');
+            $table->string('country')->nullable();
             //ciudad de la agencia
             $table->string('city')->nullable();
             //descripcion de la agencia
