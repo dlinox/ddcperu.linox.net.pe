@@ -1,5 +1,5 @@
 <template>
-    <Head :title="title + ' | SISA - HG'" />
+    <Head :title="title + ' | DDC - ADMIN'" />
     <v-app app class="w-100 h-screen d-flex justify-center align-center">
         <slot />
     </v-app>

@@ -38,10 +38,10 @@ class Agency extends Model
 
     protected $fillable = [
         'name',
-        'code',
+        'code_nsc',
         'ruc',
         'denomination',
-        'email',
+        'email_institutional',
         'phone',
         'license_start',
         'license_end',
@@ -58,10 +58,10 @@ class Agency extends Model
     public $headers =  [
         ['text' => "ID", 'value' => "id"],
         ['text' => "Nombre", 'value' => "name"],
-        ['text' => "Codigo", 'value' => "code"],
+        ['text' => "Codigo", 'value' => "code_nsc"],
         ['text' => "RUC", 'value' => "ruc"],
         ['text' => "Denominacion", 'value' => "denomination"],
-        ['text' => "Correo", 'value' => "email"],
+        ['text' => "Correo", 'value' => "email_institutional"],
         ['text' => "Telefono", 'value' => "phone"],
         ['text' => "Inicio de Licencia", 'value' => "license_start"],
         ['text' => "Fin de Licencia", 'value' => "license_end"],

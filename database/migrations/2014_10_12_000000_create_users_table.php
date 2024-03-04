@@ -8,23 +8,24 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     * 000:SUPERADMIN
+     * 001:ADMINISTRADOR
+     * 002:OPERADOR
+     * 003:INSTRUCTOR
      */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 60);
-            $table->string('paternal_surname', 60);
-            $table->string('maternal_surname', 60);
-            $table->char('phone_number', 9);
-            $table->char('document_number', 8)->unique();
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->enum('role', ['Super Admin', 'Administrador', 'Operador', 'Instructor'])->default('Administrador');
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('is_active')->default(true);
+            $table->enum('role', ['000', '001', '002', '003'])->default('001');
             $table->unsignedBigInteger('agency_id')->nullable();
+            $table->unsignedBigInteger('profile_id');
+            $table->boolean('is_enabled')->default(true);
+            $table->timestamp('email_verified_at')->nullable();
+            $table->unique(['role', 'profile_id']);
             $table->rememberToken();
             $table->timestamps();
         });

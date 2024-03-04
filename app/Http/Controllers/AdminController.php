@@ -12,7 +12,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        //catidad de usuarios
+       
         $users = User::count();
 
 

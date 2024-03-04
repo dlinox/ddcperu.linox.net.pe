@@ -9,7 +9,7 @@
                             prepend-icon="mdi-plus"
                             variant="flat"
                         >
-                            Nueva
+                            Nuevo
                         </v-btn>
                     </template>
                     <template v-slot:content="{ dialog }">
@@ -22,8 +22,8 @@
                 </BtnDialog>
             </template>
         </HeadingPage>
-        <v-container fluid class="pt-0">
-            <v-card>
+  
+            <v-card flat  rounded="0">
                 <DataTable
                     :headers="headers"
                     :items="items"
@@ -115,7 +115,7 @@
                     </template>
                 </DataTable>
             </v-card>
-        </v-container>
+
     </AdminLayout>
 </template>
 <script setup>
@@ -138,11 +138,11 @@ const props = defineProps({
 });
 
 const primaryKey = "id";
-const url = "/a/agencies";
+const url = "/a/courses";
 
 const formStructure = [
     {
-        key: "code_nsc",
+        key: "code",
         label: "Codigo",
         type: "text",
         required: true,
@@ -159,71 +159,5 @@ const formStructure = [
         colMd: 8,
         default: "",
     },
-    {
-        key: "ruc",
-        label: "RUC",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 4,
-        default: "",
-    },
-    {
-        key: "denomination",
-        label: "Denominación",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 8,
-        default: "",
-    },
-
-    {
-        key: "email_institutional",
-        label: "Correo institucional",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "phone",
-        label: "Celular de contacto",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "license_start",
-        label: "Fecha de inicio de licencia",
-        type: "date",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: null,
-    },
-    {
-        key: "license_end",
-        label: "Fecha de fin de licencia",
-        type: "date",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: null,
-    },
-    {
-        key: "is_active",
-        label: "Estado",
-        type: "switch",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: true,
-    },
-
-    
 ];
 </script>

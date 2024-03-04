@@ -23,7 +23,7 @@ class ModelHasPermissionSeeder extends Seeder
             ],
         ];
 
-        $administrador = User::where('role', 'Administrador')->first();
+        $administrador = User::where('role', '001')->first();
 
         foreach ($permissions as $permission) {
             $administrador->givePermissionTo($permission['name']);

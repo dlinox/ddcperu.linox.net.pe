@@ -28,7 +28,7 @@ class HandleInertiaRequests extends Middleware
             ],
 
             'user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email', 'role', 'area_id')
+                ? $request->user()->only('id', 'username', 'email', 'role')
                 : null,
 
             'menu' => fn () => $request->user() ?  $this->getMenuUser($request->user()) :  null,

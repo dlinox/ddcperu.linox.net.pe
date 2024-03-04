@@ -1,7 +1,13 @@
 <template>
+    <Head title="DDC - ADMIN" />
     <v-app id="inspire">
         <v-app-bar class="border-0" color="primary" elevation="0">
-            <v-btn class="me-2" icon="mdi-menu" color="dark" @click="drawer = !drawer">
+            <v-btn
+                class="me-2"
+                icon="mdi-menu"
+                color="dark"
+                @click="drawer = !drawer"
+            >
             </v-btn>
             <v-spacer></v-spacer>
             <v-menu transition="scale-transition">
@@ -40,10 +46,10 @@
             width="270"
         >
             <v-toolbar>
-                <v-list-item :title="user?.name" :subtitle="user?.role">
+                <v-list-item :title="user?.username" :subtitle="user?.role">
                     <template #prepend>
                         <v-avatar color="primary">
-                            {{ user?.name[0] }}
+                            {{ user?.username[0].toUpperCase() }}
                         </v-avatar>
                     </template>
                 </v-list-item>
@@ -140,7 +146,7 @@
 
 <script setup>
 import { ref, onMounted, computed, watch, reactive } from "vue";
-import { router, usePage } from "@inertiajs/vue3";
+import { router, usePage , Head} from "@inertiajs/vue3";
 import { useDisplay } from "vuetify";
 import MenuApp from "@/components/layout/MenuApp.vue";
 

@@ -5,29 +5,32 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use function Laravel\Prompts\password;
+
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
 
+        $admin = [
+            'document_number' => '11111111',
+            'name' => 'Admin',
+            'last_name' => 'Admin',
+            'phone_number' => '1111111111',
+        ];
 
         $users = [
             [
-                'name' => 'Admin',
-                'paternal_surname' => 'Admin',
-                'maternal_surname' => 'Admin',
-                'document_number' => '12345678',
-                'phone_number' => '123456789',
-                'username' => 'admin@ddcperu.com.pe',
-                'role' => 'Administrador',
-                'email' => 'admin@ddcperu.com.pe',
+                'username' => 'admin',
+                'email' => 'admin@test.com',
                 'password' => 'password',
+                'role' => '001',
+                'agency_id' => null,
+                'profile_id' => \App\Models\Administrator::create($admin)->id,
+                
             ],
         ];
-
 
         foreach ($users as $user) {
             \App\Models\User::create($user);

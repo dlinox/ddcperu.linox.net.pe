@@ -14,54 +14,94 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     protected $fillable = [
-        'name',
-        'paternal_surname',
-        'maternal_surname',
-        'phone_number',
-        'document_number', // dni
-        'username', // email
-        'role',
-        'agency_id',
+        'username',
         'email',
         'password',
-        'is_active'
+        'role',
+        'agency_id',
+        'profile_id',
+        'is_enabled'
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
-        'email_verified_at',
         'created_at',
-        'updated_at',
-    ];
-
-    protected $appends = [
-        'full_name',
-    ];
-
-    protected $with = [
-        'permissions:id,name,menu'
+        'updated_at'
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'is_enabled' => 'boolean',
+        'password' => 'hashed'
     ];
 
-    public function getFullNameAttribute()
+    //nombre del rol
+    public function getRoleAttribute($value)
     {
-        return "{$this->name} {$this->paternal_surname} {$this->maternal_surname}";
+        switch ($value) {
+            case '001':
+                return 'Administrador';
+                break;
+            case '002':
+                return 'Operador';
+                break;
+            case '003':
+                return 'Instructor';
+                break;
+        }
     }
 
-    public $headers =  [
-        ['text' => "ID", 'value' => "id"],
-        ['text' => "Nombre", 'value' => "full_name"],
-        ['text' => "Teléfono", 'value' => "phone_number"],
-        ['text' => "Nombre de Usuario", 'value' => "username"],
-        ['text' => "Rol", 'value' => "role"],
+    public function profile()
+    {
+        switch ($this->role) {
+            case '001':
+                return $this->belongsTo(Administrator::class);
+                break;
+            case '002':
+                return $this->belongsTo(Operator::class);
+                break;
+            case '003':
+                return $this->belongsTo(Instructor::class);
+                break;
+        }
+    }
 
-        ['text' => "Correo Electrónico", 'value' => "email"],
-        ['text' => "Activo", 'value' => "is_active"],
-        // ['text' => "Acciones", 'value' => "actions", 'sortable' => false],
-    ];
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+
+    //registrar usuario
+    static public function createAccount($request, $profile)
+    {
+        $user = new User();
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->role = $request->role;
+        $user->agency_id = $request->agency_id;
+        $user->profile_id = $profile->id;
+        $user->save();
+        return $user;
+    }
+
+    //actualizar usuario
+    static public function updateAccount($request, $profile)
+    {
+        $user = User::find($request->user_id);
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->agency_id = $request->agency_id;
+        $user->profile_id = $profile->id;
+        $user->save();
+        return $user;
+    }
+    //eliminar usuario
+    static public function deleteAccount($id)
+    {
+        $user = User::where('profile_id', $id)->first();
+        $user->delete();
+    }
 }

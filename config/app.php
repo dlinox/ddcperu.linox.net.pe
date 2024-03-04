@@ -55,13 +55,16 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-    'permissions' => [
-        [
-            'name' => 'a.users',
-            'menu' => 'Gestion de Usuarios',
-        ],
 
+    'roles' => [
+        '000' => 'SuperAdmin',
+        '001' => 'Administrador',
+        '002' => 'Operador',
+        '003' => 'Instructor',
     ],
+
+
+
 
 
 
@@ -75,22 +78,16 @@ return [
             'group' => null,
         ],
 
+
         [
-            'title' => "Usuarios",
-            'value' => "users",
-            'icon' => "mdi-account-group",
-            'to' => "/a/users",
-            'can' => 'a.users',
-            'group' => null,
-        ],
-        [
-            'title' => "Agencias",
+            'title' => "Sub Agencias",
             'value' => "agencies",
             'icon' => "mdi-domain",
             'to' => "/a/agencies",
             'can' => 'a.users',
             'group' => null,
         ],
+
 
         [
             'title' => "Cursos",
@@ -99,7 +96,52 @@ return [
             'to' => "/a/courses",
             'can' => 'a.users',
             'group' => null,
+        ],
+        [
+            'title' => "Usuarios",
+            'value' => "users",
+            'icon' => "mdi-account-group",
+            'to' => "/a/users",
+            'can' => 'a.users',
+            'group' => [
+                [
+                    'title' => "Administradores",
+                    'value' => "administrators",
+                    'icon' => "mdi-account-group",
+                    'to' => "/a/administrators",
+                    'can' => 'a.users',
+                ],
+
+                [
+                    'title' => "Operadores",
+                    'value' => "operators",
+                    'icon' => "mdi-account-group",
+                    'to' => "/a/operators",
+                    'can' => 'a.users',
+                    'group' => null,
+
+                ],
+
+                [
+                    'title' => "Instructores",
+                    'value' => "instructors",
+                    'icon' => "mdi-account-group",
+                    'to' => "/a/instructors",
+                    'can' => 'a.users',
+                    'group' => null,
+                ],
+
+            ]
         ]
+
+    ],
+
+
+    'permissions' => [
+        [
+            'name' => 'a.users',
+            'menu' => 'Gestion de Usuarios',
+        ],
 
     ],
 

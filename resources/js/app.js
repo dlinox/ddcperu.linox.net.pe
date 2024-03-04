@@ -3,11 +3,11 @@ import './bootstrap';
 
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
-import { QuillEditor } from "@vueup/vue-quill";
+// import { QuillEditor } from "@vueup/vue-quill";
 
 import vuetify from "@/plugins/vuetify";
 
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
+// import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "vue-advanced-cropper/dist/style.css";
 
 createInertiaApp({
@@ -18,7 +18,7 @@ createInertiaApp({
     },
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
-            .component("QuillEditor", QuillEditor)
+            // .component("QuillEditor", QuillEditor)
             .use(plugin)
             .use(vuetify)
             .mount(el);
