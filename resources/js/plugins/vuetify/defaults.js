@@ -1,13 +1,7 @@
 export default {
     VCard: {
-        rounded: "lg",
-        VCardActions: {
-            class: "px-4",
-            VBtn: {
-                variant: "flat",
-                rounded: "lg",
-            },
-        }
+        rounded: "0",
+        elevation: 0,
     },
     VAlert: {
         density: "comfortable",

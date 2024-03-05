@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Administrator extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'document_type',
         'document_number',
         'name',
         'last_name',
         'phone_number',
+        'is_sub_admin',
         'is_enabled'
     ];
 
@@ -24,7 +25,8 @@ class Administrator extends Model
     ];
 
     protected $casts = [
-        'is_enabled' => 'boolean'
+        'is_enabled' => 'boolean',
+        'is_sub_admin' => 'boolean'
     ];
 
 

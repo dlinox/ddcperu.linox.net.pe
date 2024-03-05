@@ -5,45 +5,6 @@
         @onCancel="$emit('onCancel')"
         @onSumbit="submit"
     >
-        <template v-slot:field.role="{ _field }">
-            <v-combobox
-                v-model="form.role"
-                :items="_field.options"
-                :label="_field.label"
-                :itemValue="_field.itemValue"
-                :itemTitle="_field.itemTitle"
-                @update:modelValue="onSelectRole"
-            ></v-combobox>
-        </template>
-
-        <template v-slot:field.area_id="{ _field }">
-            <v-combobox
-                v-model="form.area_id"
-                :items="_field.options"
-                :label="_field.label"
-                :itemValue="_field.itemValue"
-                :itemTitle="_field.itemTitle"
-                :return-object="false"
-                :rules="
-                    form.role === 'Administrador'
-                        ? []
-                        : [() => !!form.area_id || 'Campo Obligatorio.']
-                "
-                placeholder="Seleccione un area"
-            ></v-combobox>
-        </template>
-
-        <template v-slot:field.permissions="{ _field }">
-            <v-combobox
-                v-model="form.permissions"
-                :items="_field.options"
-                :label="_field.label"
-                :itemValue="_field.itemValue"
-                :itemTitle="_field.itemTitle"
-                multiple
-                chips
-            ></v-combobox>
-        </template>
     </SimpleForm>
 </template>
 

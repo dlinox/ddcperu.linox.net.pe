@@ -148,7 +148,7 @@ const url = "/a/instructors";
 const formStructure = [
     {
         key: "instructor_id",
-        label: "Instructor",
+        label: "Instructor ID",
         type: "text",
         required: true,
         cols: 12,
@@ -162,7 +162,7 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 4,
+        colMd: 6,
         default: "",
     },
     {
@@ -171,7 +171,6 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 8,
         default: "",
     },
     {
@@ -180,7 +179,7 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 6,
+
         default: "",
     },
 
@@ -190,14 +189,6 @@ const formStructure = [
         type: "email",
         required: true,
         cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "phone",
-        label: "Teléfono",
-        type: "text",
-        required: true,
         colMd: 6,
         default: "",
     },

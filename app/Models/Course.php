@@ -20,18 +20,18 @@ $table->string('name');
         'name',
         'code',
         'description',
-        'status'
+        'is_enabled'
     ];
 
     protected $casts = [
-        'status' => 'boolean'
+        'is_enabled' => 'boolean'
     ];
 
     public $headers =  [
         ['text' => "ID", 'value' => "id"],
-        ['text' => "Nombre", 'value' => "name"],
         ['text' => "Código", 'value' => "code"],
-        ['text' => "Descripción", 'value' => "description"],
-        ['text' => "Estado", 'value' => "status"],
+        ['text' => "Nombre", 'value' => "name"],
+        // ['text' => "Descripción", 'value' => "description"],
+        ['text' => "Estado", 'value' => "is_enabled"],
     ];
 }

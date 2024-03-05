@@ -210,7 +210,7 @@ watch(
 watch(
     () => error.value,
     (newValue) => {
-        if (newValue.exception && newValue.error) {
+        if (newValue.exception || newValue.error) {
             snackbarError.value = true;
         } else {
             snackbarError.value = false;

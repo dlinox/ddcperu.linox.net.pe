@@ -95,7 +95,7 @@ class AgencyController extends Controller
     public function changeState(string $id)
     {
         $user = Agency::find($id);
-        $user->status = !$user->status;
+        $user->is_enabled = !$user->is_enabled;
         $user->save();
         return redirect()->back()->with('success', 'Estado actualizado correctamente');
     }

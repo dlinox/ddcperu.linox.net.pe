@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\OperatorController;
@@ -53,4 +54,8 @@ Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
 
     //instructores
     Route::resource('instructors', InstructorController::class)->middleware(['can:a.users']);
+
+    //certificados
+    Route::resource('certificates', CertificateController::class)->middleware(['can:a.users']);
+    Route::patch('certificates/{id}/change-state',  [CertificateController::class, 'changeState'])->middleware(['can:a.users']);
 });

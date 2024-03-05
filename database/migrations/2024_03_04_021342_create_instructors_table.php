@@ -27,7 +27,7 @@ return new class extends Migration
             //correo del instructor
             $table->string('email', 100)->unique();
             //telefono del instructor
-            $table->char('phone', 15);
+            $table->char('phone_number', 15);
             //fecha de inicio de la licencia
             $table->date('license_start');
             //fecha de fin de la licencia

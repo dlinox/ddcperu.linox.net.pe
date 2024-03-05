@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administrator;
+use App\Models\Agency;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,7 @@ class AdministratorController extends Controller
                     'perPage' => $perPage,
                 ],
                 'headers' => $this->administator->headers,
+                'agencies' => Agency::select('id', 'name')->where('is_enabled', true)->get(),
                 'permissions' => config('app.permissions'),
             ]
 

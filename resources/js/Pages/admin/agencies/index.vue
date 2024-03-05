@@ -22,7 +22,7 @@
                 </BtnDialog>
             </template>
         </HeadingPage>
-        <v-container fluid class="pt-0">
+
             <v-card>
                 <DataTable
                     :headers="headers"
@@ -43,9 +43,9 @@
                         </div>
                     </template>
 
-                    <template v-slot:item.status="{ item }">
+                    <template v-slot:item.is_enabled="{ item }">
                         <v-btn
-                            :color="item.status ? 'blue' : 'red'"
+                            :color="item.is_enabled ? 'blue' : 'red'"
                             variant="tonal"
                         >
                             <DialogConfirm
@@ -60,7 +60,7 @@
                                         )
                                 "
                             />
-                            {{ item.status ? "Activo" : "Inactivo" }}
+                            {{ item.is_enabled ? "Activo" : "Inactivo" }}
                         </v-btn>
                     </template>
 
@@ -115,7 +115,7 @@
                     </template>
                 </DataTable>
             </v-card>
-        </v-container>
+
     </AdminLayout>
 </template>
 <script setup>

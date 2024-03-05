@@ -64,10 +64,6 @@ return [
     ],
 
 
-
-
-
-
     'menu' => [
         [
             'title' => "Dashboard",
@@ -98,6 +94,14 @@ return [
             'group' => null,
         ],
         [
+            'title' => "Certificados",
+            'value' => "certificates",
+            'icon' => "mdi-certificate",
+            'to' => "/a/certificates",
+            'can' => 'a.users',
+            'group' => null,
+        ],
+        [
             'title' => "Usuarios",
             'value' => "users",
             'icon' => "mdi-account-group",
@@ -110,16 +114,6 @@ return [
                     'icon' => "mdi-account-group",
                     'to' => "/a/administrators",
                     'can' => 'a.users',
-                ],
-
-                [
-                    'title' => "Operadores",
-                    'value' => "operators",
-                    'icon' => "mdi-account-group",
-                    'to' => "/a/operators",
-                    'can' => 'a.users',
-                    'group' => null,
-
                 ],
 
                 [

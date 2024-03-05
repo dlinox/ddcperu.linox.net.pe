@@ -45,13 +45,13 @@ class Agency extends Model
         'phone',
         'license_start',
         'license_end',
-        'status'
+        'is_enabled'
     ];
 
     protected $casts = [
         'license_start' => 'date',
         'license_end' => 'date',
-        'status' => 'boolean'
+        'is_enabled' => 'boolean'
     ];
 
 
@@ -65,6 +65,6 @@ class Agency extends Model
         ['text' => "Telefono", 'value' => "phone"],
         ['text' => "Inicio de Licencia", 'value' => "license_start"],
         ['text' => "Fin de Licencia", 'value' => "license_end"],
-        ['text' => "Estado", 'value' => "status"],
+        ['text' => "Estado", 'value' => "is_enabled"],
     ];
 }

@@ -9,7 +9,7 @@
                             prepend-icon="mdi-plus"
                             variant="flat"
                         >
-                            Nuevo
+                            Nueva
                         </v-btn>
                     </template>
                     <template v-slot:content="{ dialog }">
@@ -23,7 +23,7 @@
             </template>
         </HeadingPage>
 
-        <v-card flat rounded="0">
+        <v-card>
             <DataTable :headers="headers" :items="items" with-action :url="url">
                 <template v-slot:header="{ filter }">
                     <div class="pa-3">
@@ -38,9 +38,21 @@
                     </div>
                 </template>
 
-                <template v-slot:item.status="{ item }">
+                <template v-slot:item.agency="{ item }">
+                    {{ item.agency.name }}
+                </template>
+
+                <template v-slot:item.course="{ item }">
+                    {{ item.course.name }}
+                </template>
+
+                <template v-slot:item.user="{ item }">
+                    {{ item.user.username }}
+                </template>
+
+                <template v-slot:item.is_enabled="{ item }">
                     <v-btn
-                        :color="item.status ? 'blue' : 'red'"
+                        :color="item.is_enabled ? 'blue' : 'red'"
                         variant="tonal"
                     >
                         <DialogConfirm
@@ -55,7 +67,7 @@
                                     )
                             "
                         />
-                        {{ item.status ? "Activo" : "Inactivo" }}
+                        {{ item.is_enabled ? "Activo" : "Inactivo" }}
                     </v-btn>
                 </template>
 
@@ -125,110 +137,48 @@ const props = defineProps({
     headers: Object,
     filters: Object,
     agencies: Array,
-    permissions: Array,
+    courses: Array,
 });
 
 const primaryKey = "id";
-const url = "/a/administrators";
+const url = "/a/certificates";
 
 const formStructure = [
     {
-        key: "document_number",
-        label: "DNI",
-        type: "text",
+        key: "course_id",
+        label: "Curso",
+        type: "combobox",
         required: true,
         cols: 12,
-        colMd: 4,
-        default: "",
-    },
-    {
-        key: "name",
-        label: "Nombre",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 8,
-        default: "",
-    },
-    {
-        key: "last_name",
-        label: "Apellidos",
-        type: "text",
-        required: true,
-        cols: 12,
-
-        default: "",
-    },
-
-    {
-        key: "email",
-        label: "Correo",
-        type: "email",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-
-    {
-        key: "phone_number",
-        label: "Teléfono",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "username",
-        label: "Usuario",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "password",
-        label: "Contraseña",
-        type: "password",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "role",
-        label: "Rol",
-        type: "select",
-        required: true,
-        cols: 12,
-        colMd: 6,
         default: null,
-        options: [
-            { title: "Administrador", value: "001" },
-            { title: "Operador", value: "002" },
-        ],
+        options: props.courses,
+        itemTitle: "name",
+        itemValue: "id",
     },
-    {
-        key: "is_sub_admin",
-        label: "Sub Administrador",
-        type: "checkbox",
-        required: false,
-        cols: 12,
-        colMd: 6,
-        default: false,
-    },
+
     {
         key: "agency_id",
         label: "Agencia",
-        type: "hidden",
-        itemTitle: "name",
-        itemValue: "id",
+        type: "combobox",
         required: true,
         cols: 12,
         default: null,
         options: props.agencies,
+        itemTitle: "name",
+        itemValue: "id",
+    },
+    {
+        key: "ranges",
+        label: "Rangos",
+        type: "hidden",
+        required: true,
+        cols: 12,
+        default: [
+            {
+                range_start: "",
+                range_end: "",
+            },
+        ],
     },
 ];
 </script>

@@ -41,7 +41,7 @@
                     <template v-for="(header, j) in headers">
                         <td>
                             <slot :name="'item.' + header.value" :item="item">
-                                {{ item[header.value] }}
+                                {{ item[`${header.value}`] }}
                             </slot>
                         </td>
                     </template>

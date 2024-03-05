@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('last_name', 180);
             $table->char('phone_number', 15);
+            $table->boolean('is_sub_admin')->default(false);
             $table->boolean('is_enabled')->default(true);
             $table->timestamps();
         });
