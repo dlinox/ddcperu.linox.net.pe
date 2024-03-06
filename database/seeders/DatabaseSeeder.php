@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PermissionSeeder::class,
             ModelHasPermissionSeeder::class,
-
         ]);
     }
 }

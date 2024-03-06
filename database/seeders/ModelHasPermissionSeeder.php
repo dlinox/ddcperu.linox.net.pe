@@ -15,14 +15,9 @@ class ModelHasPermissionSeeder extends Seeder
     {
 
 
-        $permissions = [
-
-            [
-                'name' => 'a.users',
-                'menu' => 'Gestion de Usuarios',
-            ],
-        ];
-
+        //permisos de tipo 001
+        $permissions = collect(config('app.permissions'))->where('type', '001')->toArray();
+        
         $administrador = User::where('role', '001')->first();
 
         foreach ($permissions as $permission) {

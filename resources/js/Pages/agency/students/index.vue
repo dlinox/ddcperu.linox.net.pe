@@ -60,7 +60,7 @@
                 </template>
 
                 <template v-slot:action="{ item }">
-                    <BtnDialog title="Editar" width="800px">
+                    <BtnDialog title="Editar" width="500px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn
                                 color="info"
@@ -107,10 +107,6 @@
                 </template>
             </DataTable>
         </v-card>
-
-        <pre>
-            {{ permissions }}
-        </pre>
     </AdminLayout>
 </template>
 <script setup>
@@ -128,21 +124,36 @@ const props = defineProps({
     items: Object,
     headers: Object,
     filters: Object,
-    agencies: Array,
-    permissions: Array,
 });
 
 const primaryKey = "id";
-const url = "/a/administrators";
+const url = "/s/students";
 
 const formStructure = [
     {
+        key: "document_type",
+        label: "Tipo de documento",
+        type: "select",
+        required: true,
+        cols: 12,
+        colMd: 6,
+        default: "001",
+        options: [
+            { value: "001", title: "DNI" },
+            { value: "002", title: "Carnet de extranjería" },
+            { value: "003", title: "Pasaporte" },
+        ],
+        itemValue: "id",
+        itemTitle: "title",
+
+    },
+    {
         key: "document_number",
-        label: "DNI",
+        label: "Número de documento",
         type: "text",
         required: true,
         cols: 12,
-        colMd: 4,
+        colMd: 6,
         default: "",
     },
     {
@@ -151,16 +162,24 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 8,
         default: "",
     },
     {
-        key: "last_name",
-        label: "Apellidos",
+        key: "paternal_surname",
+        label: "Apellido paterno",
         type: "text",
         required: true,
         cols: 12,
-
+        colMd: 6,
+        default: "",
+    },
+    {
+        key: "maternal_surname",
+        label: "Apellido materno",
+        type: "text",
+        required: false,
+        cols: 12,
+        colMd: 6,
         default: "",
     },
 
@@ -183,69 +202,5 @@ const formStructure = [
         colMd: 6,
         default: "",
     },
-    {
-        key: "username",
-        label: "Usuario",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "password",
-        label: "Contraseña",
-        type: "password",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "role",
-        label: "Rol",
-        type: "select",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: null,
-        options: [
-            { title: "Administrador", value: "001" },
-            { title: "Operador", value: "002" },
-        ],
-    },
-    {
-        key: "is_sub_admin",
-        label: "Sub Administrador",
-        type: "checkbox",
-        required: false,
-        cols: 12,
-        colMd: 6,
-        default: false,
-    },
-    {
-        key: "agency_id",
-        label: "Agencia",
-        type: "hidden",
-        itemTitle: "name",
-        itemValue: "id",
-        required: true,
-        cols: 12,
-        default: null,
-        options: props.agencies,
-    },
-    {
-        key: "permissions",
-        label: "Permisos",
-        type: "hidden",
-        required: false,
-        itemTitle: "menu",
-        itemValue: "name",
-        cols: 12,
-        colMd: 12,
-        default: [],
-        options: props.permissions,
-    
-    }
 ];
 </script>

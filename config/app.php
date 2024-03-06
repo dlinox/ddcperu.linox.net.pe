@@ -73,24 +73,20 @@ return [
             'can' => null,
             'group' => null,
         ],
-
-
         [
             'title' => "Sub Agencias",
             'value' => "agencies",
             'icon' => "mdi-domain",
             'to' => "/a/agencies",
-            'can' => 'a.users',
+            'can' => 'a.agencies',
             'group' => null,
         ],
-
-
         [
             'title' => "Cursos",
             'value' => "courses",
             'icon' => "mdi-book-open-variant",
             'to' => "/a/courses",
-            'can' => 'a.users',
+            'can' => 'a.courses',
             'group' => null,
         ],
         [
@@ -98,7 +94,7 @@ return [
             'value' => "certificates",
             'icon' => "mdi-certificate",
             'to' => "/a/certificates",
-            'can' => 'a.users',
+            'can' => 'a.certificates',
             'group' => null,
         ],
         [
@@ -106,14 +102,14 @@ return [
             'value' => "users",
             'icon' => "mdi-account-group",
             'to' => "/a/users",
-            'can' => 'a.users',
+            'can' => 'a.administrators|a.instructors',
             'group' => [
                 [
                     'title' => "Administradores",
                     'value' => "administrators",
                     'icon' => "mdi-account-group",
                     'to' => "/a/administrators",
-                    'can' => 'a.users',
+                    'can' => 'a.administrators',
                 ],
 
                 [
@@ -121,20 +117,96 @@ return [
                     'value' => "instructors",
                     'icon' => "mdi-account-group",
                     'to' => "/a/instructors",
-                    'can' => 'a.users',
+                    'can' => 'a.instructors',
                     'group' => null,
                 ],
 
             ]
+        ],
+        [
+            'title' => "Instructores",
+            'value' => "instructors",
+            'icon' => "mdi-account-group",
+            'to' => "/s/instructors",
+            'can' => 's.instructors',
+            'group' => null,
+        ],
+        [
+            'title' => "Certificados",
+            'value' => "certificates",
+            'icon' => "mdi-certificate",
+            'to' => "/s/certificates",
+            'can' => 's.certificates',
+            'group' => null,
+        ],
+        [
+            'title' => "Estudiantes",
+            'value' => "students",
+            'icon' => "mdi-account-group",
+            'to' => "/s/students",
+            'can' => 's.students',
+            'group' => null,
+        ],
+        [
+            'title' => "Certificados",
+            'value' => "certificates",
+            'icon' => "mdi-certificate",
+            'to' => "/i/certificates",
+            'can' => 'i.certificates',
+            'group' => null,
         ]
-
     ],
 
 
     'permissions' => [
+
         [
-            'name' => 'a.users',
-            'menu' => 'Gestion de Usuarios',
+            'name' => 'a.agencies',
+            'menu' => 'Gestion de Sub agencias',
+            'type' => '001'
+        ],
+        [
+            'name' => 'a.courses',
+            'menu' => 'Gestion de Cursos',
+            'type' => '001'
+        ],
+        [
+            'name' => 'a.certificates',
+            'menu' => 'Gestion de Certificados',
+            'type' => '001'
+        ],
+        [
+            'name' => 'a.administrators',
+            'menu' => 'Gestion de Administradores',
+            'type' => '001'
+        ],
+        [
+            'name' => 'a.instructors',
+            'menu' => 'Gestion de Instructores',
+            'type' => '001'
+        ],
+        [
+            'name' => 's.instructors',
+            'menu' => 'Gestion de Instructores',
+            'type' => '002'
+
+        ],
+        [
+            'name' => 's.certificates',
+            'menu' => 'Gestion de Certificados',
+            'type' => '002'
+        ],
+
+        [
+            'name' => 's.students',
+            'menu' => 'Gestion de Estudiantes',
+            'type' => '002'
+        ],
+
+        [
+            'name' => 'i.certificates',
+            'menu' => 'Gestion certificados',
+            'type' => '003'
         ],
 
     ],

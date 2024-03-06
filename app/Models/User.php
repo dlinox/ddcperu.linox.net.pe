@@ -36,6 +36,14 @@ class User extends Authenticatable
         'password' => 'hashed'
     ];
 
+
+    
+    protected $with = [
+        'permissions:id,name,menu'
+    ];
+
+  
+
     //nombre del rol
     public function getRoleAttribute($value)
     {
@@ -104,4 +112,5 @@ class User extends Authenticatable
         $user = User::where('profile_id', $id)->first();
         $user->delete();
     }
+
 }

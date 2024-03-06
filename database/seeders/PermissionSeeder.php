@@ -14,17 +14,14 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
 
-        $permissions = [
-            [
-                'name' => 'a.users',
-                'menu' => 'Gestion de Usuarios',
-            ],
-        ];
+        $permissions = config('app.permissions');
 
         foreach ($permissions as $permission) {
 
-            //agisnar todos los permisos al usuario administrador con laravel spatie
-            Permission::create($permission);
+            Permission::create([
+                'name' => $permission['name'],
+                'menu' => $permission['menu'],
+            ]);
         }
     }
 }

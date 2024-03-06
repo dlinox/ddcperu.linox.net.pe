@@ -48,4 +48,9 @@ class Certificate extends Model
         ['text' => "Usuario", 'value' => "user"],
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
+
+    public $headersAgency =  [
+        // ['text' => "ID", 'value' => "id"],
+        ['text' => "Curso", 'value' => "course"],
+    ];
 }

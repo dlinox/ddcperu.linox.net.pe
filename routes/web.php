@@ -8,6 +8,8 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\StudentCertificateController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -36,26 +38,40 @@ Route::name('auth.')->prefix('auth')->group(function () {
 
 Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
     Route::get('',  [AdminController::class, 'index'])->name('index');
-
     //agencias
-    Route::resource('agencies', AgencyController::class)->middleware(['can:a.users']);
-    Route::patch('agencies/{id}/change-state',  [AgencyController::class, 'changeState'])->middleware(['can:a.users']);
-
+    Route::resource('agencies', AgencyController::class)->middleware(['can:a.agencies']);
+    Route::patch('agencies/{id}/change-state',  [AgencyController::class, 'changeState'])->middleware(['can:a.agencies']);
     //cursos
-    Route::resource('courses', CourseController::class)->middleware(['can:a.users']);
-    Route::patch('courses/{id}/change-state',  [CourseController::class, 'changeState'])->middleware(['can:a.users']);
-
+    Route::resource('courses', CourseController::class)->middleware(['can:a.courses']);
+    Route::patch('courses/{id}/change-state',  [CourseController::class, 'changeState'])->middleware(['can:a.courses']);
     //usuarios
     //administradores
-    Route::resource('administrators', AdministratorController::class)->middleware(['can:a.users']);
-
-    //operadores
-    Route::resource('operators', OperatorController::class)->middleware(['can:a.users']);
-
+    Route::resource('administrators', AdministratorController::class)->middleware(['can:a.administrators']);
     //instructores
-    Route::resource('instructors', InstructorController::class)->middleware(['can:a.users']);
-
+    Route::resource('instructors', InstructorController::class)->middleware(['can:a.instructors']);
     //certificados
-    Route::resource('certificates', CertificateController::class)->middleware(['can:a.users']);
-    Route::patch('certificates/{id}/change-state',  [CertificateController::class, 'changeState'])->middleware(['can:a.users']);
+    Route::resource('certificates', CertificateController::class)->middleware(['can:a.certificates']);
+    Route::patch('certificates/{id}/change-state',  [CertificateController::class, 'changeState'])->middleware(['can:a.certificates']);
+});
+
+Route::middleware('auth')->name('s.')->prefix('s')->group(function () {
+    //instructores -  cambiar los metodos de los controladores
+    Route::get('instructors',  [InstructorController::class, 'indexAgency'])->name('instructors')->middleware(['can:s.instructors']);
+    Route::post('instructors',  [InstructorController::class, 'store'])->name('instructors')->middleware(['can:s.instructors']);
+    Route::put('instructors/{id}',  [InstructorController::class, 'update'])->name('instructors')->middleware(['can:s.instructors']);
+    Route::delete('instructors/{id}',  [InstructorController::class, 'destroy'])->name('instructors')->middleware(['can:s.instructors']);
+    Route::patch('instructors/{id}/change-state',  [InstructorController::class, 'changeState'])->name('instructors')->middleware(['can:s.instructors']);
+
+    //students
+    Route::resource('students', StudentController::class)->middleware(['can:s.students']);
+
+    //certificates
+    Route::get('certificates',  [CertificateController::class, 'indexAgency'])->name('certificates')->middleware(['can:s.certificates']);
+    Route::post('certificates',  [CertificateController::class, 'storeAgency'])->name('certificates')->middleware(['can:s.certificates']);
+});
+
+Route::middleware('auth')->name('i.')->prefix('i')->group(function () {
+    //studentCertificates
+    Route::get('certificates',  [StudentCertificateController::class, 'index'])->name('certificates')->middleware(['can:i.certificates']);
+    Route::put('certificates/{id}/change-state',  [StudentCertificateController::class, 'changeState'])->name('certificates')->middleware(['can:i.certificates']);
 });

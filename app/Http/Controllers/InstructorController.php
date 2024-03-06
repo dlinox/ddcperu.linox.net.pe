@@ -77,7 +77,10 @@ class InstructorController extends Controller
             $request->merge(['role' => '003']);
             $instructor = $this->instructor->create($request->only($this->instructor->getFillable()));
 
-            User::createAccount($request, $instructor);
+            //asinar permisos de type 003
+            $permissions = collect(config('app.permissions'))->where('type', '003')->pluck('name');
+            $user = User::createAccount($request, $instructor);
+            $user->givePermissionTo($permissions);
             DB::commit();
             return redirect()->back()->with('success', 'Instructor creado correctamente');
         } catch (\Exception $e) {
@@ -111,7 +114,10 @@ class InstructorController extends Controller
             $instructor->update($request->only($this->instructor->getFillable()));
 
 
-            User::updateAccount($request, $instructor);
+            $user = User::updateAccount($request, $instructor);
+            //$permissions = collect(config('app.permissions'))->where('type', '003')->pluck('name');
+            //$user->givePermissionTo($permissions);
+
             DB::commit();
             return redirect()->back()->with('success', 'Instructor actualizado correctamente');
         } catch (\Exception $e) {
@@ -139,5 +145,46 @@ class InstructorController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    //indexAgency
+    public function indexAgency(Request $request)
+    {
+        $currentUser = $request->user();
+
+        $perPage = $request->input('perPage', 10);
+
+        $query = $this->instructor->query();
+
+        //join con la tabla de usuarios
+        $query->join('users', 'users.profile_id', '=', 'instructors.id')
+            ->select('instructors.*', 'users.id as user_id', 'users.username', 'users.email', 'users.role', 'users.is_enabled as user_is_enabled')->where('role', '003');
+
+        //solo mostrar los instructores de la agencia del usuario
+        $query->where('instructors.agency_id', $currentUser->agency_id);
+
+        if ($request->has('search')) {
+            $query->where('name', 'LIKE', "%{$request->search}%");
+        }
+
+        $items = $query->paginate($perPage)->appends($request->query());
+
+        return inertia(
+            'agency/instructors/index',
+            [
+                'title' => 'Instructores',
+                'subtitle' => 'Gestión de instructores',
+                'items' => $items,
+                'filters' => [
+                    'search' => $request->search,
+                    'perPage' => $perPage,
+                ],
+                'headers' => $this->instructor->headers,
+                'permissions' => config('app.permissions'),
+                'agencies' => Agency::where('id', $currentUser->agency_id)->get(),
+                'agency' => $currentUser->agency_id
+            ]
+
+        );
     }
 }

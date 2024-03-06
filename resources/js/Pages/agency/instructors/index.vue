@@ -60,7 +60,7 @@
                 </template>
 
                 <template v-slot:action="{ item }">
-                    <BtnDialog title="Editar" width="800px">
+                    <BtnDialog title="Editar" width="500px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn
                                 color="info"
@@ -107,9 +107,8 @@
                 </template>
             </DataTable>
         </v-card>
-
         <pre>
-            {{ permissions }}
+            {{ currentUser }}
         </pre>
     </AdminLayout>
 </template>
@@ -128,21 +127,46 @@ const props = defineProps({
     items: Object,
     headers: Object,
     filters: Object,
-    agencies: Array,
+    areas: Array,
     permissions: Array,
+    agencies: Array,
+    agency: String | Number,
 });
 
 const primaryKey = "id";
-const url = "/a/administrators";
+const url = "/s/instructors";
 
+/*
+       'instructor_id',
+        'document_type',
+        'document_number',
+        'name',
+        'last_name',
+        'email',
+        'phone',
+        'license_start',
+        'license_end',
+        'agency_id',
+        'is_enabled',
+*/
 const formStructure = [
+    {
+        key: "instructor_id",
+        label: "Instructor ID",
+        type: "text",
+        required: true,
+        cols: 12,
+        colMd: 6,
+        default: "",
+    },
+
     {
         key: "document_number",
         label: "DNI",
         type: "text",
         required: true,
         cols: 12,
-        colMd: 4,
+        colMd: 6,
         default: "",
     },
     {
@@ -151,7 +175,6 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 8,
         default: "",
     },
     {
@@ -201,51 +224,36 @@ const formStructure = [
         colMd: 6,
         default: "",
     },
+
     {
-        key: "role",
-        label: "Rol",
-        type: "select",
+        key: "license_start",
+        label: "Fecha de inicio de licencia",
+        type: "date",
         required: true,
         cols: 12,
         colMd: 6,
-        default: null,
-        options: [
-            { title: "Administrador", value: "001" },
-            { title: "Operador", value: "002" },
-        ],
+        default: "",
     },
     {
-        key: "is_sub_admin",
-        label: "Sub Administrador",
-        type: "checkbox",
-        required: false,
+        key: "license_end",
+        label: "Fecha de fin de licencia",
+        type: "date",
+        required: true,
         cols: 12,
         colMd: 6,
-        default: false,
+        default: "",
     },
     {
         key: "agency_id",
         label: "Agencia",
-        type: "hidden",
-        itemTitle: "name",
-        itemValue: "id",
+        type: "combobox",
         required: true,
         cols: 12,
-        default: null,
+        disabled: true,
+        default: props.agency,
         options: props.agencies,
+        itemValue: "id",
+        itemTitle: "name",
     },
-    {
-        key: "permissions",
-        label: "Permisos",
-        type: "hidden",
-        required: false,
-        itemTitle: "menu",
-        itemValue: "name",
-        cols: 12,
-        colMd: 12,
-        default: [],
-        options: props.permissions,
-    
-    }
 ];
 </script>

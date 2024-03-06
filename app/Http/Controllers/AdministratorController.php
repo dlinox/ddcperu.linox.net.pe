@@ -26,13 +26,32 @@ class AdministratorController extends Controller
 
         //join con la tabla de usuarios
         $query->join('users', 'users.profile_id', '=', 'administrators.id')
-            ->select('administrators.*', 'users.id as user_id', 'users.username', 'users.email', 'users.role', 'users.is_enabled as user_is_enabled')->where('role', '001');
+            ->select(
+                'administrators.*',
+                'users.id as user_id',
+                'users.username',
+                'users.email',
+                'users.role',
+                'users.agency_id',
+                'users.is_enabled as user_is_enabled',
+            )->whereIn('users.role', ['001', '002']);
 
         if ($request->has('search')) {
             $query->where('name', 'LIKE', "%{$request->search}%");
         }
 
         $items = $query->paginate($perPage)->appends($request->query());
+        //mapear los permisos
+        $items->map(function ($item) {
+            //agrergar permisos al item no es is_sub_admin
+            if ($item->is_sub_admin) {
+                $item->permissions = [];
+            } else {
+                $item->permissions = User::find($item->user_id)->permissions->pluck('name');
+            }
+
+            return $item;
+        });
 
         return inertia(
             'admin/administrators/index',
@@ -46,7 +65,11 @@ class AdministratorController extends Controller
                 ],
                 'headers' => $this->administator->headers,
                 'agencies' => Agency::select('id', 'name')->where('is_enabled', true)->get(),
-                'permissions' => config('app.permissions'),
+                //del array de permisos solo traer los que son de tipo 001 [[name=> '', menu=>'']...]
+
+                'permissions' => collect(config('app.permissions'))->where('type', '001')->map(function ($permission) {
+                    return collect($permission)->except('type');
+                })
             ]
 
         );
@@ -60,7 +83,6 @@ class AdministratorController extends Controller
             'last_name' => 'required',
             'email' => 'required',
             'phone_number' => 'required',
-
             'email' => 'required|email',
             'password' => 'required',
             'username' => 'required',
@@ -72,8 +94,16 @@ class AdministratorController extends Controller
             //añadir el rol de administrador
             $request->merge(['role' => '001']);
             $administator = $this->administator->create($request->only($this->administator->getFillable()));
+            $user = User::createAccount($request, $administator);
+            //asignar permisos del request al usuario
 
-            User::createAccount($request, $administator);
+            if ($request->is_sub_admin) {
+                $user->givePermissionTo(collect(config('app.permissions'))->where('type', '002')->pluck('name'));
+            } else {
+                $user->givePermissionTo($request->permissions);
+            }
+
+
             DB::commit();
             return redirect()->back()->with('success', 'Administrador creado correctamente');
         } catch (\Exception $e) {

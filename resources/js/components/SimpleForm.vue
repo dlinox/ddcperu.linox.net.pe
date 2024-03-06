@@ -53,6 +53,7 @@
                             v-model="form[`${field.key}`]"
                             :items="field.options"
                             :label="field.label"
+                            :disabled="field.disabled"
                             :rules="field.required ? [isRequired] : []"
                         ></v-select>
                     </template>
@@ -61,6 +62,7 @@
                             v-model="form[`${field.key}`]"
                             :label="field.label"
                             :rules="field.required ? [isRequired] : []"
+                            :disabled="field.disabled"
                             type="number"
                         ></v-text-field>
                     </template>
@@ -70,6 +72,7 @@
                             :label="field.label"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
+                            :disabled="field.disabled"
                         ></v-textarea>
                     </template>
 
@@ -79,6 +82,7 @@
                             :label="field.label"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
+                            :disabled="field.disabled"
                         ></v-checkbox>
                     </template>
 
@@ -92,6 +96,7 @@
                             v-model="form[`${field.key}`]"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
+                            :disabled="field.disabled"
                         />
                     </template>
 
@@ -104,6 +109,7 @@
                             :item-value="field.itemValue"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
+                            :disabled="field.disabled"
                         />
                     </template>
                     <!-- <template v-else-if="field.type === 'richt-text'">
