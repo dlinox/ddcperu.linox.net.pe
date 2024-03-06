@@ -107,9 +107,6 @@
                 </template>
             </DataTable>
         </v-card>
-        <pre>
-            {{ currentUser }}
-        </pre>
     </AdminLayout>
 </template>
 <script setup>
