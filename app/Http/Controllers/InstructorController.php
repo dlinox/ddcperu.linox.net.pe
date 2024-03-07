@@ -105,7 +105,7 @@ class InstructorController extends Controller
             'license_end' => 'required',
             'email' => 'required|email',
             'username' => 'required',
-            'agency_id' => 'required',
+            'agency_id' => 'required',  
         ]);
 
         DB::beginTransaction();

@@ -24,7 +24,7 @@ class StudentCertificate extends Model
 
     protected $fillable = [
         'student_id',
-        'certificate_id',
+        'certificate_id', // numero del certificado (Certicifate Details)
         'user_id',
         'start_date',
         'end_date',

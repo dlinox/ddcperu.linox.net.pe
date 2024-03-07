@@ -36,6 +36,23 @@ class CertificateController extends Controller
 
         $items = $query->paginate($perPage)->appends($request->query());
 
+        $items->map(function ($item) {
+            $item->certificateStudent  = CertificateDetail::leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
+                ->leftjoin('students', 'students.id', '=', 'student_certificates.student_id')
+                ->leftjoin('instructors', 'instructors.id', '=', 'student_certificates.instructor_id')
+                ->where('certificate_details.certificate_id', $item->id)
+                // ->where('student_certificates.student_id', auth()->user()->student_id)
+                ->get([
+                    'certificate_details.id',
+                    'certificate_details.number',
+                    'certificate_details.status',
+                    'student_certificates.is_approved',
+                    DB::raw("CONCAT(students.name , ' ' ,students.paternal_surname , ' ', students.maternal_surname ) as student"),
+                    DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name) as instructor")
+                ]);
+            return $item;
+        });
+
         return inertia(
             'admin/certificates/index',
             [
@@ -148,6 +165,19 @@ class CertificateController extends Controller
             $item->certificateDetails = CertificateDetail::where('certificate_id', $item->id)
                 ->where('status', '000')
                 ->get(['id', 'number', 'status']);
+            $item->certificateStudent  = CertificateDetail::leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
+                ->leftjoin('students', 'students.id', '=', 'student_certificates.student_id')
+                ->leftjoin('instructors', 'instructors.id', '=', 'student_certificates.instructor_id')
+                ->where('certificate_details.certificate_id', $item->id)
+                // ->where('student_certificates.student_id', auth()->user()->student_id)
+                ->get([
+                    'certificate_details.id',
+                    'certificate_details.number',
+                    'certificate_details.status',
+                    'student_certificates.is_approved',
+                    DB::raw("CONCAT(students.name , ' ' ,students.paternal_surname , ' ', students.maternal_surname ) as student"),
+                    DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name) as instructor")
+                ]);
             return $item;
         });
 
@@ -200,6 +230,4 @@ class CertificateController extends Controller
             ]);
         }
     }
-
- 
 }

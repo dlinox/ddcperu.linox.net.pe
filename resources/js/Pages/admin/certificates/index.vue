@@ -72,6 +72,76 @@
                 </template>
 
                 <template v-slot:action="{ item }">
+                    <BtnDialog title="Certificados" width="500px">
+                        <template v-slot:activator="{ dialog }">
+                            <v-btn
+                                color="black"
+                                icon="mdi-plus"
+                                variant="tonal"
+                                density="comfortable"
+                                @click="dialog"
+                            >
+                            </v-btn>
+                        </template>
+                        <template v-slot:content="{ dialog }">
+                            <v-list-item
+                                v-for="certificate in item.certificateStudent"
+                            >
+                                <v-list-item-title>
+                                    Certificado: {{ certificate.number }} -
+                                    <v-chip
+                                        :color="
+                                            certificate.status === '000'
+                                                ? 'blue'
+                                                : certificate.status == '001'
+                                                ? 'yellow'
+                                                : 'red'
+                                        "
+                                    >
+                                        {{
+                                            certificate.status === "000"
+                                                ? "Disponible"
+                                                : certificate.status == "001"
+                                                ? "pendiente"
+                                                : "asignado"
+                                        }}
+                                    </v-chip>
+
+                                    <v-chip
+                                        v-if="certificate.is_approved !== null"
+                                        :color="
+                                            certificate.is_approved === 0
+                                                ? 'yellow'
+                                                : certificate.is_approved == 1
+                                                ? 'blue'
+                                                : 'red'
+                                        "
+                                    >
+                                        {{
+                                            certificate.is_approved === 0
+                                                ? "Pendiente"
+                                                : certificate.is_approved == 1
+                                                ? "Verificado"
+                                                : "Rechazado"
+                                        }}
+                                    </v-chip>
+                                </v-list-item-title>
+
+                                <v-list-item-subtitle
+                                    v-if="certificate.student"
+                                >
+                                    Estudinate: : {{ certificate.student }}
+                                </v-list-item-subtitle>
+
+                                <v-list-item-subtitle
+                                    v-if="certificate.student"
+                                >
+                                    Instructor: {{ certificate.instructor }}
+                                </v-list-item-subtitle>
+                            </v-list-item>
+                        </template>
+                    </BtnDialog>
+
                     <BtnDialog title="Editar" width="500px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn
@@ -119,6 +189,9 @@
                 </template>
             </DataTable>
         </v-card>
+        <pre>
+            {{ items }}
+        </pre>
     </AdminLayout>
 </template>
 <script setup>
