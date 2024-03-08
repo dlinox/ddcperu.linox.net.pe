@@ -8,7 +8,7 @@
                     <v-card>
                         <v-toolbar flat density="compact" color="primary">
                             <v-toolbar-title>
-                                <small> Instrictores </small>
+                                <small> Instructores </small>
                             </v-toolbar-title>
                             <v-spacer></v-spacer>
                             <v-icon class="me-3">mdi-account</v-icon>
