@@ -118,9 +118,8 @@ class StudentCertificateController extends Controller
 
                 //fecha de emision y fecha de vencimiento del certificado formato dd/mm/yyyy
 
-
-                DB::raw("DATE_FORMAT(certificate_details.start_date, '%d/%m/%Y') as start_date"),
-                DB::raw("DATE_FORMAT(certificate_details.end_date, '%d/%m/%Y') as end_date"),
+                DB::raw("DATE_FORMAT(student_certificates.start_date, '%d/%m/%Y') as start_date"),
+                DB::raw("DATE_FORMAT(student_certificates.end_date, '%d/%m/%Y') as end_date"),
 
             );
 
