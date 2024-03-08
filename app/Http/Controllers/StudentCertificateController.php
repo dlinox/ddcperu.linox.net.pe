@@ -116,9 +116,11 @@ class StudentCertificateController extends Controller
                 'agencies.name as agency',
                 //codigo del instructor
 
-                //fecha de emision y fecha de vencimiento del certificado
-                'student_certificates.start_date as start_date',
-                'student_certificates.end_date as end_date',
+                //fecha de emision y fecha de vencimiento del certificado formato dd/mm/yyyy
+
+
+                DB::raw("DATE_FORMAT(certificate_details.start_date, '%d/%m/%Y') as start_date"),
+                DB::raw("DATE_FORMAT(certificate_details.end_date, '%d/%m/%Y') as end_date"),
 
             );
 
