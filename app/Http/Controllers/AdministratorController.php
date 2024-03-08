@@ -26,6 +26,8 @@ class AdministratorController extends Controller
 
         //join con la tabla de usuarios
         $query->join('users', 'users.profile_id', '=', 'administrators.id')
+            //anadir la agencia
+            ->leftJoin('agencies', 'users.agency_id', '=', 'agencies.id')
             ->select(
                 'administrators.*',
                 'users.id as user_id',
@@ -33,6 +35,7 @@ class AdministratorController extends Controller
                 'users.email',
                 'users.role',
                 'users.agency_id',
+                'agencies.name as agency',
                 'users.is_enabled as user_is_enabled',
             )->whereIn('users.role', ['001', '002']);
 
@@ -161,5 +164,13 @@ class AdministratorController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    public function changeState($id)
+    {
+        $administator = $this->administator->find($id);
+        $administator->is_enabled = !$administator->is_enabled;
+        $administator->save();
+        return redirect()->back()->with('success', 'Estado del administrador actualizado correctamente');
     }
 }

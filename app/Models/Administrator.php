@@ -38,6 +38,7 @@ class Administrator extends Model
         ['text' => "Teléfono", 'value' => "phone_number"],
         ['text' => "Usuario", 'value' => "username"],
         ['text' => "Correo", 'value' => "email"],
+        ['text' => "Sub agencia", 'value' => "agency"],
 
         ['text' => "Estado", 'value' => "is_enabled"],
     ];

@@ -43,7 +43,7 @@ class Certificate extends Model
 
     public $headers =  [
         ['text' => "ID", 'value' => "id"],
-        ['text' => "Agencia", 'value' => "agency"],
+        ['text' => "Sub agencia", 'value' => "agency"],
         ['text' => "Curso", 'value' => "course"],
         ['text' => "Usuario", 'value' => "user"],
         ['text' => "Estado", 'value' => "is_enabled"],

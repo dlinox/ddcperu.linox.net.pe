@@ -47,6 +47,7 @@ class Instructor extends Model
         ['text' => "Teléfono", 'value' => "phone_number"],
         ['text' => "Inicio de licencia", 'value' => "license_start"],
         ['text' => "Fin de licencia", 'value' => "license_end"],
+        ['text' => "Sub agencia", 'value' => "agency"],
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
 }

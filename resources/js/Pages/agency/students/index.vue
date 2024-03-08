@@ -38,25 +38,14 @@
                     </div>
                 </template>
 
-                <template v-slot:item.status="{ item }">
-                    <v-btn
-                        :color="item.status ? 'blue' : 'red'"
-                        variant="tonal"
-                    >
-                        <DialogConfirm
-                            text="¿Activar/Desactivar?"
-                            @onConfirm="
-                                () =>
-                                    router.patch(
-                                        url +
-                                            '/' +
-                                            item[`${primaryKey}`] +
-                                            '/change-state'
-                                    )
-                            "
-                        />
-                        {{ item.status ? "Activo" : "Inactivo" }}
-                    </v-btn>
+                <template v-slot:item.document_type="{ item }">
+                    {{
+                        item.document_type === "001"
+                            ? "DNI"
+                            : item.document_type === "002"
+                            ? "Carnet de extranjería"
+                            : "Pasaporte"
+                    }}
                 </template>
 
                 <template v-slot:action="{ item }">

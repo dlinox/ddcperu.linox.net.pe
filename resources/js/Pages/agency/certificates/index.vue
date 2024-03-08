@@ -22,109 +22,142 @@
                 </template>
 
                 <template v-slot:action="{ item }">
-                    <BtnDialog title="Certificados" width="500px">
-                        <template v-slot:activator="{ dialog }">
-                            <v-btn
-                                color="black"
-                                icon="mdi-plus"
-                                variant="tonal"
-                                density="comfortable"
-                                @click="dialog"
-                            >
-                                
-                            </v-btn>
-                        </template>
-                        <template v-slot:content="{ dialog }">
-                            <v-list-item
-                                v-for="certificate in item.certificateStudent"
-                            >
-                                <v-list-item-title>
-                                    Certificado: {{ certificate.number }} -
-                                    <v-chip
-                                        :color="
-                                            certificate.status === '000'
-                                                ? 'blue'
-                                                : certificate.status == '001'
-                                                ? 'yellow'
-                                                : 'red'
-                                        "
+                    <div class="d-flex">
+                        <BtnDialog title="Certificados" width="500px">
+                            <template v-slot:activator="{ dialog }">
+                                <v-btn
+                                    color="black"
+                                    icon="mdi-plus"
+                                    variant="tonal"
+                                    density="comfortable"
+                                    @click="dialog"
+                                >
+                                </v-btn>
+                            </template>
+                            <template v-slot:content="{ dialog }">
+                                <v-row>
+                                    <v-col
+                                        cols="12"
+                                        v-for="certificate in item.certificateStudent"
+                                        class="border-b py-1"
                                     >
-                                        {{
-                                            certificate.status === "000"
-                                                ? "Disponible"
-                                                : certificate.status == "001"
-                                                ? "pendiente"
-                                                : "asignado"
-                                        }}
-                                    </v-chip>
-                                    
-                                    <v-chip
-                                        v-if="certificate.is_approved !== null"
-                                        :color="
-                                            certificate.is_approved === 0
-                                                ? 'yellow'
-                                                : certificate.is_approved == 1
-                                                ? 'blue'
-                                                : 'red'
-                                        "
-                                    >
-                                        {{
-                                            certificate.is_approved === 0
-                                                ? "Pendiente"
-                                                : certificate.is_approved == 1
-                                                ? "Verificado"
-                                                : "Rechazado"
-                                        }}
-                                    </v-chip>
-                                </v-list-item-title>
+                                        <v-list-item>
+                                            <v-list-item-title>
+                                                N°:
+                                                {{ certificate.number }} -
+                                                <v-chip
+                                                    density="comfortable"
+                                                    label
+                                                    class="me-1"
+                                                    :color="
+                                                        certificate.status ===
+                                                        '000'
+                                                            ? 'blue'
+                                                            : certificate.status ==
+                                                              '001'
+                                                            ? 'yellow'
+                                                            : 'green'
+                                                    "
+                                                >
+                                                    {{
+                                                        certificate.status ===
+                                                        "000"
+                                                            ? "Disponible"
+                                                            : certificate.status ==
+                                                              "001"
+                                                            ? "Pendiente"
+                                                            : "Asignado"
+                                                    }}
+                                                </v-chip>
 
-                                <v-list-item-subtitle v-if="certificate.student">
-                                    Estudinate: : {{ certificate.student }}
-                                </v-list-item-subtitle>
+                                                <v-chip
+                                                    density="comfortable"
+                                                    label
+                                                    v-if="
+                                                        certificate.is_approved !==
+                                                        null
+                                                    "
+                                                    :color="
+                                                        certificate.is_approved ===
+                                                        0
+                                                            ? 'yellow'
+                                                            : certificate.is_approved ==
+                                                              1
+                                                            ? 'blue'
+                                                            : 'red'
+                                                    "
+                                                >
+                                                    {{
+                                                        certificate.is_approved ===
+                                                        0
+                                                            ? "Pendiente"
+                                                            : certificate.is_approved ==
+                                                              1
+                                                            ? "Verificado"
+                                                            : "Rechazado"
+                                                    }}
+                                                </v-chip>
+                                            </v-list-item-title>
 
-                                <v-list-item-subtitle v-if="certificate.student">
-                                    Instructor: {{ certificate.instructor }}
-                                </v-list-item-subtitle>
-                            </v-list-item>
-                        </template>
-                    </BtnDialog>
+                                            <v-list-item-subtitle
+                                                v-if="certificate.student"
+                                            >
+                                                Estudinate:
+                                                <strong>
+                                                    {{ certificate.student }}
+                                                </strong>
+                                            </v-list-item-subtitle>
 
-                    <BtnDialog title="Registrar Certificado" width="500px">
-                        <template v-slot:activator="{ dialog }">
-                            <v-btn
-                                color="info"
-                                prepend-icon="mdi-file-certificate-outline"
-                                variant="tonal"
-                                @click="dialog"
-                            >
-                                Registrar
-                            </v-btn>
-                        </template>
-                        <template v-slot:content="{ dialog }">
-                            <create
-                                :form-structure="
-                                    formStructure.filter(
-                                        (field) => field.key !== 'password'
-                                    )
-                                "
-                                @on-cancel="dialog"
-                                :form-data="{
-                                    instructor_id: null,
-                                    student_id: null,
-                                    certificate_id: null,
-                                    start_date: null,
-                                    end_date: null,
-                                }"
-                                :numbers="item.certificateDetails"
-                                :url="url"
-                            />
-                        </template>
-                    </BtnDialog>
+                                            <v-list-item-subtitle
+                                                v-if="certificate.student"
+                                            >
+                                                Instructor:
+                                                <strong>
+                                                    {{ certificate.instructor }}
+                                                </strong>
+                                            </v-list-item-subtitle>
+                                        </v-list-item>
+                                    </v-col>
+                                </v-row>
+                            </template>
+                        </BtnDialog>
+
+                        <BtnDialog title="Registrar Certificado" width="500px">
+                            <template v-slot:activator="{ dialog }">
+                                <v-btn
+                                    color="info"
+                                    prepend-icon="mdi-file-certificate-outline"
+                                    variant="tonal"
+                                    @click="dialog"
+                                    class="ms-1"
+                                >
+                                    Registrar
+                                </v-btn>
+                            </template>
+                            <template v-slot:content="{ dialog }">
+                                <create
+                                    :form-structure="
+                                        formStructure.filter(
+                                            (field) => field.key !== 'password'
+                                        )
+                                    "
+                                    @on-cancel="dialog"
+                                    :form-data="{
+                                        instructor_id: null,
+                                        student_id: null,
+                                        certificate_id: null,
+                                        start_date: null,
+                                        end_date: null,
+                                    }"
+                                    :numbers="item.certificateDetails"
+                                    :url="url"
+                                />
+                            </template>
+                        </BtnDialog>
+                    </div>
                 </template>
             </DataTable>
         </v-card>
-
-        
     </AdminLayout>
 </template>
 <script setup>

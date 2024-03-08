@@ -7,15 +7,14 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\InstructorController;
-use App\Http\Controllers\OperatorController;
+
 use App\Http\Controllers\StudentCertificateController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Redirect;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return Redirect::route('auth.index');
+    return inertia('index');
 });
 
 Route::name('auth.')->prefix('auth')->group(function () {
@@ -47,8 +46,10 @@ Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
     //usuarios
     //administradores
     Route::resource('administrators', AdministratorController::class)->middleware(['can:a.administrators']);
+    Route::patch('administrators/{id}/change-state',  [AdministratorController::class, 'changeState'])->middleware(['can:a.administrators']);
     //instructores
     Route::resource('instructors', InstructorController::class)->middleware(['can:a.instructors']);
+    Route::patch('instructors/{id}/change-state',  [InstructorController::class, 'changeState'])->middleware(['can:a.instructors']);
     //certificados
     Route::resource('certificates', CertificateController::class)->middleware(['can:a.certificates']);
     Route::patch('certificates/{id}/change-state',  [CertificateController::class, 'changeState'])->middleware(['can:a.certificates']);

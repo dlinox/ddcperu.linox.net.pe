@@ -74,6 +74,8 @@ class StudentCertificate extends Model
         ['text' => "Curso", 'value' => "course"],
         ['text' => "Certificado", 'value' => "certificate"],
         ['text' => "Fecha de inicio", 'value' => "start_date"],
+        //agency
+        ['text' => "Sub agencia", 'value' => "agency"],
 
         ['text' => "Fecha de fin", 'value' => "end_date"],
         ['text' => "Estado", 'value' => "is_approved"],

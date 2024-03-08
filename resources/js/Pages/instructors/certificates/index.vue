@@ -19,9 +19,7 @@
                     </div>
                 </template>
 
-                <template v-slot:item.student="{ item }">
-                    {{ item.student.name }}
-                </template>
+    
 
                 <template v-slot:item.certificate="{ item }">
                     {{ item.certificate.number }}

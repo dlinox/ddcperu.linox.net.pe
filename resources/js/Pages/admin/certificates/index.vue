@@ -84,61 +84,88 @@
                             </v-btn>
                         </template>
                         <template v-slot:content="{ dialog }">
-                            <v-list-item
-                                v-for="certificate in item.certificateStudent"
-                            >
-                                <v-list-item-title>
-                                    Certificado: {{ certificate.number }} -
-                                    <v-chip
-                                        :color="
-                                            certificate.status === '000'
-                                                ? 'blue'
-                                                : certificate.status == '001'
-                                                ? 'yellow'
-                                                : 'red'
-                                        "
-                                    >
-                                        {{
-                                            certificate.status === "000"
-                                                ? "Disponible"
-                                                : certificate.status == "001"
-                                                ? "pendiente"
-                                                : "asignado"
-                                        }}
-                                    </v-chip>
-
-                                    <v-chip
-                                        v-if="certificate.is_approved !== null"
-                                        :color="
-                                            certificate.is_approved === 0
-                                                ? 'yellow'
-                                                : certificate.is_approved == 1
-                                                ? 'blue'
-                                                : 'red'
-                                        "
-                                    >
-                                        {{
-                                            certificate.is_approved === 0
-                                                ? "Pendiente"
-                                                : certificate.is_approved == 1
-                                                ? "Verificado"
-                                                : "Rechazado"
-                                        }}
-                                    </v-chip>
-                                </v-list-item-title>
-
-                                <v-list-item-subtitle
-                                    v-if="certificate.student"
+                            <v-row>
+                                <v-col
+                                    cols="12"
+                                    v-for="certificate in item.certificateStudent"
+                                    class="border-b py-1"
                                 >
-                                    Estudinate: : {{ certificate.student }}
-                                </v-list-item-subtitle>
+                                    <v-list-item>
+                                        <v-list-item-title>
+                                            N°:
+                                            {{ certificate.number }} -
+                                            <v-chip
+                                                density="comfortable"
+                                                label
+                                                class="me-1"
+                                                :color="
+                                                    certificate.status === '000'
+                                                        ? 'blue'
+                                                        : certificate.status ==
+                                                          '001'
+                                                        ? 'yellow'
+                                                        : 'green'
+                                                "
+                                            >
+                                                {{
+                                                    certificate.status === "000"
+                                                        ? "Disponible"
+                                                        : certificate.status ==
+                                                          "001"
+                                                        ? "Pendiente"
+                                                        : "Asignado"
+                                                }}
+                                            </v-chip>
 
-                                <v-list-item-subtitle
-                                    v-if="certificate.student"
-                                >
-                                    Instructor: {{ certificate.instructor }}
-                                </v-list-item-subtitle>
-                            </v-list-item>
+                                            <v-chip
+                                                density="comfortable"
+                                                label
+                                                v-if="
+                                                    certificate.is_approved !==
+                                                    null
+                                                "
+                                                :color="
+                                                    certificate.is_approved ===
+                                                    0
+                                                        ? 'yellow'
+                                                        : certificate.is_approved ==
+                                                          1
+                                                        ? 'blue'
+                                                        : 'red'
+                                                "
+                                            >
+                                                {{
+                                                    certificate.is_approved ===
+                                                    0
+                                                        ? "Pendiente"
+                                                        : certificate.is_approved ==
+                                                          1
+                                                        ? "Verificado"
+                                                        : "Rechazado"
+                                                }}
+                                            </v-chip>
+                                        </v-list-item-title>
+
+                                        <v-list-item-subtitle
+                                            v-if="certificate.student"
+                                        >
+                                            Estudinate:
+                                            <strong>
+                                                {{ certificate.student }}
+                                            </strong>
+                                        </v-list-item-subtitle>
+
+                                        <v-list-item-subtitle
+                                            v-if="certificate.student"
+                                        >
+                                            Instructor:
+                                            <strong>
+                                                {{ certificate.instructor }}
+                                            </strong>
+                                        </v-list-item-subtitle>
+                                    </v-list-item>
+                                </v-col>
+                            </v-row>
                         </template>
                     </BtnDialog>
 
@@ -150,6 +177,7 @@
                                 variant="tonal"
                                 density="comfortable"
                                 @click="dialog"
+                                class="ml-1"
                             >
                                 <v-icon size="18" icon="mdi-pencil"></v-icon>
                             </v-btn>
@@ -189,9 +217,7 @@
                 </template>
             </DataTable>
         </v-card>
-        <pre>
-            {{ items }}
-        </pre>
+
     </AdminLayout>
 </template>
 <script setup>

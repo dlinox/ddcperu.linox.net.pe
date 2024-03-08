@@ -38,9 +38,9 @@
                     </div>
                 </template>
 
-                <template v-slot:item.status="{ item }">
+                <template v-slot:item.is_enabled="{ item }">
                     <v-btn
-                        :color="item.status ? 'blue' : 'red'"
+                        :color="item.is_enabled ? 'blue' : 'red'"
                         variant="tonal"
                     >
                         <DialogConfirm
@@ -55,7 +55,7 @@
                                     )
                             "
                         />
-                        {{ item.status ? "Activo" : "Inactivo" }}
+                        {{ item.is_enabled ? "Activo" : "Inactivo" }}
                     </v-btn>
                 </template>
 
@@ -107,10 +107,6 @@
                 </template>
             </DataTable>
         </v-card>
-
-        <pre>
-            {{ permissions }}
-        </pre>
     </AdminLayout>
 </template>
 <script setup>
@@ -245,7 +241,6 @@ const formStructure = [
         colMd: 12,
         default: [],
         options: props.permissions,
-    
-    }
+    },
 ];
 </script>

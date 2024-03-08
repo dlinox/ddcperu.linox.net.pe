@@ -23,10 +23,17 @@ class InstructorController extends Controller
 
         $query = $this->instructor->query();
 
-
-        //join con la tabla de usuarios
         $query->join('users', 'users.profile_id', '=', 'instructors.id')
-            ->select('instructors.*', 'users.id as user_id', 'users.username', 'users.email', 'users.role', 'users.is_enabled as user_is_enabled')->where('role', '003');
+            ->join('agencies', 'instructors.agency_id', '=', 'agencies.id')
+            ->select(
+                'instructors.*',
+                'users.id as user_id',
+                'users.username',
+                'users.email',
+                'users.role',
+                'users.is_enabled as user_is_enabled',
+                'agencies.name as agency'
+            )->where('role', '003');
 
         if ($request->has('search')) {
             $query->where('name', 'LIKE', "%{$request->search}%");
@@ -105,7 +112,7 @@ class InstructorController extends Controller
             'license_end' => 'required',
             'email' => 'required|email',
             'username' => 'required',
-            'agency_id' => 'required',  
+            'agency_id' => 'required',
         ]);
 
         DB::beginTransaction();
@@ -147,6 +154,15 @@ class InstructorController extends Controller
         }
     }
 
+    //cambiar estado
+    public function changeState($id)
+    {
+        $instructor = Instructor::find($id);
+        $instructor->is_enabled = !$instructor->is_enabled;
+        $instructor->save();
+        return redirect()->back()->with('success', 'Estado del instructor actualizado correctamente');
+    }
+
     //indexAgency
     public function indexAgency(Request $request)
     {
@@ -158,7 +174,16 @@ class InstructorController extends Controller
 
         //join con la tabla de usuarios
         $query->join('users', 'users.profile_id', '=', 'instructors.id')
-            ->select('instructors.*', 'users.id as user_id', 'users.username', 'users.email', 'users.role', 'users.is_enabled as user_is_enabled')->where('role', '003');
+            ->join('agencies', 'instructors.agency_id', '=', 'agencies.id')
+            ->select(
+                'instructors.*',
+                'users.id as user_id',
+                'users.username',
+                'users.email',
+                'users.role',
+                'users.is_enabled as user_is_enabled',
+                'agencies.name as agency'
+            )->where('role', '003');
 
         //solo mostrar los instructores de la agencia del usuario
         $query->where('instructors.agency_id', $currentUser->agency_id);

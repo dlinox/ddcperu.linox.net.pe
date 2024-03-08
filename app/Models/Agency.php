@@ -49,8 +49,7 @@ class Agency extends Model
     ];
 
     protected $casts = [
-        'license_start' => 'date',
-        'license_end' => 'date',
+
         'is_enabled' => 'boolean'
     ];
 
