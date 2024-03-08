@@ -18,7 +18,7 @@
                                 <span class="text-h5">  0 </span>
                             </v-avatar>
                             <span class="ms-4 text-h6 text-primary">
-                                Instrictores
+                                Instructores
                             </span>
                         </v-card-item>
                     </v-card>
