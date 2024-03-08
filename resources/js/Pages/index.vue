@@ -220,9 +220,6 @@ const submit = async () => {
         by: searchBy.value,
         search: search.value,
     });
-
-    console.log(data);
-
     result.value = data;
 
     if (data.length === 0) {
