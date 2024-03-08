@@ -36,7 +36,7 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        return redirect('/');
+        return redirect('/auth/login');
     }
 
     public function changePassword(Request $request)

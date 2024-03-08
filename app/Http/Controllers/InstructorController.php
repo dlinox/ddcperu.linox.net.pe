@@ -26,6 +26,11 @@ class InstructorController extends Controller
         $query->join('users', 'users.profile_id', '=', 'instructors.id')
             ->join('agencies', 'instructors.agency_id', '=', 'agencies.id')
             ->select(
+                DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name ) as full_name"),
+
+                //validity_period
+                DB::raw("CONCAT(DATE_FORMAT(instructors.license_start, '%d/%m/%Y') , ' - ' ,DATE_FORMAT(instructors.license_end, '%d/%m/%Y')) as validity_period"),
+                DB::raw("DATEDIFF(instructors.license_end, CURDATE()) as days_remaining"),
                 'instructors.*',
                 'users.id as user_id',
                 'users.username',
@@ -68,7 +73,6 @@ class InstructorController extends Controller
             'document_number' => 'required',
             'name' => 'required',
             'last_name' => 'required',
-            'email' => 'required',
             'phone_number' => 'required',
             'license_start' => 'required',
             'license_end' => 'required',
@@ -176,6 +180,10 @@ class InstructorController extends Controller
         $query->join('users', 'users.profile_id', '=', 'instructors.id')
             ->join('agencies', 'instructors.agency_id', '=', 'agencies.id')
             ->select(
+                DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name ) as full_name"),
+                DB::raw("CONCAT(DATE_FORMAT(instructors.license_start, '%d/%m/%Y') , ' - ' ,DATE_FORMAT(instructors.license_end, '%d/%m/%Y')) as validity_period"),
+                //dias restantes de la fecha de vencimiento
+                DB::raw("DATEDIFF(instructors.license_end, CURDATE()) as days_remaining"),
                 'instructors.*',
                 'users.id as user_id',
                 'users.username',

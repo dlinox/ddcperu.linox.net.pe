@@ -109,11 +109,13 @@ class StudentCertificateController extends Controller
                 //nombre del curso
                 'courses.name as course',
                 //nombre del instructor
-                DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name ) as instructor"),
+                DB::raw("CONCAT(instructors.instructor_id, ' - ', instructors.name , ' ' ,instructors.last_name ) as instructor"),
                 //numero del certificado
                 'certificate_details.number as certificate_number',
                 //nombre de la agencia
                 'agencies.name as agency',
+                //codigo del instructor
+
                 //fecha de emision y fecha de vencimiento del certificado
                 'student_certificates.start_date as start_date',
                 'student_certificates.end_date as end_date',

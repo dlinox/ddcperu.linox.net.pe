@@ -145,6 +145,24 @@ const formStructure = [
     },
 
     {
+        key: "document_type",
+        label: "Tipo de documento",
+        type: "select",
+        required: true,
+        cols: 12,
+        colMd: 6,
+        default: "001",
+        options: [
+            { value: "001", title: "DNI" },
+            { value: "002", title: "Carnet de extranjería" },
+            { value: "003", title: "Pasaporte" },
+        ],
+        itemValue: "id",
+        itemTitle: "title",
+
+    },
+
+    {
         key: "document_number",
         label: "DNI",
         type: "text",

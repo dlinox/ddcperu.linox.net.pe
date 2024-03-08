@@ -204,15 +204,12 @@ const formStructure = [
         required: true,
         cols: 12,
         colMd: 6,
-        default: null,
-        options: [
-            { title: "Administrador", value: "001" },
-            { title: "Operador", value: "002" },
-        ],
+        default: "001",
+        options: [{ title: "Administrador", value: "001" }],
     },
     {
         key: "is_sub_admin",
-        label: "Sub Administrador",
+        label: "Sub Agencia",
         type: "checkbox",
         required: false,
         cols: 12,
@@ -221,7 +218,7 @@ const formStructure = [
     },
     {
         key: "agency_id",
-        label: "Agencia",
+        label: "Sub agencia",
         type: "hidden",
         itemTitle: "name",
         itemValue: "id",

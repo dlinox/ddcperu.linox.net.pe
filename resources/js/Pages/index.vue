@@ -76,13 +76,32 @@
 
                     <v-col cols="12" v-for="item in result">
                         <v-card elevation="10" rounded="lg" class="pa-2">
-                            <v-card-title>
-                                <h3>
+
+                            <v-card-title class="d-flex justify-end">
+                                <h2 class="text-primary">
+                                  N° Reg.  {{ item.certificate_number }}
+                                </h2>
+                                
+                            </v-card-title>
+
+                            <v-card-title class="d-flex justify-space-between">
+                                <h4>
+                                   Emitido por:
+                                    <span class="text-primary">
+                                        {{ item.agency }}
+                                   </span> 
+                                </h4>
+                                
+                            </v-card-title>
+                            <v-card-title class="d-flex justify-space-between">
+                                <h3 class=" mb-2">
                                     <v-icon color="primary"
                                         >mdi-certificate</v-icon
                                     >
                                     {{ item.course }}
                                 </h3>
+
+                              
                             </v-card-title>
                             <v-card-text>
                                 <h2>{{ item.student }}</h2>
@@ -90,7 +109,10 @@
                                     <strong class="me-2">Instructor:</strong>
                                     {{ item.instructor }}
                                 </p>
-                                <p class="text-end text-blue-grey-lighten-2">
+                                <p class="text-end text-blue-grey-lighten-2 text-subtitle-1">
+                                   <strong>
+                                    Periodo de validez:
+                                   </strong>
                                     {{ item.start_date }} - {{ item.end_date }}
                                 </p>
                             </v-card-text>

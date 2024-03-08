@@ -72,9 +72,7 @@
             ></v-select>
         </template>
     </SimpleForm>
-    <pre>
-        {{ form }}
-    </pre>
+
 </template>
 
 <script setup>

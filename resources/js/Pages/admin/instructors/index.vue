@@ -38,6 +38,20 @@
                     </div>
                 </template>
 
+                <template v-slot:item.days_remaining="{ item }">
+                    <v-chip
+                        :color="
+                            item.days_remaining < 7
+                                ? 'red'
+                                : item.days_remaining < 15
+                                ? 'orange'
+                                : 'green'
+                        "
+                        label
+                    >
+                        {{ item.days_remaining }} día(s)
+                    </v-chip>
+                </template>
                 <template v-slot:item.is_enabled="{ item }">
                     <v-btn
                         :color="item.is_enabled ? 'blue' : 'red'"
@@ -60,7 +74,7 @@
                 </template>
 
                 <template v-slot:action="{ item }">
-                    <BtnDialog title="Editar" width="500px">
+                    <BtnDialog title="Editar" width="800px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn
                                 color="info"
@@ -152,13 +166,29 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 6,
         default: "",
     },
 
     {
+        key: "document_type",
+        label: "Tipo de documento",
+        type: "select",
+        required: true,
+        cols: 12,
+        colMd: 6,
+        default: "001",
+        options: [
+            { value: "001", title: "DNI" },
+            { value: "002", title: "Carnet de extranjería" },
+            { value: "003", title: "Pasaporte" },
+        ],
+        itemValue: "id",
+        itemTitle: "title",
+
+    },
+    {
         key: "document_number",
-        label: "DNI",
+        label: "Número de documento",
         type: "text",
         required: true,
         cols: 12,

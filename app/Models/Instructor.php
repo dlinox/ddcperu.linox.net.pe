@@ -40,13 +40,15 @@ class Instructor extends Model
 
     public $headers =  [
         ['text' => "ID", 'value' => "id"],
+        ['text' => "Codigo", 'value' => "instructor_id"],
         ['text' => "Número de documento", 'value' => "document_number"],
-        ['text' => "Nombre", 'value' => "name"],
-        ['text' => "Apellidos", 'value' => "last_name"],
+        ['text' => "Nombre", 'value' => "full_name"],
+        //dias restantes
+        
         ['text' => "Correo", 'value' => "email"],
         ['text' => "Teléfono", 'value' => "phone_number"],
-        ['text' => "Inicio de licencia", 'value' => "license_start"],
-        ['text' => "Fin de licencia", 'value' => "license_end"],
+        ['text' => "Periodo de validacion", 'value' => "validity_period"],
+        ['text' => "Vencimiento de licencia", 'value' => "days_remaining"],
         ['text' => "Sub agencia", 'value' => "agency"],
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
