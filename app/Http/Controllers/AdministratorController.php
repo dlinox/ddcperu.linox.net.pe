@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdministratorRequest;
 use App\Models\Administrator;
 use App\Models\Agency;
 use App\Models\User;
@@ -78,19 +79,9 @@ class AdministratorController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(AdministratorRequest $request)
     {
-        $request->validate([
-            'document_number' => 'required',
-            'name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'phone_number' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'username' => 'required',
 
-        ]);
 
         DB::beginTransaction();
         try {
@@ -118,18 +109,8 @@ class AdministratorController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(AdministratorRequest $request)
     {
-        $request->validate([
-            'document_number' => 'required',
-            'name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'phone_number' => 'required',
-            'email' => 'required|email',
-            'username' => 'required',
-        ]);
-
         DB::beginTransaction();
         try {
             $administator = $this->administator->find($request->id);

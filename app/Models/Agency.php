@@ -66,4 +66,10 @@ class Agency extends Model
         ['text' => "Fin de Licencia", 'value' => "license_end"],
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
+
+    //users
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

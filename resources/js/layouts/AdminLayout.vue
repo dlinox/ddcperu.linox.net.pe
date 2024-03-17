@@ -141,6 +141,19 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-snackbar v-model="snackbarAlert" multi-line color="warning" vertical>
+            {{ alert }}
+
+            <template v-slot:actions>
+                <v-btn
+                    color="dark"
+                    variant="text"
+                    @click="snackbarAlert = false"
+                    icon="mdi-close"
+                ></v-btn>
+            </template>
+        </v-snackbar>
     </v-app>
 </template>
 
@@ -160,7 +173,6 @@ onMounted(() => {
 
 const form = reactive({
     password: "",
-
     loading: false,
 });
 
@@ -191,10 +203,14 @@ watch(
 const user = computed(() => usePage().props?.user);
 
 const flash = computed(() => usePage().props?.flash);
+//errores manejados 
+const alert = computed(() => usePage().props?.flash?.alert);
+//error desconocido
 const error = computed(() => usePage().props?.errors);
 
 const snackbar = ref(false);
 const snackbarError = ref(false);
+const snackbarAlert = ref(false);
 
 watch(
     () => flash.value,
@@ -217,6 +233,18 @@ watch(
         }
     }
 );
+
+watch(
+    () => alert.value,
+    (newValue) => {
+        if (newValue) {
+            snackbarAlert.value = true;
+        } else {
+            snackbarAlert.value = false;
+        }
+    }
+);
+
 
 const signOut = async () => {
     router.post("/auth/sign-out");

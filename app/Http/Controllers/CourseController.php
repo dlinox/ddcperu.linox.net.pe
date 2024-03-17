@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,7 @@ class CourseController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
         try {
             $data = $request->all();
@@ -58,7 +59,7 @@ class CourseController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(CourseRequest $request, $id)
     {
         try {
             $data = $request->all();
@@ -90,6 +91,15 @@ class CourseController extends Controller
     {
         try {
             $course = Course::find($id);
+
+            //validar que no este relacionado con un certificado
+            if ($course->certificates->count() > 0) {
+                return redirect()->back()->with([
+                    'alert' => 'No se puede eliminar el curso, tiene certificados relacionados',
+                ]);
+            }
+
+
             $course->delete();
             return redirect()->back()->with('success', 'Curso eliminado correctamente');
         } catch (\Exception $e) {

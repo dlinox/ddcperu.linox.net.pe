@@ -20,10 +20,6 @@ const props = defineProps({
         default: (props) =>
             props.formStructure?.reduce((acc, item) => {
                 acc[item.key] = item.default;
-                //el password no se debe enviar en el formulario cuando se esta editando
-                if (item.key === "password" && props.edit) {
-                    delete acc[item.key];
-                }
                 return acc;
             }, {}),
     },
@@ -37,29 +33,11 @@ const props = defineProps({
     url: String,
 });
 
-const onSelectRole = (value) => {
-
-    if (value === "Administrador") {
-        props.formStructure.map((item) => {
-            if (item.key === "area_id") {
-                item.required = false;
-            }
-        });
-    } else {
-        props.formStructure.map((item) => {
-            if (item.key === "area_id") {
-                item.required = true;
-            }
-        });
-    }
-};
-
 const form = useForm({ ...props.formData });
 
 const submit = async () => {
-
     if (props.edit) {
-         form.put(props.url, option);
+        form.put(props.url, option);
     } else {
         form.post(props.url, option);
     }

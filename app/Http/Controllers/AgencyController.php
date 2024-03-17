@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AgencyRequest;
+use App\Http\Requests\AgencyUpdateRequest;
 use App\Models\Agency;
 use Illuminate\Http\Request;
 
@@ -49,7 +51,7 @@ class AgencyController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(AgencyRequest $request)
     {
         try {
             $data = $request->all();
@@ -63,7 +65,7 @@ class AgencyController extends Controller
         }
     }
 
-    public function update(Request $request, string $id)
+    public function update(AgencyUpdateRequest $request, string $id)
     {
         try {
             $user = Agency::findOrFail($id);
@@ -81,8 +83,17 @@ class AgencyController extends Controller
     public function destroy(string $id)
     {
         try {
-            $user = Agency::findOrFail($id);
-            $user->delete();
+            
+            
+            $agency = Agency::findOrFail($id);
+            //si tiene alguna relacion no se puede eliminar
+            if ($agency->users()->count() > 0) {
+                return redirect()->back()->with([
+                    'alert' => 'No se puede eliminar la agencia, tiene usuarios relacionados'
+                ]);
+            }
+            
+            $agency->delete();
             return redirect()->back()->with('success', 'Agencia eliminada correctamente');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors([

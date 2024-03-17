@@ -15,7 +15,7 @@
                         </v-toolbar>
                         <v-card-item>
                             <v-avatar size="60" color="primary">
-                                <span class="text-h5">  0 </span>
+                                <span class="text-h5"> {{ instructors }} </span>
                             </v-avatar>
                             <span class="ms-4 text-h6 text-primary">
                                 Instructores
@@ -31,11 +31,15 @@
                                 <small> Certificados </small>
                             </v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <v-icon class="me-3">mdi-account</v-icon>
+                            <v-icon class="me-3">
+                                mdi-certificate-outline
+                            </v-icon>
                         </v-toolbar>
                         <v-card-item>
                             <v-avatar size="60" color="primary">
-                                <span class="text-h5">0</span>
+                                <span class="text-h5">
+                                    {{ certificates }}
+                                </span>
                             </v-avatar>
                             <span class="ms-4 text-h6 text-primary">
                                 Certificados
@@ -51,11 +55,15 @@
                                 <small> Sub Agencias </small>
                             </v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <v-icon class="me-3">mdi-account</v-icon>
+                            <v-icon class="me-3"
+                                >mdi-office-building-outline</v-icon
+                            >
                         </v-toolbar>
                         <v-card-item>
                             <v-avatar size="60" color="primary">
-                                <span class="text-h5">0 </span>
+                                <span class="text-h5">
+                                    {{ subagencies }}
+                                </span>
                             </v-avatar>
                             <span class="ms-4 text-h6 text-primary">
                                 Sub Agencias
@@ -71,11 +79,15 @@
                                 <small> Cursos </small>
                             </v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <v-icon class="me-3">mdi-account</v-icon>
+                            <v-icon class="me-3">
+                                mdi-book-education-outline
+                            </v-icon>
                         </v-toolbar>
                         <v-card-item>
                             <v-avatar size="60" color="primary">
-                                <span class="text-h5"> 0 </span>
+                                <span class="text-h5">
+                                    {{ courses }}
+                                </span>
                             </v-avatar>
                             <span class="ms-4 text-h6 text-primary">
                                 Cursos
@@ -100,7 +112,9 @@ const props = defineProps({
     filters: Object,
 
     users: [String, Number],
-    doctors: [String, Number],
-    posts: [String, Number],
+    instructors: [String, Number],
+    certificates: [String, Number],
+    subagencies: [String, Number],
+    courses: [String, Number],
 });
 </script>

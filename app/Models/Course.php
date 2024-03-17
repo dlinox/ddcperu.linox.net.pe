@@ -34,4 +34,9 @@ $table->string('name');
         // ['text' => "Descripción", 'value' => "description"],
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
+    }
 }

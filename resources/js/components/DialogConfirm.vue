@@ -5,7 +5,7 @@
         location="top right"
         activator="parent"
     >
-        <v-card elevation="lg" rounded="lg">
+        <v-card elevation="10" rounded="lg">
             <v-card-item>
                 <div>
                     <div class="text-overline mb-1">{{ title }}</div>

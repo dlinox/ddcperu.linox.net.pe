@@ -67,20 +67,36 @@ class InstructorController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
+        $request->validate(
+            [
 
-            'instructor_id' => 'required',
-            'document_number' => 'required',
-            'name' => 'required',
-            'last_name' => 'required',
-            'phone_number' => 'required',
-            'license_start' => 'required',
-            'license_end' => 'required',
-            'email' => 'required|email',
-            'username' => 'required',
-            'agency_id' => 'required',
-            'password' => 'required',
-        ]);
+                'instructor_id' => 'required',
+                'document_number' => 'required',
+                'name' => 'required',
+                'last_name' => 'required',
+                'phone_number' => 'required',
+                'license_start' => 'required',
+                'license_end' => 'required',
+                'email' => 'required|email',
+                'username' => 'required',
+                'agency_id' => 'required',
+                'password' => 'required',
+            ],
+            [
+                'instructor_id.required' => 'El campo código es obligatorio',
+                'document_number.required' => 'El campo número de documento es obligatorio',
+                'name.required' => 'El campo nombre es obligatorio',
+                'last_name.required' => 'El campo apellido es obligatorio',
+                'phone_number.required' => 'El campo teléfono es obligatorio',
+                'license_start.required' => 'El campo fecha de inicio de licencia es obligatorio',
+                'license_end.required' => 'El campo fecha de fin de licencia es obligatorio',
+                'email.required' => 'El campo correo es obligatorio',
+                'email.email' => 'El campo correo debe ser un correo válido',
+                'username.required' => 'El campo usuario es obligatorio',
+                'agency_id.required' => 'El campo agencia es obligatorio',
+                'password.required' => 'El campo contraseña es obligatorio',
+            ]
+        );
 
         DB::beginTransaction();
         try {
@@ -105,19 +121,34 @@ class InstructorController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
-            'instructor_id' => 'required',
-            'document_number' => 'required',
-            'name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'phone_number' => 'required',
-            'license_start' => 'required',
-            'license_end' => 'required',
-            'email' => 'required|email',
-            'username' => 'required',
-            'agency_id' => 'required',
-        ]);
+        $request->validate(
+            [
+                'instructor_id' => 'required',
+                'document_number' => 'required',
+                'name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required',
+                'phone_number' => 'required',
+                'license_start' => 'required',
+                'license_end' => 'required',
+                'email' => 'required|email',
+                'username' => 'required',
+                'agency_id' => 'required',
+            ],
+            [
+                'instructor_id.required' => 'El campo código es obligatorio',
+                'document_number.required' => 'El campo número de documento es obligatorio',
+                'name.required' => 'El campo nombre es obligatorio',
+                'last_name.required' => 'El campo apellido es obligatorio',
+                'phone_number.required' => 'El campo teléfono es obligatorio',
+                'license_start.required' => 'El campo fecha de inicio de licencia es obligatorio',
+                'license_end.required' => 'El campo fecha de fin de licencia es obligatorio',
+                'email.required' => 'El campo correo es obligatorio',
+                'email.email' => 'El campo correo debe ser un correo válido',
+                'username.required' => 'El campo usuario es obligatorio',
+                'agency_id.required' => 'El campo agencia es obligatorio',
+            ]
+        );
 
         DB::beginTransaction();
         try {

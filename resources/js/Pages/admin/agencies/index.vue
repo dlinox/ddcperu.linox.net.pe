@@ -23,99 +23,90 @@
             </template>
         </HeadingPage>
 
-            <v-card>
-                <DataTable
-                    :headers="headers"
-                    :items="items"
-                    with-action
-                    :url="url"
-                >
-                    <template v-slot:header="{ filter }">
-                        <div class="pa-3">
-                            <v-row justify="end">
-                                <v-col cols="6">
-                                    <v-text-field
-                                        v-model="filter.search"
-                                        label="Buscar"
-                                    />
-                                </v-col>
-                            </v-row>
-                        </div>
-                    </template>
-
-                    <template v-slot:item.is_enabled="{ item }">
-                        <v-btn
-                            :color="item.is_enabled ? 'blue' : 'red'"
-                            variant="tonal"
-                        >
-                            <DialogConfirm
-                                text="¿Activar/Desactivar?"
-                                @onConfirm="
-                                    () =>
-                                        router.patch(
-                                            url +
-                                                '/' +
-                                                item[`${primaryKey}`] +
-                                                '/change-state'
-                                        )
-                                "
-                            />
-                            {{ item.is_enabled ? "Activo" : "Inactivo" }}
-                        </v-btn>
-                    </template>
-
-                    <template v-slot:action="{ item }">
-                        <BtnDialog title="Editar" width="500px">
-                            <template v-slot:activator="{ dialog }">
-                                <v-btn
-                                    color="info"
-                                    icon
-                                    variant="tonal"
-                                    density="comfortable"
-                                    @click="dialog"
-                                >
-                                    <v-icon
-                                        size="18"
-                                        icon="mdi-pencil"
-                                    ></v-icon>
-                                </v-btn>
-                            </template>
-                            <template v-slot:content="{ dialog }">
-                                <create
-                                    :form-structure="
-                                        formStructure.filter(
-                                            (field) => field.key !== 'password'
-                                        )
-                                    "
-                                    @on-cancel="dialog"
-                                    :form-data="item"
-                                    :edit="true"
-                                    :url="url + '/' + item[`${primaryKey}`]"
+        <v-card>
+            <DataTable :headers="headers" :items="items" with-action :url="url">
+                <template v-slot:header="{ filter }">
+                    <div class="pa-3">
+                        <v-row justify="end">
+                            <v-col cols="6">
+                                <v-text-field
+                                    v-model="filter.search"
+                                    label="Buscar"
                                 />
-                            </template>
-                        </BtnDialog>
+                            </v-col>
+                        </v-row>
+                    </div>
+                </template>
 
-                        <v-btn
-                            icon
-                            variant="tonal"
-                            density="comfortable"
-                            class="ml-1"
-                            color="red"
-                        >
-                            <DialogConfirm
-                                @onConfirm="
-                                    () =>
-                                        router.delete(
-                                            url + '/' + item[`${primaryKey}`]
-                                        )
+                <template v-slot:item.is_enabled="{ item }">
+                    <v-btn
+                        :color="item.is_enabled ? 'blue' : 'red'"
+                        variant="tonal"
+                    >
+                        <DialogConfirm
+                            text="¿Activar/Desactivar?"
+                            @onConfirm="
+                                () =>
+                                    router.patch(
+                                        url +
+                                            '/' +
+                                            item[`${primaryKey}`] +
+                                            '/change-state'
+                                    )
+                            "
+                        />
+                        {{ item.is_enabled ? "Activo" : "Inactivo" }}
+                    </v-btn>
+                </template>
+
+                <template v-slot:action="{ item }">
+                    <BtnDialog title="Editar" width="800px">
+                        <template v-slot:activator="{ dialog }">
+                            <v-btn
+                                color="info"
+                                icon
+                                variant="tonal"
+                                density="comfortable"
+                                @click="dialog"
+                            >
+                                <v-icon size="18" icon="mdi-pencil"></v-icon>
+                            </v-btn>
+                        </template>
+                        <template v-slot:content="{ dialog }">
+                            <create
+                                :form-structure="
+                                    formStructure.filter(
+                                        (field) => field.key !== 'password'
+                                    )
                                 "
+                                @on-cancel="dialog"
+                                :form-data="item"
+                                :edit="true"
+                                :url="url + '/' + item[`${primaryKey}`]"
                             />
-                            <v-icon size="18" icon="mdi-delete-empty"></v-icon>
-                        </v-btn>
-                    </template>
-                </DataTable>
-            </v-card>
+                        </template>
+                    </BtnDialog>
 
+                    <v-btn
+                        icon
+                        variant="tonal"
+                        density="comfortable"
+                        class="ml-1"
+                        color="red"
+                    >
+                        <DialogConfirm
+                            @onConfirm="
+                                () =>
+                                    router.delete(
+                                        url + '/' + item[`${primaryKey}`]
+                                    )
+                            "
+                        />
+                        <v-icon size="18" icon="mdi-delete-empty"></v-icon>
+                    </v-btn>
+                </template>
+            </DataTable>
+        </v-card>
     </AdminLayout>
 </template>
 <script setup>
@@ -223,7 +214,5 @@ const formStructure = [
         colMd: 6,
         default: true,
     },
-
-    
 ];
 </script>

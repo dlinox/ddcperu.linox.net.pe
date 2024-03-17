@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
+use App\Models\CertificateDetail;
+use App\Models\Course;
+use App\Models\Instructor;
 use App\Models\Publication;
 use App\Models\User;
 use App\Models\Worker;
@@ -14,6 +18,12 @@ class AdminController extends Controller
     {
        
         $users = User::count();
+        $subagencies = Agency::count();
+        $courses = Course::count();
+        $instructors = Instructor::count();
+        $certificates = CertificateDetail::count();
+
+
 
 
         return inertia(
@@ -22,8 +32,11 @@ class AdminController extends Controller
                 'title' => 'Admin',
                 'subtitle' => 'Gestión General',
                 'users' => $users,
-                'posts' => 0,
-                'doctors' => 0,
+                'subagencies' => $subagencies,
+                'courses' => $courses,
+                'instructors' => $instructors,
+                'certificates' => $certificates,
+
 
             ]
         );
