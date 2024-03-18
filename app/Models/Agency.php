@@ -4,37 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 class Agency extends Model
 {
     use HasFactory;
-    /*
 
-     Schema::create('agencies', function (Blueprint $table) {
-            // id de la agencia
-            $table->id();
-            // nombre de la agencia
-            $table->string('name');
-            // codigo NSC de la agencia
-            $table->string('code');
-            // ruc de la agencia
-            $table->string('ruc');
-            // denominacion de la agencia
-            $table->string('denomination');
-            //correo institucional de la agencia
-            $table->string('email');
-            //numero de telefono de la agencia
-            $table->string('phone');
-            //fecha de inicio de la licencia 
-            $table->date('license_start');
-            //fecha de fin de la licencia
-            $table->date('license_end');
-            //status de la agencia
-            $table->boolean('status');
-            
-            $table->timestamps();
-        });
-    */
 
     protected $fillable = [
         'name',
@@ -52,6 +27,15 @@ class Agency extends Model
 
         'is_enabled' => 'boolean'
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $appends = [
+        'validity_period',
+        'days_remaining'
+    ];
 
 
     public $headers =  [
@@ -62,8 +46,8 @@ class Agency extends Model
         ['text' => "Denominacion", 'value' => "denomination"],
         ['text' => "Correo", 'value' => "email_institutional"],
         ['text' => "Telefono", 'value' => "phone"],
-        ['text' => "Inicio de Licencia", 'value' => "license_start"],
-        ['text' => "Fin de Licencia", 'value' => "license_end"],
+        ['text' => "Periodo de validacion", 'value' => "validity_period"],
+        ['text' => "Vencimiento de licencia", 'value' => "days_remaining"],
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
 
@@ -71,5 +55,20 @@ class Agency extends Model
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+    /*
+             DB::raw("CONCAT(DATE_FORMAT(instructors.license_start, '%d/%m/%Y') , ' - ' ,DATE_FORMAT(instructors.license_end, '%d/%m/%Y')) as validity_period"),
+                DB::raw("DATEDIFF(instructors.license_end, CURDATE()) as days_remaining"),
+    */
+    public function getValidityPeriodAttribute()
+    {
+        return $this->license_start . ' - ' . $this->license_end;
+    }
+
+    public function getDaysRemainingAttribute()
+    {
+        $end = Date::parse($this->license_end);
+        return $end->diffInDays(now());
+        // return $this->license_end->diffInDays(now());
     }
 }

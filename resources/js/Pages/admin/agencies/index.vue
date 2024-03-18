@@ -38,6 +38,21 @@
                     </div>
                 </template>
 
+                <template v-slot:item.days_remaining="{ item }">
+                    <v-chip
+                        :color="
+                            item.days_remaining < 7
+                                ? 'red'
+                                : item.days_remaining < 15
+                                ? 'orange'
+                                : 'green'
+                        "
+                        label
+                    >
+                        {{ item.days_remaining }} día(s)
+                    </v-chip>
+                </template>
+
                 <template v-slot:item.is_enabled="{ item }">
                     <v-btn
                         :color="item.is_enabled ? 'blue' : 'red'"

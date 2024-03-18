@@ -32,7 +32,6 @@ class AgencyController extends Controller
         $items = $query->paginate($perPage)->appends($request->query());
 
 
-
         return inertia(
             'admin/agencies/index',
             [
