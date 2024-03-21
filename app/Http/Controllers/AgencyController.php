@@ -35,8 +35,8 @@ class AgencyController extends Controller
         return inertia(
             'admin/agencies/index',
             [
-                'title' => 'Agenicas',
-                'subtitle' => 'Gestión de Agencias',
+                'title' => 'Sub Agencias',
+                'subtitle' => 'Gestión de Sub agencias',
                 'items' => $items,
                 'filters' => [
                     'search' => $request->search,
@@ -82,8 +82,8 @@ class AgencyController extends Controller
     public function destroy(string $id)
     {
         try {
-            
-            
+
+
             $agency = Agency::findOrFail($id);
             //si tiene alguna relacion no se puede eliminar
             if ($agency->users()->count() > 0) {
@@ -91,7 +91,7 @@ class AgencyController extends Controller
                     'alert' => 'No se puede eliminar la agencia, tiene usuarios relacionados'
                 ]);
             }
-            
+
             $agency->delete();
             return redirect()->back()->with('success', 'Agencia eliminada correctamente');
         } catch (\Exception $e) {

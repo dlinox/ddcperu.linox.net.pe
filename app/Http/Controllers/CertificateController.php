@@ -161,6 +161,11 @@ class CertificateController extends Controller
         $items = $query->paginate($perPage)->appends($request->query());
 
         $items->map(function ($item) {
+
+            //al agregar el rango  el minimo y maximo
+            $item->range = CertificateDetail::where('certificate_id', $item->id)
+                ->select(DB::raw('MIN(number) as min'), DB::raw('MAX(number) as max'))
+                ->first();
             //agrergar los detalles del certificado solo el numero y el estado
             $item->certificateDetails = CertificateDetail::where('certificate_id', $item->id)
                 ->where('status', '000')

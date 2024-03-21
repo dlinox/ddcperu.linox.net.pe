@@ -18,6 +18,7 @@
                 </template>
 
                 <template v-slot:item.course="{ item }">
+                    [{{ item.range.min }} - {{ item.range.max }}]
                     {{ item.course.name }}
                 </template>
 

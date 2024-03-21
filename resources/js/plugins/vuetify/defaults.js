@@ -2,6 +2,13 @@ export default {
     VCard: {
         rounded: "0",
         elevation: 0,
+        VCardActions: {
+            VBtn:{
+                color: "primary",
+                variant: "flat",
+            }
+        }
+
     },
     VAlert: {
         density: "comfortable",

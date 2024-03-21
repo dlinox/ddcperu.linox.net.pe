@@ -34,11 +34,7 @@
                                             <v-select
                                                 v-model="searchBy"
                                                 :clearable="false"
-                                                :items="[
-                                                    'Nombre',
-                                                    'Documento',
-                                                    'Código',
-                                                ]"
+                                                :items="['Documento', 'Código']"
                                                 label="Buscar por:"
                                                 :rules="[isRequired]"
                                             ></v-select>
@@ -76,32 +72,27 @@
 
                     <v-col cols="12" v-for="item in result">
                         <v-card elevation="10" rounded="lg" class="pa-2">
-
                             <v-card-title class="d-flex justify-end">
                                 <h2 class="text-primary">
-                                  N° Reg.  {{ item.certificate_number }}
+                                    N° Reg. {{ item.certificate_number }}
                                 </h2>
-                                
                             </v-card-title>
 
                             <v-card-title class="d-flex justify-space-between">
                                 <h4>
-                                   Emitido por:
+                                    Emitido por:
                                     <span class="text-primary">
                                         {{ item.agency }}
-                                   </span> 
+                                    </span>
                                 </h4>
-                                
                             </v-card-title>
                             <v-card-title class="d-flex justify-space-between">
-                                <h3 class=" mb-2">
+                                <h3 class="mb-2">
                                     <v-icon color="primary"
                                         >mdi-certificate</v-icon
                                     >
                                     {{ item.course }}
                                 </h3>
-
-                              
                             </v-card-title>
                             <v-card-text>
                                 <h2>{{ item.student }}</h2>
@@ -109,10 +100,10 @@
                                     <strong class="me-2">Instructor:</strong>
                                     {{ item.instructor }}
                                 </p>
-                                <p class="text-end text-blue-grey-lighten-2 text-subtitle-1">
-                                   <strong>
-                                    Periodo de validez:
-                                   </strong>
+                                <p
+                                    class="text-end text-blue-grey-lighten-2 text-subtitle-1"
+                                >
+                                    <strong> Periodo de validez: </strong>
                                     {{ item.start_date }} - {{ item.end_date }}
                                 </p>
                             </v-card-text>
@@ -193,8 +184,11 @@
                         </v-col>
                         <v-col cols="6" md="3">
                             <div class="d-flex justify-end">
-
-                                <img src="/assets/logos/nsc.png" alt="Logo NSC" width="120" />
+                                <img
+                                    src="/assets/logos/nsc.png"
+                                    alt="Logo NSC"
+                                    width="120"
+                                />
                             </div>
                         </v-col>
                     </v-row>
@@ -210,7 +204,7 @@ import { ref } from "vue";
 import { isRequired } from "@/helpers/validations";
 import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
 
-const searchBy = ref("Nombre");
+const searchBy = ref("Documento");
 const search = ref("");
 const formRef = ref(null);
 

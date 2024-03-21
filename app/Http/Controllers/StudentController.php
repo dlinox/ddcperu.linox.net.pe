@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -20,6 +21,11 @@ class StudentController extends Controller
         $perPage = $request->input('perPage', 10);
 
         $query = $this->student->query();
+
+        $user = Auth::user();
+
+        //solo se muestran los estudiantes de la agencia del usuario logueado
+        $query->where('agency_id', $user->agency_id);
 
         if ($request->has('search')) {
             $query->where('name', 'LIKE', "%{$request->search}%");
@@ -45,25 +51,27 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'document_type' => 'required',
-            //el numero de documento debe ser unico por agencia
-            'document_number' => 'required|unique:students,document_number,NULL,id,agency_id,' . auth()->user()->agency_id,
-            'name' => 'required',
-            'paternal_surname' => 'required',
-            'email' => 'required|email',
-            'phone_number' => 'required',
-        ], [
-            'document_type.required' => 'El tipo de documento es requerido',
-            'document_number.unique' => 'El número de documento ya se encuentra registrado',
-            'name.required' => 'El nombre es requerido',
-            'paternal_surname.required' => 'El apellido paterno es requerido',
-            'email.required' => 'El correo es requerido',
-            'email.email' => 'El correo no es válido',
-            'phone_number.required' => 'El teléfono es requerido',
+        $request->validate(
+            [
+                'document_type' => 'required',
+                //el numero de documento debe ser unico por agencia
+                'document_number' => 'required|unique:students,document_number,NULL,id,agency_id,' . auth()->user()->agency_id,
+                'name' => 'required',
+                'paternal_surname' => 'required',
+                'email' => 'required|email',
+                'phone_number' => 'required',
+            ],
+            [
+                'document_type.required' => 'El tipo de documento es requerido',
+                'document_number.unique' => 'El número de documento ya se encuentra registrado',
+                'name.required' => 'El nombre es requerido',
+                'paternal_surname.required' => 'El apellido paterno es requerido',
+                'email.required' => 'El correo es requerido',
+                'email.email' => 'El correo no es válido',
+                'phone_number.required' => 'El teléfono es requerido',
 
-        ]
-    );
+            ]
+        );
 
         try {
             //la agencia se obtiene del usuario logueado
