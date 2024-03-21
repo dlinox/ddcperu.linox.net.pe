@@ -19,7 +19,7 @@ return new class extends Migration
             // codigo NSC de la agencia
             $table->string('code_nsc')->unique();
             // ruc de la agencia
-            $table->char('ruc', 11)->unique();
+            $table->string('ruc', 50)->nullable();
             // denominacion de la agencia
             $table->string('denomination')->nullable();
             //correo institucional de la agencia
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->char('ubigeo', 6)->default('000000');
             //status de la agencia
             $table->boolean('is_enabled')->default(true);
-            
+
             $table->timestamps();
         });
     }

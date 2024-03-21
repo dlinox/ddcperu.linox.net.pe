@@ -28,7 +28,7 @@ class AgencyRequest extends FormRequest
             //required, string, unique:agencies,name
             'name' => ['required', 'string', 'unique:agencies,name'],
             //required, string, unique:agencies,ruc length:11 only numbers
-            'ruc' => ['required', 'unique:agencies,ruc'],
+            'ruc' => ['unique:agencies,ruc'],
             'denomination' => ['required'],
             //required, email, unique:agencies,email_institutional
             'email_institutional' => ['required', 'email', 'unique:agencies,email_institutional'],

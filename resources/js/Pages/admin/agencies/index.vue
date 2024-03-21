@@ -169,7 +169,7 @@ const formStructure = [
         key: "ruc",
         label: "RUC",
         type: "text",
-        required: true,
+        required: false,
         cols: 12,
         colMd: 4,
         default: "",

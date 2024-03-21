@@ -19,7 +19,7 @@ return new class extends Migration
         Schema::create('administrators', function (Blueprint $table) {
             $table->id();
             $table->char('document_type', 3)->default('001');
-            $table->char('document_number', 8)->unique();
+            $table->char('document_number', 12)->unique();
             $table->string('name', 100);
             $table->string('last_name', 180);
             $table->char('phone_number', 15);
