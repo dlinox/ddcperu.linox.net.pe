@@ -116,14 +116,15 @@ class AdministratorController extends Controller
             $administator = $this->administator->find($request->id);
             $administator->update($request->only($this->administator->getFillable()));
 
-
             $user = User::updateAccount($request, $administator);
-
 
             if ($request->is_sub_admin) {
                 $user->givePermissionTo(collect(config('app.permissions'))->where('type', '002')->pluck('name'));
             } else {
+                //borrar y reasignar todos los permisos
+                $user->revokePermissionTo($user->permissions);
                 $user->givePermissionTo($request->permissions);
+                
             }
             DB::commit();
             return redirect()->back()->with('success', 'Administrador actualizado correctamente');
