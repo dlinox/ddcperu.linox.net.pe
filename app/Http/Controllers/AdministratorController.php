@@ -117,7 +117,14 @@ class AdministratorController extends Controller
             $administator->update($request->only($this->administator->getFillable()));
 
 
-            User::updateAccount($request, $administator);
+            $user = User::updateAccount($request, $administator);
+
+
+            if ($request->is_sub_admin) {
+                $user->givePermissionTo(collect(config('app.permissions'))->where('type', '002')->pluck('name'));
+            } else {
+                $user->givePermissionTo($request->permissions);
+            }
             DB::commit();
             return redirect()->back()->with('success', 'Administrador actualizado correctamente');
         } catch (\Exception $e) {

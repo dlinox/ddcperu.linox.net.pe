@@ -28,17 +28,17 @@ class AgencyRequest extends FormRequest
             //required, string, unique:agencies,name
             'name' => ['required', 'string', 'unique:agencies,name'],
             //required, string, unique:agencies,ruc length:11 only numbers
-            'ruc' => ['required', 'digits:11', 'unique:agencies,ruc'],
+            'ruc' => ['required', 'unique:agencies,ruc'],
             'denomination' => ['required'],
             //required, email, unique:agencies,email_institutional
             'email_institutional' => ['required', 'email', 'unique:agencies,email_institutional'],
             //required, string unique:agencies,phone
             'phone' => ['required', 'unique:agencies,phone'],
             //required, date, after:today 
-            'license_start' => ['required', 'date', 'after:today'],
+            'license_start' => ['required', 'date'],
             //required, date, after:license_start 
             'license_end' => ['required', 'date', 'after:license_start'],
-            
+
         ];
     }
 
@@ -62,7 +62,6 @@ class AgencyRequest extends FormRequest
             'phone.unique' => 'El teléfono ya está en uso.',
             'license_start.required' => 'La fecha de inicio de licencia es requerida.',
             'license_start.date' => 'La fecha de inicio de licencia no es válida.',
-            'license_start.after' => 'La fecha de inicio de licencia debe ser después de hoy.',
             'license_end.required' => 'La fecha de fin de licencia es requerida.',
             'license_end.date' => 'La fecha de fin de licencia no es válida.',
             'license_end.after' => 'La fecha de fin de licencia debe ser después de la fecha de inicio de licencia.',
