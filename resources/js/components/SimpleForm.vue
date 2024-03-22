@@ -16,7 +16,7 @@
                         "
                     >
                         <v-text-field
-                            v-model="form[`${field.key}`]"
+                            v-model.trim="form[`${field.key}`]"
                             :label="field.label"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
@@ -33,7 +33,7 @@
                         v-if="field.type === 'password'"
                     >
                         <v-text-field
-                            v-model="form[`${field.key}`]"
+                            v-model.trim="form[`${field.key}`]"
                             :label="field.label"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
@@ -50,7 +50,7 @@
 
                     <template v-else-if="field.type === 'select'">
                         <v-select
-                            v-model="form[`${field.key}`]"
+                            v-model.trim="form[`${field.key}`]"
                             :items="field.options"
                             :label="field.label"
                             :disabled="field.disabled"
@@ -59,7 +59,7 @@
                     </template>
                     <template v-else-if="field.type === 'number'">
                         <v-text-field
-                            v-model="form[`${field.key}`]"
+                            v-model.trim="form[`${field.key}`]"
                             :label="field.label"
                             :rules="field.required ? [isRequired] : []"
                             :disabled="field.disabled"
@@ -68,7 +68,7 @@
                     </template>
                     <template v-else-if="field.type === 'textarea'">
                         <v-textarea
-                            v-model="form[`${field.key}`]"
+                            v-model.trim="form[`${field.key}`]"
                             :label="field.label"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
@@ -78,7 +78,7 @@
 
                     <template v-else-if="field.type === 'checkbox'">
                         <v-checkbox
-                            v-model="form[`${field.key}`]"
+                            v-model.trim="form[`${field.key}`]"
                             :label="field.label"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
@@ -93,7 +93,7 @@
                             :item-title="field.itemTitle"
                             :item-value="field.itemValue"
                             :label="field.label"
-                            v-model="form[`${field.key}`]"
+                            v-model.trim="form[`${field.key}`]"
                             :rules="field.required ? [isRequired] : []"
                             :error-messages="form.errors[`${field.key}`]"
                             :disabled="field.disabled"
@@ -102,7 +102,7 @@
 
                     <template v-else-if="field.type === 'combobox'">
                         <v-autocomplete
-                            v-model="form[`${field.key}`]"
+                            v-model.trim="form[`${field.key}`]"
                             :items="field.options"
                             :label="field.label"
                             :item-title="field.itemTitle"

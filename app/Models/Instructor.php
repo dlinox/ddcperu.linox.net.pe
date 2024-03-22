@@ -21,6 +21,7 @@ class Instructor extends Model
         'license_end',
         'agency_id',
         'is_enabled',
+        'instructor_link',
     ];
 
     protected $hidden = [

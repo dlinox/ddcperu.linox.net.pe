@@ -5,8 +5,8 @@ const theme = {
         light: {
             dark: false,
             colors: {
-                "anchor-base": "#F48652",
-                primary: "#F48652",
+                "anchor-base": "#ff6633",
+                primary: "#ff6633",
                 secondary: "#8A8D93",
                 "on-secondary": "#fff",
                 success: "#56CA00",
@@ -47,7 +47,7 @@ const theme = {
         dark: {
             dark: true,
             colors: {
-                primary: "#F48652",
+                primary: "#ff6633",
                 secondary: "#8A8D93",
                 "on-secondary": "#fff",
                 success: "#56CA00",

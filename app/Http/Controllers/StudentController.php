@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\StudentCertificate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -77,10 +78,71 @@ class StudentController extends Controller
             //la agencia se obtiene del usuario logueado
             $request->merge(['agency_id' => auth()->user()->agency_id]);
             $this->student->create($request->all());
-            return redirect()->back()->with('success', 'Instructor creado correctamente');
+            return redirect()->back()->with('success', 'Estudiante creado correctamente');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors([
                 'error' => 'Ocurrió un error al crear el instructor',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate(
+            [
+                'document_type' => 'required',
+                //el numero de documento debe ser unico por agencia
+                'document_number' => 'required|unique:students,document_number,' . $request->id . ',id,agency_id,' . auth()->user()->agency_id,
+                'name' => 'required',
+                'paternal_surname' => 'required',
+                'email' => 'required|email',
+                'phone_number' => 'required',
+            ],
+            [
+                'document_type.required' => 'El tipo de documento es requerido',
+                'document_number.unique' => 'El número de documento ya se encuentra registrado',
+                'name.required' => 'El nombre es requerido',
+                'paternal_surname.required' => 'El apellido paterno es requerido',
+                'email.required' => 'El correo es requerido',
+                'email.email' => 'El correo no es válido',
+                'phone_number.required' => 'El teléfono es requerido',
+
+            ]
+        );
+
+        try {
+            //la agencia se obtiene del usuario logueado
+            $request->merge(['agency_id' => auth()->user()->agency_id]);
+            $this->student->find($request->id)->update($request->all());
+            return redirect()->back()->with('success', 'Estudiante actualizado correctamente');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => 'Ocurrió un error al actualizar el estudiante',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+
+            // no se ouede eliminar si tiene un certificado asociado (student_certificates)
+            if (StudentCertificate::where('student_id', $id)->exists()) {
+                return redirect()->back()->withErrors([
+                    'error' => 'No se puede eliminar el estudiante, tiene certificados asociados',
+                    'message' => 'El estudiante tiene certificados asociados'
+                ]);
+            }
+
+            $this->student->find($id)->delete();
+
+
+            return redirect()->back()->with('success', 'Estudiante eliminado correctamente');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => 'Ocurrió un error al eliminar el estudiante',
                 'message' => $e->getMessage()
             ]);
         }

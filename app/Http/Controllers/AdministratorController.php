@@ -41,7 +41,7 @@ class AdministratorController extends Controller
             )->whereIn('users.role', ['001', '002']);
 
         if ($request->has('search')) {
-            $query->where('name', 'LIKE', "%{$request->search}%");
+            $query->where('username', 'LIKE', "%{$request->search}%");
         }
 
         $items = $query->paginate($perPage)->appends($request->query());

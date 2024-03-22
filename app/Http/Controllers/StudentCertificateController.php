@@ -110,6 +110,8 @@ class StudentCertificateController extends Controller
                 'courses.name as course',
                 //nombre del instructor
                 DB::raw("CONCAT(instructors.instructor_id, ' - ', instructors.name , ' ' ,instructors.last_name ) as instructor"),
+                //link del instructor
+                'instructors.instructor_link',
                 //numero del certificado
                 'certificate_details.number as certificate_number',
                 //nombre de la agencia

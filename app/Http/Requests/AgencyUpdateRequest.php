@@ -29,14 +29,14 @@ class AgencyUpdateRequest extends FormRequest
             //required, string, unique:agencies,name
             'name' => ['required', 'unique:agencies,name,' . $this->id],
             //required, string, unique:agencies,ruc length:11 only numbers
-            'ruc' => ['required', 'digits:11', 'unique:agencies,ruc,' . $this->id],
+            'ruc' => ['required', 'unique:agencies,ruc,' . $this->id],
             'denomination' => ['required'],
             //required, email, unique:agencies,email_institutional
             'email_institutional' => ['required', 'email', 'unique:agencies,email_institutional,' . $this->id],
             //required, string unique:agencies,phone
             'phone' => ['required', 'unique:agencies,phone,' . $this->id],
             //required, date, after:today 
-            'license_start' => ['required', 'date', 'after:today'],
+            'license_start' => ['required', 'date'],
             //required, date, after:license_start 
             'license_end' => ['required', 'date', 'after:license_start'],
         ];
@@ -50,7 +50,6 @@ class AgencyUpdateRequest extends FormRequest
             'name.required' => 'El nombre es requerido',
             'name.unique' => 'El nombre ya existe',
             'ruc.required' => 'El RUC es requerido',
-            'ruc.digits' => 'El RUC debe tener 11 dígitos',
             'ruc.unique' => 'El RUC ya existe',
             'denomination.required' => 'La denominación es requerida',
             'email_institutional.required' => 'El correo institucional es requerido',
@@ -59,8 +58,7 @@ class AgencyUpdateRequest extends FormRequest
             'phone.required' => 'El teléfono es requerido',
             'phone.unique' => 'El teléfono ya existe',
             'license_start.required' => 'La fecha de inicio de licencia es requerida',
-            'license_start.date' => 'La fecha de inicio de licencia no es válida',
-            'license_start.after' => 'La fecha de inicio de licencia debe ser mayor a la fecha actual',
+            'license_start.date' => 'La fecha de inicio de licencia no es válida',  
             'license_end.required' => 'La fecha de fin de licencia es requerida',
             'license_end.date' => 'La fecha de fin de licencia no es válida',
             'license_end.after' => 'La fecha de fin de licencia debe ser mayor a la fecha de inicio de licencia',

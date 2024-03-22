@@ -146,19 +146,6 @@ const props = defineProps({
 const primaryKey = "id";
 const url = "/a/instructors";
 
-/*
-       'instructor_id',
-        'document_type',
-        'document_number',
-        'name',
-        'last_name',
-        'email',
-        'phone',
-        'license_start',
-        'license_end',
-        'agency_id',
-        'is_enabled',
-*/
 const formStructure = [
     {
         key: "instructor_id",
@@ -184,7 +171,6 @@ const formStructure = [
         ],
         itemValue: "id",
         itemTitle: "title",
-
     },
     {
         key: "document_number",
@@ -270,12 +256,20 @@ const formStructure = [
         default: "",
     },
     {
+        //linkde instractor
+        key: "instructor_link",
+        label: "Link de instructor",
+        type: "text",
+        required: false,
+        cols: 12,
+        default: "",
+    },
+    {
         key: "agency_id",
         label: "Agencia",
         type: "combobox",
         required: true,
         cols: 12,
-        colMd: 6,
         default: null,
         options: props.agencies,
         itemValue: "id",

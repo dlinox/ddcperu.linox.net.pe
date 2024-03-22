@@ -2,7 +2,7 @@
     <AdminLayout>
         <HeadingPage :title="title" :subtitle="subtitle">
             <template #actions>
-                <BtnDialog title="Registrar" width="800px">
+                <BtnDialog title="Registrar" width="900px">
                     <template v-slot:activator="{ dialog }">
                         <v-btn
                             @click="dialog"
@@ -75,7 +75,7 @@
                 </template>
 
                 <template v-slot:action="{ item }">
-                    <BtnDialog title="Editar" width="500px">
+                    <BtnDialog title="Editar" width="900px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn
                                 color="info"
@@ -155,7 +155,7 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 6,
+        colMd: 4,
         default: "",
     },
 
@@ -165,7 +165,7 @@ const formStructure = [
         type: "select",
         required: true,
         cols: 12,
-        colMd: 6,
+        colMd: 4,
         default: "001",
         options: [
             { value: "001", title: "DNI" },
@@ -174,7 +174,6 @@ const formStructure = [
         ],
         itemValue: "id",
         itemTitle: "title",
-
     },
 
     {
@@ -183,7 +182,7 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 6,
+        colMd: 4,
         default: "",
     },
     {
@@ -258,6 +257,15 @@ const formStructure = [
         required: true,
         cols: 12,
         colMd: 6,
+        default: "",
+    },
+    {
+        //linkde instractor
+        key: "instructor_link",
+        label: "Link de instructor",
+        type: "text",
+        required: false,
+        cols: 12,
         default: "",
     },
     {

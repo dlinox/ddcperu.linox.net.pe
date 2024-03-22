@@ -15,7 +15,7 @@ return new class extends Migration
             //id de la tabla
             $table->id();
             //id del instructor
-            $table->char('instructor_id', 10)->unique();
+            $table->string('instructor_id', 15)->unique();
             //tipo de documento de identidad del instructor
             $table->char('document_type', 3)->default('000');
             //documento de identidad del instructor
@@ -32,6 +32,8 @@ return new class extends Migration
             $table->date('license_start');
             //fecha de fin de la licencia
             $table->date('license_end');
+            //link del instructor
+            $table->string('instructor_link', 255)->nullable();
             //agencia a la que pertenece el instructor  
             $table->foreignId('agency_id')->constrained('agencies');
             //estado del instructor (habilitado o deshabilitado)

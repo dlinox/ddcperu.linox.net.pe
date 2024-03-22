@@ -99,6 +99,15 @@
                                 <p class="my-2">
                                     <strong class="me-2">Instructor:</strong>
                                     {{ item.instructor }}
+
+                                    <br />
+                                    <a
+                                        :href="item.instructor_link"
+                                        target="_blank"
+                                    >
+                                        <v-icon> mdi-eye </v-icon>
+                                        Ver instructor
+                                    </a>
                                 </p>
                                 <p
                                     class="text-end text-blue-grey-lighten-2 text-subtitle-1"
@@ -250,7 +259,7 @@ a {
 }
 .header {
     .header-top {
-        background-color: darken(#e9e0dc, 1);
+        background-color: darken(#fff, 1);
         position: relative;
         z-index: 11;
     }
@@ -284,7 +293,7 @@ a {
     }
     width: 100%;
 
-    background: darken(#f48652, 5);
+    background: #ff6633;
     background-image: url("/assets/bg/header.jpg");
     background-size: cover;
     background-position: center;
@@ -300,7 +309,7 @@ a {
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(darken(#f48652, 11), 0.5);
+        background: rgba(#ff6633, 0.9);
         z-index: 10;
     }
 
@@ -311,12 +320,7 @@ a {
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: radial-gradient(
-            rgba(#f48652, 0.3) 1px,
-            transparent 1px
-        );
-        background-size: 10px 10px;
-        background-repeat: repeat;
+
         z-index: 12;
     }
 }
