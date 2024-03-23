@@ -69,6 +69,7 @@ class Agency extends Model
     {
         $end = Date::parse($this->license_end);
         $now = Date::now()->format('Y-m-d');
-        return $end->diffInDays($now);
+        //si la fecha de vencimiento es menor a la fecha actual se retorna 0
+        return  $now > $end ? 0 : Date::parse($this->license_end)->diffInDays($now);
     }
 }
