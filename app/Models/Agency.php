@@ -68,7 +68,7 @@ class Agency extends Model
     public function getDaysRemainingAttribute()
     {
         $end = Date::parse($this->license_end);
-        return $end->diffInDays(now());
-        // return $this->license_end->diffInDays(now());
+        $now = Date::now()->format('Y-m-d');
+        return $end->diffInDays($now);
     }
 }

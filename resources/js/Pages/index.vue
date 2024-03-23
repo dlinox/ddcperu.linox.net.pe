@@ -292,26 +292,19 @@ a {
         }
     }
     width: 100%;
+    /* paralax effect */
 
-    background: #ff6633;
-    background-image: url("/assets/bg/header.jpg");
+    background-image: url("/assets/bg/bg-ddcperu.png");
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
+    
 
     position: relative;
 
     z-index: 10;
     overflow: hidden;
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(#ff6633, 0.9);
-        z-index: 10;
-    }
+
 
     &::after {
         content: "";
