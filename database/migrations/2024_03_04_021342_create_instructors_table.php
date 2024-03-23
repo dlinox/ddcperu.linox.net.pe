@@ -15,7 +15,7 @@ return new class extends Migration
             //id de la tabla
             $table->id();
             //id del instructor
-            $table->string('instructor_id', 15)->unique();
+            $table->string('instructor_id', 25)->unique();
             //tipo de documento de identidad del instructor
             $table->char('document_type', 3)->default('000');
             //documento de identidad del instructor
