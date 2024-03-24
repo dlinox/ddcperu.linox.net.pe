@@ -59,7 +59,6 @@
         </v-navigation-drawer>
 
         <v-main>
-       
             <slot />
         </v-main>
 
@@ -160,7 +159,7 @@
 
 <script setup>
 import { ref, onMounted, computed, watch, reactive } from "vue";
-import { router, usePage , Head} from "@inertiajs/vue3";
+import { router, usePage, Head } from "@inertiajs/vue3";
 import { useDisplay } from "vuetify";
 import MenuApp from "@/components/layout/MenuApp.vue";
 
@@ -204,7 +203,7 @@ watch(
 const user = computed(() => usePage().props?.user);
 
 const flash = computed(() => usePage().props?.flash);
-//errores manejados 
+//errores manejados
 const alert = computed(() => usePage().props?.flash?.alert);
 //error desconocido
 const error = computed(() => usePage().props?.errors);
@@ -246,7 +245,6 @@ watch(
     }
 );
 
-
 const signOut = async () => {
     router.post("/auth/sign-out");
 };
@@ -262,3 +260,18 @@ const changePassword = async () => {
     });
 };
 </script>
+
+<style>
+/* #inspire {
+    background-image: url("/assets/bg/header-bg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position: top;
+    background-size: 100%;
+} */
+
+/* #appmain {
+    background-color: rgba(255, 255, 255, 0.8);
+} */
+
+</style>
