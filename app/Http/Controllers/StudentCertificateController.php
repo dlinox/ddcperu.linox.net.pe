@@ -105,7 +105,7 @@ class StudentCertificateController extends Controller
 
         //obtener los cursos del certificado
         $query->join('certificate_details', 'certificate_details.id', '=', 'student_certificates.certificate_id')
-            ->join('courses', 'courses.id', '=', 'certificate_details.course_id')
+            ->join('courses', 'courses.id', '=', 'student_certificates.course_id')
             ->join('students', 'students.id', '=', 'student_certificates.student_id')
             ->join('instructors', 'instructors.id', '=', 'student_certificates.instructor_id')
             //agregar el nombre de la agencia
