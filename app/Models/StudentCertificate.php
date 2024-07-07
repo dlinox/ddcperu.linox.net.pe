@@ -8,19 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class StudentCertificate extends Model
 {
     use HasFactory;
-    /*
-        $table->id();
-            //id del estudiante
-            $table->foreignId('student_id')->constrained('students');
-            //id del certificado
-            $table->foreignId('certificate_id')->constrained('certificate_details');
-            //usuario que registro el certificado
-            $table->foreignId('user_id')->constrained('users');
-            //estado de aprobacion
-            $table->boolean('is_approved')->default(false);
-            //estado registro
-            $table->boolean('is_enabled')->default(true);
-    */
 
     protected $fillable = [
         'student_id',
@@ -29,13 +16,15 @@ class StudentCertificate extends Model
         'start_date',
         'end_date',
         'instructor_id',
+        'course_id',
         'is_approved',
         'is_enabled'
     ];
 
     protected $casts = [
         'is_approved' => 'integer', //0 - Pendiente, 1 - Aprobado, 2 - Rechazado
-        'is_enabled' => 'boolean'
+        'is_enabled' => 'boolean',
+        'updated_at' => 'datetime:d/m/Y',
     ];
 
     public function student()
@@ -59,13 +48,17 @@ class StudentCertificate extends Model
     }
 
 
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+    
     /*
     is_approved
     0 - Pendiente
     1 - Aprobado
     2 - Rechazado
     */
-
 
     public $headers = [
         ['text' => "ID", 'value' => "id"],

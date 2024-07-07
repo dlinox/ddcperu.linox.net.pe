@@ -17,18 +17,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('certificate_details', function (Blueprint $table) {
-            //id del detalle del certificado
             $table->id();
-            //id del certificado
-            $table->foreignId('certificate_id')->constrained('certificates');
-            //id curso
-            $table->foreignId('course_id')->constrained('courses');
-            //numero del certificado
-            $table->char('number', 20);
-            //estado del certificado
+            $table->char('number', 20)->unique();
             $table->char('status', 3)->default('000');
-
-            $table->unique(['course_id', 'number']);
+            $table->foreignId('certificate_id')->constrained('certificates');
             $table->timestamps();
         });
     }

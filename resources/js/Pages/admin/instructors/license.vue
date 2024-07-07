@@ -2,14 +2,14 @@
     <AdminLayout>
         <HeadingPage :title="title" :subtitle="subtitle">
             <template #actions>
-                <BtnDialog title="Registrar" width="500px">
+                <BtnDialog title="Registrar" width="600px">
                     <template v-slot:activator="{ dialog }">
                         <v-btn
                             @click="dialog"
                             prepend-icon="mdi-plus"
                             variant="flat"
                         >
-                            Nueva
+                            Nuevo
                         </v-btn>
                     </template>
                     <template v-slot:content="{ dialog }">
@@ -23,7 +23,7 @@
             </template>
         </HeadingPage>
 
-        <v-card>
+        <v-card flat rounded="0">
             <DataTable :headers="headers" :items="items" with-action :url="url">
                 <template v-slot:header="{ filter }">
                     <div class="pa-3">
@@ -38,29 +38,27 @@
                     </div>
                 </template>
 
-                <template v-slot:item.is_enabled="{ item }">
-                    <v-btn
-                        :color="item.is_enabled ? 'blue' : 'red'"
-                        variant="tonal"
+                <template v-slot:item.days_remaining="{ item }">
+                    <v-chip
+                        :color="
+                            item.days_remaining < 7
+                                ? 'red'
+                                : item.days_remaining < 15
+                                ? 'orange'
+                                : 'green'
+                        "
+                        label
                     >
-                        <DialogConfirm
-                            text="¿Activar/Desactivar?"
-                            @onConfirm="
-                                () =>
-                                    router.patch(
-                                        url +
-                                            '/' +
-                                            item[`${primaryKey}`] +
-                                            '/change-state'
-                                    )
-                            "
-                        />
-                        {{ item.is_enabled ? "Activo" : "Inactivo" }}
-                    </v-btn>
+                        {{
+                            item.days_remaining > 0
+                                ? item.days_remaining + "día(s)"
+                                : "Vencido"
+                        }}
+                    </v-chip>
                 </template>
 
                 <template v-slot:action="{ item }">
-                    <BtnDialog title="Editar" width="500px">
+                    <BtnDialog title="Editar" width="600px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn
                                 color="info"
@@ -74,11 +72,7 @@
                         </template>
                         <template v-slot:content="{ dialog }">
                             <create
-                                :form-structure="
-                                    formStructure.filter(
-                                        (field) => field.key !== 'password'
-                                    )
-                                "
+                                :form-structure="formStructure"
                                 @on-cancel="dialog"
                                 :form-data="item"
                                 :edit="true"
@@ -117,35 +111,49 @@ import DialogConfirm from "@/components/DialogConfirm.vue";
 import DataTable from "@/components/DataTable.vue";
 import { router } from "@inertiajs/core";
 import create from "./create.vue";
+import { id } from "vuetify/locale";
 
 const props = defineProps({
+    id: String,
     title: String,
     subtitle: String,
     items: Object,
     headers: Object,
     filters: Object,
-    areas: Array,
-    permissions: Array,
+    courses: Array,
 });
 
 const primaryKey = "id";
-const url = "/a/courses";
+const url = "/a/instructors/" + props.id + "/license";
 
 const formStructure = [
     {
-        key: "code",
-        label: "Codigo",
-        type: "text",
+        key: "course_id",
+        label: "Seleccione un curso",
+        type: "combobox",
         required: true,
         cols: 12,
+        default: null,
+        options: [...props.courses],
+        itemValue: "id",
+        itemTitle: "name",
+    },
+    {
+        key: "start_date",
+        label: "Fecha de inicio",
+        type: "date",
+        required: true,
+        cols: 12,
+        colMd: 6,
         default: "",
     },
     {
-        key: "name",
-        label: "Nombre",
-        type: "text",
+        key: "end_date",
+        label: "Fecha de fin",
+        type: "date",
         required: true,
         cols: 12,
+        colMd: 6,
         default: "",
     },
 ];

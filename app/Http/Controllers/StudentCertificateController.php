@@ -25,7 +25,7 @@ class StudentCertificateController extends Controller
         //obtener los cursos del certificado
 
         $query->join('certificate_details', 'certificate_details.id', '=', 'student_certificates.certificate_id')
-            ->join('courses', 'courses.id', '=', 'certificate_details.course_id')
+            ->join('courses', 'courses.id', '=', 'student_certificates.course_id')
             ->join('students', 'students.id', '=', 'student_certificates.student_id')
             //agregar el nombre de la agencia
             ->join('agencies', 'agencies.id', '=', 'students.agency_id')
@@ -72,6 +72,13 @@ class StudentCertificateController extends Controller
         ]);
 
         $studentCertificate = $this->studentCertificate->find($id);
+        //si esta aprobado no se puede cambiar el estado 1
+        if ($studentCertificate->is_approved == 1) {
+            return redirect()->back()->withErrors([
+                'error' => 'El certificado ya fue aprobado',
+                'exception' => 'El certificado ya fue aprobado, no se puede cambiar el estado'
+            ]);
+        }
         $studentCertificate->is_approved = $request->is_approved;
         $studentCertificate->save();
 

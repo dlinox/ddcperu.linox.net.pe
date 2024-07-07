@@ -22,8 +22,7 @@ class AdminController extends Controller
 
         if ($users->agency_id != null) {
             $subagencies = 1;
-            $courses = Course::join('certificates', 'courses.id', '=', 'certificates.course_id')
-                ->where('certificates.agency_id', $users->agency_id)->count();
+            $courses = Course::count();
 
             $instructors = Instructor::where('agency_id', $users->agency_id)->count();
             $certificates = CertificateDetail::join('certificates', 'certificate_details.certificate_id', '=', 'certificates.id')

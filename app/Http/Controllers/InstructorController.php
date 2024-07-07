@@ -60,7 +60,6 @@ class InstructorController extends Controller
                 'permissions' => config('app.permissions'),
                 'agencies' => Agency::all()
             ]
-
         );
     }
 
@@ -127,7 +126,6 @@ class InstructorController extends Controller
                 'document_number' => 'required',
                 'name' => 'required',
                 'last_name' => 'required',
-                'email' => 'required',
                 'phone_number' => 'required',
                 'license_start' => 'required',
                 'license_end' => 'required',

@@ -14,14 +14,19 @@ return new class extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             //id del certificado
             $table->id();
+            //rango de inicio
+            $table->integer('range_start');
+            //rango de fin
+            $table->integer('range_end');
+            //cantidad de certificados
+            $table->integer('quantity');
+            //estado del certificado
+            $table->string('is_enabled')->default(true);
             //id de la agencia
             $table->foreignId('agency_id')->constrained('agencies');
             //id del usuario
             $table->foreignId('user_id')->constrained('users');
-            //id del curso
-            $table->foreignId('course_id')->constrained('courses');
-            //estado del certificado
-            $table->string('is_enabled')->default(true);
+
             $table->timestamps();
         });
     }

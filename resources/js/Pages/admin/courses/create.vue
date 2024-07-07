@@ -38,22 +38,6 @@ const props = defineProps({
     url: String,
 });
 
-const onSelectRole = (value) => {
-
-    if (value === "Administrador") {
-        props.formStructure.map((item) => {
-            if (item.key === "area_id") {
-                item.required = false;
-            }
-        });
-    } else {
-        props.formStructure.map((item) => {
-            if (item.key === "area_id") {
-                item.required = true;
-            }
-        });
-    }
-};
 
 const form = useForm({ ...props.formData });
 

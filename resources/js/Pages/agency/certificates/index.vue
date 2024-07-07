@@ -1,6 +1,6 @@
 <template>
     <AdminLayout>
-        <HeadingPage :title="title" :subtitle="subtitle"> </HeadingPage>
+        <HeadingPage :title="title" :subtitle="subtitle"></HeadingPage>
 
         <v-card>
             <DataTable :headers="headers" :items="items" with-action :url="url">
@@ -17,140 +17,71 @@
                     </div>
                 </template>
 
-                <template v-slot:item.course="{ item }">
-                    [{{ item.range.min }} - {{ item.range.max }}]
-                    {{ item.course.name }}
+                <template v-slot:item.status="{ item }">
+                    <v-chip
+                        :color="
+                            item.status === '000'
+                                ? 'blue'
+                                : item.status === '001'
+                                ? 'orange'
+                                : 'green'
+                        "
+                        label
+                    >
+                        {{
+                            item.status === "000"
+                                ? "Disponible"
+                                : item.status === "001"
+                                ? "Pendiente"
+                                : "Asignado"
+                        }}
+                    </v-chip>
+                </template>
+                <template v-slot:item.is_approved="{ item }">
+                    <template v-if="item.is_approved === null">
+                        <v-chip color="blue" label> Disponible </v-chip>
+                    </template>
+                    <v-chip
+                        v-else
+                        :color="
+                            item.is_approved === 0
+                                ? 'orange'
+                                : item.is_approved === 1
+                                ? 'green'
+                                : 'red'
+                        "
+                        label
+                    >
+                        {{
+                            item.is_approved === 0
+                                ? "Pendiente"
+                                : item.is_approved === 1
+                                ? "Aprobado"
+                                : "Rechazado"
+                        }}
+                    </v-chip>
                 </template>
 
                 <template v-slot:action="{ item }">
                     <div class="d-flex">
-                        <BtnDialog title="Certificados" width="500px">
+                        <BtnDialog title="Asignar Certificado" width="500px">
                             <template v-slot:activator="{ dialog }">
                                 <v-btn
                                     color="black"
-                                    icon="mdi-plus"
-                                    variant="tonal"
-                                    density="comfortable"
-                                    @click="dialog"
-                                >
-                                </v-btn>
-                            </template>
-                            <template v-slot:content="{ dialog }">
-                                <v-row>
-                                    <v-col
-                                        cols="12"
-                                        v-for="certificate in item.certificateStudent"
-                                        class="border-b py-1"
-                                    >
-                                        <v-list-item>
-                                            <v-list-item-title>
-                                                N°:
-                                                {{ certificate.number }} -
-                                                <v-chip
-                                                    density="comfortable"
-                                                    label
-                                                    class="me-1"
-                                                    :color="
-                                                        certificate.status ===
-                                                        '000'
-                                                            ? 'blue'
-                                                            : certificate.status ==
-                                                              '001'
-                                                            ? 'yellow'
-                                                            : 'green'
-                                                    "
-                                                >
-                                                    {{
-                                                        certificate.status ===
-                                                        "000"
-                                                            ? "Disponible"
-                                                            : certificate.status ==
-                                                              "001"
-                                                            ? "Pendiente"
-                                                            : "Asignado"
-                                                    }}
-                                                </v-chip>
-
-                                                <v-chip
-                                                    density="comfortable"
-                                                    label
-                                                    v-if="
-                                                        certificate.is_approved !==
-                                                        null
-                                                    "
-                                                    :color="
-                                                        certificate.is_approved ===
-                                                        0
-                                                            ? 'yellow'
-                                                            : certificate.is_approved ==
-                                                              1
-                                                            ? 'blue'
-                                                            : 'red'
-                                                    "
-                                                >
-                                                    {{
-                                                        certificate.is_approved ===
-                                                        0
-                                                            ? "Pendiente"
-                                                            : certificate.is_approved ==
-                                                              1
-                                                            ? "Verificado"
-                                                            : "Rechazado"
-                                                    }}
-                                                </v-chip>
-                                            </v-list-item-title>
-
-                                            <v-list-item-subtitle
-                                                v-if="certificate.student"
-                                            >
-                                                Estudinate:
-                                                <strong>
-                                                    {{ certificate.student }}
-                                                </strong>
-                                            </v-list-item-subtitle>
-
-                                            <v-list-item-subtitle
-                                                v-if="certificate.student"
-                                            >
-                                                Instructor:
-                                                <strong>
-                                                    {{ certificate.instructor }}
-                                                </strong>
-                                            </v-list-item-subtitle>
-                                        </v-list-item>
-                                    </v-col>
-                                </v-row>
-                            </template>
-                        </BtnDialog>
-
-                        <BtnDialog title="Registrar Certificado" width="500px">
-                            <template v-slot:activator="{ dialog }">
-                                <v-btn
-                                    color="info"
                                     prepend-icon="mdi-file-certificate-outline"
                                     variant="tonal"
                                     @click="dialog"
                                     class="ms-1"
+                                    :disabled="item.is_approved === 1"
                                 >
-                                    Registrar
+                                    Asignar
                                 </v-btn>
                             </template>
                             <template v-slot:content="{ dialog }">
                                 <create
-                                    :form-structure="
-                                        formStructure.filter(
-                                            (field) => field.key !== 'password'
-                                        )
-                                    "
+                                    :form-structure="formStructure"
                                     @on-cancel="dialog"
-                                    :form-data="{
-                                        instructor_id: null,
-                                        student_id: null,
-                                        certificate_id: null,
-                                        start_date: null,
-                                        end_date: null,
-                                    }"
-                                    :numbers="item.certificateDetails"
+                                    :form-data="item"
                                     :url="url"
                                 />
                             </template>
@@ -178,12 +109,24 @@ const props = defineProps({
     filters: Object,
     students: Array,
     instructors: Array,
+    courses: Array,
 });
 
 const primaryKey = "id";
 const url = "/s/certificates";
 
 const formStructure = [
+    {
+        key: "course_id",
+        label: "Curso",
+        type: "combobox",
+        required: true,
+        cols: 12,
+        default: null,
+        options: props.courses,
+        itemTitle: "name",
+        itemValue: "id",
+    },
     {
         key: "instructor_id",
         label: "Instructor",
@@ -208,15 +151,6 @@ const formStructure = [
     },
 
     {
-        key: "certificate_id",
-        label: "Número de certificado",
-        type: "hidden",
-        required: true,
-        cols: 12,
-        default: null,
-    },
-    //FECHA DE VALIDES
-    {
         key: "start_date",
         label: "Fecha de inicio",
         type: "date",
@@ -224,6 +158,7 @@ const formStructure = [
         cols: 6,
         default: null,
     },
+
     {
         key: "end_date",
         label: "Fecha de fin",
@@ -231,6 +166,16 @@ const formStructure = [
         required: true,
         cols: 6,
         default: null,
+    },
+    {
+        key: "number",
+        label: "Número de certificado",
+        type: "text",
+        required: true,
+        cols: 12,
+        default: "",
+        disabled: true,
+        readonly: true,
     },
 ];
 </script>

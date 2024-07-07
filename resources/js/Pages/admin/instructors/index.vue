@@ -74,6 +74,17 @@
                 </template>
 
                 <template v-slot:action="{ item }">
+                    <v-btn
+                        icon
+                        variant="tonal"
+                        density="comfortable"
+                        class="me-1"
+                        color="black"
+                        @click="router.get(url + '/' + item[`${primaryKey}`] + '/license')"
+                    >
+                        <v-icon size="18" icon="mdi-card-account-details-outline"></v-icon>
+                    </v-btn>
+
                     <BtnDialog title="Editar" width="800px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn

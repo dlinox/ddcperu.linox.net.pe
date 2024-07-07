@@ -39,7 +39,6 @@ class Agency extends Model
 
 
     public $headers =  [
-        ['text' => "ID", 'value' => "id"],
         ['text' => "Nombre", 'value' => "name"],
         ['text' => "Codigo", 'value' => "code_nsc"],
         ['text' => "RUC", 'value' => "ruc"],

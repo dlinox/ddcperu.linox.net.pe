@@ -75,50 +75,55 @@
                 </template>
 
                 <template v-slot:action="{ item }">
-                    <BtnDialog title="Editar" width="800px">
-                        <template v-slot:activator="{ dialog }">
-                            <v-btn
-                                color="info"
-                                icon
-                                variant="tonal"
-                                density="comfortable"
-                                @click="dialog"
-                            >
-                                <v-icon size="18" icon="mdi-pencil"></v-icon>
-                            </v-btn>
-                        </template>
-                        <template v-slot:content="{ dialog }">
-                            <create
-                                :form-structure="
-                                    formStructure.filter(
-                                        (field) => field.key !== 'password'
-                                    )
-                                "
-                                @on-cancel="dialog"
-                                :form-data="item"
-                                :edit="true"
-                                :url="url + '/' + item[`${primaryKey}`]"
-                            />
-                        </template>
-                    </BtnDialog>
+                    <div class="d-flex">
+                        <BtnDialog title="Editar" width="800px">
+                            <template v-slot:activator="{ dialog }">
+                                <v-btn
+                                    color="info"
+                                    icon
+                                    variant="tonal"
+                                    density="comfortable"
+                                    @click="dialog"
+                                >
+                                    <v-icon
+                                        size="18"
+                                        icon="mdi-pencil"
+                                    ></v-icon>
+                                </v-btn>
+                            </template>
+                            <template v-slot:content="{ dialog }">
+                                <create
+                                    :form-structure="
+                                        formStructure.filter(
+                                            (field) => field.key !== 'password'
+                                        )
+                                    "
+                                    @on-cancel="dialog"
+                                    :form-data="item"
+                                    :edit="true"
+                                    :url="url + '/' + item[`${primaryKey}`]"
+                                />
+                            </template>
+                        </BtnDialog>
 
-                    <v-btn
-                        icon
-                        variant="tonal"
-                        density="comfortable"
-                        class="ml-1"
-                        color="red"
-                    >
-                        <DialogConfirm
-                            @onConfirm="
-                                () =>
-                                    router.delete(
-                                        url + '/' + item[`${primaryKey}`]
-                                    )
-                            "
-                        />
-                        <v-icon size="18" icon="mdi-delete-empty"></v-icon>
-                    </v-btn>
+                        <v-btn
+                            icon
+                            variant="tonal"
+                            density="comfortable"
+                            class="ml-1"
+                            color="red"
+                        >
+                            <DialogConfirm
+                                @onConfirm="
+                                    () =>
+                                        router.delete(
+                                            url + '/' + item[`${primaryKey}`]
+                                        )
+                                "
+                            />
+                            <v-icon size="18" icon="mdi-delete-empty"></v-icon>
+                        </v-btn>
+                    </div>
                 </template>
             </DataTable>
         </v-card>

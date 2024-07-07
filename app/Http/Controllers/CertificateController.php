@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\DB;
 class CertificateController extends Controller
 {
     protected $certificate;
-
+    protected $agency;
     public function __construct()
     {
+        $this->agency = new Agency();
         $this->certificate = new Certificate();
     }
 
@@ -27,31 +28,13 @@ class CertificateController extends Controller
 
         $perPage = $request->input('perPage', 10);
 
-        $query = $this->certificate->query();
-        $query->with('agency:id,name', 'course:id,name', 'user:id,username');
+        $query = $this->agency->query();
 
         if ($request->has('search')) {
-            $query->where('courses.name', 'LIKE', "%{$request->search}%");
+            $query->where('name', 'LIKE', "%{$request->search}%");
         }
 
         $items = $query->paginate($perPage)->appends($request->query());
-
-        $items->map(function ($item) {
-            $item->certificateStudent  = CertificateDetail::leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
-                ->leftjoin('students', 'students.id', '=', 'student_certificates.student_id')
-                ->leftjoin('instructors', 'instructors.id', '=', 'student_certificates.instructor_id')
-                ->where('certificate_details.certificate_id', $item->id)
-                // ->where('student_certificates.student_id', auth()->user()->student_id)
-                ->get([
-                    'certificate_details.id',
-                    'certificate_details.number',
-                    'certificate_details.status',
-                    'student_certificates.is_approved',
-                    DB::raw("CONCAT(students.name , ' ' ,students.paternal_surname , ' ', students.maternal_surname ) as student"),
-                    DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name) as instructor")
-                ]);
-            return $item;
-        });
 
         return inertia(
             'admin/certificates/index',
@@ -71,22 +54,97 @@ class CertificateController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function agency(Request $request, $id)
+    {
+
+        $agency = Agency::findOrFail($id);
+
+        $perPage = $request->input('perPage', 10);
+
+        $query = $this->certificate->query();
+
+        if ($request->has('search')) {
+            $query->where('range_start', 'LIKE', "%{$request->search}%")
+                ->orWhere('range_end', 'LIKE', "%{$request->search}%");
+        }
+
+        $query->where('agency_id', $id);
+
+        $items = $query->paginate($perPage)->appends($request->query());
+
+
+        return inertia(
+            'admin/certificates/agency',
+            [
+                'title' => 'Certificados - ' . $agency->name,
+                'subtitle' => 'Gestión de Certificados',
+                'agency' => $agency,
+                'items' => $items,
+                'filters' => [
+                    'search' => $request->search,
+                    'perPage' => $perPage,
+                ],
+                'headers' => $this->certificate->headersCertificates,
+            ]
+        );
+    }
+
+    public function store(Request $request, $id)
     {
         DB::beginTransaction();
         try {
-            $data = $request->all();
 
-            $data['user_id'] = auth()->id();
-            $certificate = $this->certificate->create($data);
+            $request->validate(
+                [
+                    'range_start' => 'required|numeric',
+                    //validar que el rango final sea mayor o igual al rango inicial
+                    'range_end' => 'required|numeric|gte:range_start',
+                ],
+                [
+                    'range_end.gte' => 'El rango final debe ser mayor o igual al rango inicial',
+                ]
+            );
 
-            foreach ($request->ranges as $range) {
-                for ($i = $range['range_start']; $i <= $range['range_end']; $i++) {
-                    $certificate->certificateDetails()->create([
-                        'number' => $i,
-                        'course_id' => $request->course_id,
-                    ]);
-                }
+
+            $rangeStart = $request->range_start;
+            $rangeEnd = $request->range_end;
+            $overlap = $this->certificate
+                ->where('agency_id', $id)
+                ->where(function ($query) use ($rangeStart, $rangeEnd) {
+                    $query->whereBetween('range_start', [$rangeStart, $rangeEnd])
+                        ->orWhereBetween('range_end', [$rangeStart, $rangeEnd])
+                        ->orWhere(function ($query) use ($rangeStart, $rangeEnd) {
+                            $query->where('range_start', '<=', $rangeStart)
+                                ->where('range_end', '>=', $rangeEnd);
+                        });
+                })
+                ->exists();
+
+            if ($overlap) {
+                return back()->withErrors([
+                    'error' => 'Los rangos de certificados se superponen.',
+                    'exception' => 'Los rangos de certificados se superponen, esto quiere decir que ya existe un rango de certificados que se superpone con el rango que intenta crear.'
+                ]);
+            }
+
+            $certificate = $this->certificate->create(
+                [
+                    'agency_id' => $id,
+                    'range_start' => $request->range_start,
+                    'range_end' => $request->range_end,
+                    'quantity' => $request->range_end - $request->range_start + 1,
+                    'user_id' => auth()->id(),
+                ]
+            );
+
+            $certificateNumber = $request->range_start;
+            while ($certificateNumber <= $request->range_end) {
+                CertificateDetail::create([
+                    'certificate_id' => $certificate->id,
+                    'number' => $certificateNumber,
+                    'status' => '000',
+                ]);
+                $certificateNumber++;
             }
 
             DB::commit();
@@ -101,13 +159,78 @@ class CertificateController extends Controller
         }
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, string $certificate_id)
     {
         DB::beginTransaction();
         try {
-            $certificate = Certificate::findOrFail($id);
-            $data = $request->all();
-            $certificate->update($data);
+
+            $request->validate(
+                [
+                    'range_start' => 'required|numeric',
+                    //validar que el rango final sea mayor o igual al rango inicial
+                    'range_end' => 'required|numeric|gte:range_start',
+                ],
+                [
+                    'range_end.gte' => 'El rango final debe ser mayor o igual al rango inicial',
+                ]
+            );
+
+
+
+            $rangeStart = $request->range_start;
+            $rangeEnd = $request->range_end;
+            $overlap = $this->certificate
+                ->where('agency_id', $id)
+                ->where('id', '!=', $certificate_id)
+                ->where(function ($query) use ($rangeStart, $rangeEnd) {
+                    $query->whereBetween('range_start', [$rangeStart, $rangeEnd])
+                        ->orWhereBetween('range_end', [$rangeStart, $rangeEnd])
+                        ->orWhere(function ($query) use ($rangeStart, $rangeEnd) {
+                            $query->where('range_start', '<=', $rangeStart)
+                                ->where('range_end', '>=', $rangeEnd);
+                        });
+                })
+                ->exists();
+
+            if ($overlap) {
+                return back()->withErrors([
+                    'error' => 'Los rangos de certificados se superponen.',
+                    'exception' => 'Los rangos de certificados se superponen, esto quiere decir que ya existe un rango de certificados que se superpone con el rango que intenta crear.'
+                ]);
+            }
+
+            $certificate = Certificate::findOrFail($certificate_id);
+
+            $certificate->update([
+                'range_start' => $request->range_start,
+                'range_end' => $request->range_end,
+                'quantity' => $request->range_end - $request->range_start + 1,
+            ]);
+
+            //validar si unos de los detalles del certificado ya fue asignado a un estudiante que sea diferente a 000
+            $certificateDetails = CertificateDetail::where('certificate_id', $certificate_id)->where('status', '!=', '000')->exists();
+
+            if ($certificateDetails) {
+                return back()->withErrors([
+                    'error' => 'No se puede modificar el rango de certificados',
+                    'exception' => 'No se puede modificar el rango de certificados ya que uno de los certificados ya fue asignado a un estudiante'
+                ]);
+            }
+
+            //eliminar los detalles del certificado
+            CertificateDetail::where('certificate_id', $certificate_id)->delete();
+
+            $certificateNumber = $request->range_start;
+            while ($certificateNumber <= $request->range_end) {
+                CertificateDetail::create([
+                    'certificate_id' => $certificate->id,
+                    'number' => $certificateNumber,
+                    'status' => '000',
+                ]);
+                $certificateNumber++;
+            }
+
+
             DB::commit();
             return redirect()->back()->with('success', 'Certificado actualizado correctamente');
         } catch (\Exception $e) {
@@ -119,11 +242,21 @@ class CertificateController extends Controller
         }
     }
 
-    public function destroy(string $id)
+    public function destroy(string $id, string $certificate_id)
     {
         DB::beginTransaction();
         try {
-            $certificate = Certificate::findOrFail($id);
+
+            $certificateDetails = CertificateDetail::where('certificate_id', $certificate_id)->where('status', '!=', '000')->exists();
+
+            if ($certificateDetails) {
+                return back()->withErrors([
+                    'error' => 'No se puede modificar el rango de certificados',
+                    'exception' => 'No se puede modificar el rango de certificados ya que uno de los certificados ya fue asignado a un estudiante'
+                ]);
+            }
+
+            $certificate = Certificate::findOrFail($certificate_id);
             //eliminar los detalles del certificado
             $certificate->certificateDetails()->delete();
             $certificate->delete();
@@ -151,40 +284,45 @@ class CertificateController extends Controller
         $perPage = $request->input('perPage', 10);
 
         $query = $this->certificate->query();
-        $query->with('course:id,name');
-        $query->where('agency_id', auth()->user()->agency_id);
+
+        $query->where('certificates.agency_id', auth()->user()->agency_id);
+
+        $query->select(
+            'certificate_details.id',
+            'certificates.created_at',
+            'certificate_details.number',
+            // 'certificate_details.updated_at',
+            'certificate_details.status',
+            'student_certificates.start_date',
+            'student_certificates.end_date',
+            'student_certificates.is_approved',
+            'courses.id as course_id',
+            'courses.name as course',
+            'students.id as student_id',
+            DB::raw('concat_ws(" ", students.document_number, students.name, students.paternal_surname, students.maternal_surname) as student'),
+            'instructors.id as instructor_id',
+            DB::raw('concat_ws(" ", instructors.instructor_id, instructors.name, instructors.last_name) as instructor'),
+        )
+            ->join('certificate_details', 'certificates.id', '=', 'certificate_details.certificate_id')
+            ->leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
+            ->leftJoin('courses', 'student_certificates.course_id', '=', 'courses.id')
+            ->leftjoin('students', 'student_certificates.student_id', '=', 'students.id')
+            ->leftjoin('instructors', 'student_certificates.instructor_id', '=', 'instructors.id')
+            // ->leftjoin('students', 'student_certificates.student_id', '=', 'students.id')
+
+        ;
+
 
         if ($request->has('search')) {
-            $query->where('courses.name', 'LIKE', "%{$request->search}%");
+            $query->where('courses.name', 'LIKE', "%{$request->search}%")
+                ->orWhere('students.name', 'LIKE', "%{$request->search}%")
+                ->orWhere('students.document_number', 'LIKE', "%{$request->search}%")
+                ->orWhere('instructors.name', 'LIKE', "%{$request->search}%")
+                ->orWhere('instructors.instructor_id', 'LIKE', "%{$request->search}%")
+                ->orWhere('certificate_details.number', 'LIKE', "%{$request->search}%");
         }
 
         $items = $query->paginate($perPage)->appends($request->query());
-
-        $items->map(function ($item) {
-
-            //al agregar el rango  el minimo y maximo
-            $item->range = CertificateDetail::where('certificate_id', $item->id)
-                ->select(DB::raw('MIN(number) as min'), DB::raw('MAX(number) as max'))
-                ->first();
-            //agrergar los detalles del certificado solo el numero y el estado
-            $item->certificateDetails = CertificateDetail::where('certificate_id', $item->id)
-                ->where('status', '000')
-                ->get(['id', 'number', 'status']);
-            $item->certificateStudent  = CertificateDetail::leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
-                ->leftjoin('students', 'students.id', '=', 'student_certificates.student_id')
-                ->leftjoin('instructors', 'instructors.id', '=', 'student_certificates.instructor_id')
-                ->where('certificate_details.certificate_id', $item->id)
-                // ->where('student_certificates.student_id', auth()->user()->student_id)
-                ->get([
-                    'certificate_details.id',
-                    'certificate_details.number',
-                    'certificate_details.status',
-                    'student_certificates.is_approved',
-                    DB::raw("CONCAT(students.name , ' ' ,students.paternal_surname , ' ', students.maternal_surname ) as student"),
-                    DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name) as instructor")
-                ]);
-            return $item;
-        });
 
         return inertia(
             'agency/certificates/index',
@@ -194,11 +332,12 @@ class CertificateController extends Controller
                 'items' => $items,
                 'filters' => [
                     'search' => $request->search,
-                    'perPage' => $perPage,
+                    //   'perPage' => $perPage,
                 ],
                 'headers' => $this->certificate->headersAgency,
                 'students' => Student::select('id', DB::raw("CONCAT(document_number,' - ', name, ' ', paternal_surname, ' ', maternal_surname) as name"))->where('agency_id', auth()->user()->agency_id)->get(),
                 'instructors' => Instructor::select('id', DB::raw("CONCAT(instructor_id,' - ', name, ' ', last_name) as name"))->where('agency_id', auth()->user()->agency_id)->get(),
+                'courses' => Course::select('id', 'name')->where('is_enabled', true)->get(),
             ]
 
         );
@@ -207,22 +346,49 @@ class CertificateController extends Controller
     public function storeAgency(Request $request)
     {
         DB::beginTransaction();
+
+
         try {
-            $studentCertificate = StudentCertificate::create([
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'instructor_id' => $request->instructor_id,
-                'student_id' => $request->student_id,
-                'certificate_id' => $request->certificate_id,
-                'user_id' => auth()->id(),
-            ]);
+            $certificate = CertificateDetail::where('id', $request->id)->first();
+            //validar si el certificado ya fue asignado a un estudiante para actualizar  o crear
+            if ($certificate->status != '000') {
+                //actualizar el estado del detalle del certificado si se creo correctamente
+                $studentCertificate = StudentCertificate::where('certificate_id', $request->id)->first();
+
+                //si el certificado ya fue aprobado no se puede modificar
+                if ($studentCertificate->is_approved != 0) {
+                    return redirect()->back()->withErrors([
+                        'error' => 'El certificado ya fue aprobado o rechazado',
+                        'exception' => 'El certificado ya fue aprobado o rechazado, no se puede modificar'
+                    ]);
+                }
+
+                $studentCertificate->update([
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'instructor_id' => $request->instructor_id,
+                    'student_id' => $request->student_id,
+                    'course_id' => $request->course_id,
+                    'user_id' => auth()->id(),
+                ]);
+            } else {
+                $studentCertificate = StudentCertificate::create([
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'instructor_id' => $request->instructor_id,
+                    'student_id' => $request->student_id,
+                    'certificate_id' => $request->id,
+                    'course_id' => $request->course_id,
+                    'user_id' => auth()->id(),
+                ]);
+            }
+
             //actualizar el estado del detalle del certificado si se creo correctamente
             if ($studentCertificate) {
-                $certificate = CertificateDetail::where('id', $request->certificate_id)->first();
+                $certificate = CertificateDetail::where('id', $certificate->id)->first();
                 $certificate->status = '001';
                 $certificate->save();
             }
-
 
             DB::commit();
 

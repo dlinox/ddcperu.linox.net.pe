@@ -2,14 +2,14 @@
     <AdminLayout>
         <HeadingPage :title="title" :subtitle="subtitle">
             <template #actions>
-                <BtnDialog title="Registrar" width="500px">
+                <BtnDialog title="Asignar certificados" width="500px">
                     <template v-slot:activator="{ dialog }">
                         <v-btn
                             @click="dialog"
                             prepend-icon="mdi-plus"
                             variant="flat"
                         >
-                            Nueva
+                            Asignar
                         </v-btn>
                     </template>
                     <template v-slot:content="{ dialog }">
@@ -38,25 +38,19 @@
                     </div>
                 </template>
 
-                <template v-slot:item.is_enabled="{ item }">
-                    <v-btn
-                        :color="item.is_enabled ? 'blue' : 'red'"
-                        variant="tonal"
+                <template v-slot:item.days_remaining="{ item }">
+                    <v-chip
+                        :color="
+                            item.days_remaining < 7
+                                ? 'red'
+                                : item.days_remaining < 15
+                                ? 'orange'
+                                : 'green'
+                        "
+                        label
                     >
-                        <DialogConfirm
-                            text="¿Activar/Desactivar?"
-                            @onConfirm="
-                                () =>
-                                    router.patch(
-                                        url +
-                                            '/' +
-                                            item[`${primaryKey}`] +
-                                            '/change-state'
-                                    )
-                            "
-                        />
-                        {{ item.is_enabled ? "Activo" : "Inactivo" }}
-                    </v-btn>
+                        {{ item.days_remaining }} día(s)
+                    </v-chip>
                 </template>
 
                 <template v-slot:action="{ item }">
@@ -121,32 +115,27 @@ import create from "./create.vue";
 const props = defineProps({
     title: String,
     subtitle: String,
+    agency: Object,
     items: Object,
     headers: Object,
     filters: Object,
-    areas: Array,
-    permissions: Array,
 });
 
+const url = `/a/certificates/${props.agency.id}/agency`;
 const primaryKey = "id";
-const url = "/a/courses";
 
 const formStructure = [
     {
-        key: "code",
-        label: "Codigo",
+        key: "range_start",
         type: "text",
-        required: true,
-        cols: 12,
-        default: "",
+        label: "Rango inicial",
+        colMd: 6,
     },
     {
-        key: "name",
-        label: "Nombre",
+        key: "range_end",
         type: "text",
-        required: true,
-        cols: 12,
-        default: "",
+        label: "Rango final",
+        colMd: 6,
     },
 ];
 </script>

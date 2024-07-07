@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\InstructorController;
-
+use App\Http\Controllers\InstructorLicensedController;
 use App\Http\Controllers\StudentCertificateController;
 use App\Http\Controllers\StudentController;
 
@@ -50,9 +50,19 @@ Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
     //instructores
     Route::resource('instructors', InstructorController::class)->middleware(['can:a.instructors']);
     Route::patch('instructors/{id}/change-state',  [InstructorController::class, 'changeState'])->middleware(['can:a.instructors']);
+    //instructores - licencias
+    Route::get('instructors/{id}/license', [InstructorLicensedController::class, 'index'])->middleware(['can:a.instructors']);
+    Route::post('instructors/{id}/license', [InstructorLicensedController::class, 'store'])->middleware(['can:a.instructors']);
+    Route::put('instructors/{id}/license/{license_id}', [InstructorLicensedController::class, 'update'])->middleware(['can:a.instructors']);
+    Route::delete('instructors/{id}/license/{license_id}', [InstructorLicensedController::class, 'destroy'])->middleware(['can:a.instructors']);
     //certificados
-    Route::resource('certificates', CertificateController::class)->middleware(['can:a.certificates']);
-    Route::patch('certificates/{id}/change-state',  [CertificateController::class, 'changeState'])->middleware(['can:a.certificates']);
+    Route::get('certificates', [CertificateController::class, 'index'])->middleware(['can:a.certificates']);
+
+    Route::get('certificates/{id}/agency', [CertificateController::class, 'agency'])->middleware(['can:a.certificates']);
+    Route::post('certificates/{id}/agency', [CertificateController::class, 'store'])->middleware(['can:a.certificates']);
+    Route::put('certificates/{id}/agency/{certificate_id}', [CertificateController::class, 'update'])->middleware(['can:a.certificates']);
+    Route::delete('certificates/{id}/agency/{certificate_id}', [CertificateController::class, 'destroy'])->middleware(['can:a.certificates']);
+    // Route::patch('certificates/{id}/change-state',  [CertificateController::class, 'changeState'])->middleware(['can:a.certificates']);
 });
 
 Route::middleware('auth')->name('s.')->prefix('s')->group(function () {
