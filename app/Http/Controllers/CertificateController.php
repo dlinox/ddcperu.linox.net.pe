@@ -121,7 +121,6 @@ class CertificateController extends Controller
 
         ;
 
-
         if ($request->has('search')) {
             $query->where('courses.name', 'LIKE', "%{$request->search}%")
                 ->orWhere('students.name', 'LIKE', "%{$request->search}%")

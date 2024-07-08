@@ -48,7 +48,7 @@
                     <v-chip
                         v-else
                         :color="
-                            item.is_approved === 0
+                            item.is_approved == 0
                                 ? 'orange'
                                 : item.is_approved === 1
                                 ? 'green'
@@ -57,7 +57,7 @@
                         label
                     >
                         {{
-                            item.is_approved === 0
+                            item.is_approved == 0
                                 ? "Pendiente"
                                 : item.is_approved === 1
                                 ? "Aprobado"
@@ -85,4 +85,6 @@ const props = defineProps({
     headers: Object,
     filters: Object,
 });
+
+const url = window.location.pathname;
 </script>
