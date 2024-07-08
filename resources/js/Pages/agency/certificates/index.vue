@@ -44,18 +44,18 @@
                     <v-chip
                         v-else
                         :color="
-                            item.is_approved === 0
+                            item.is_approve === 0
                                 ? 'orange'
-                                : item.is_approved === 1
+                                : item.is_approved == 1
                                 ? 'green'
                                 : 'red'
                         "
                         label
                     >
                         {{
-                            item.is_approved === 0
+                            item.is_approved == 0
                                 ? "Pendiente"
-                                : item.is_approved === 1
+                                : item.is_approved == 1
                                 ? "Aprobado"
                                 : "Rechazado"
                         }}

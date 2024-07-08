@@ -50,7 +50,7 @@
                         :color="
                             item.is_approved == 0
                                 ? 'orange'
-                                : item.is_approved === 1
+                                : item.is_approved == 1
                                 ? 'green'
                                 : 'red'
                         "
@@ -59,7 +59,7 @@
                         {{
                             item.is_approved == 0
                                 ? "Pendiente"
-                                : item.is_approved === 1
+                                : item.is_approved == 1
                                 ? "Aprobado"
                                 : "Rechazado"
                         }}
