@@ -91,7 +91,7 @@ return [
         ],
         [
             'title' => "Estudiantes",
-            'value' => "students",
+            'value' => "a.students",
             'icon' => "mdi-account-group",
             'to' => "/a/students",
             'can' => 'a.students',
