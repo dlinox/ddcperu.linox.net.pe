@@ -58,7 +58,7 @@ Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
 
     //
     //estudiantes
-    Route::resource('students', StudentController::class);
+    Route::resource('students', StudentController::class)->middleware(['can:a.students.admin']);
     //certificados
     Route::get('certificates', [CertificateController::class, 'index'])->middleware(['can:a.certificates']);
 

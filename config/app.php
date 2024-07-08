@@ -94,7 +94,7 @@ return [
             'value' => "a.students",
             'icon' => "mdi-account-group",
             'to' => "/a/students",
-            'can' => 'a.students',
+            'can' => 'a.students.admin',
             'group' => null,
         ],
         [
@@ -189,7 +189,7 @@ return [
             'type' => '001'
         ],
         [
-            'name' => 'a.students',
+            'name' => 'a.students.admin',
             'menu' => 'Gestion de Estudiantes',
             'type' => '001'
         ],
