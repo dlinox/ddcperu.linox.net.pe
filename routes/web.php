@@ -56,9 +56,9 @@ Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
     Route::put('instructors/{id}/license/{license_id}', [InstructorLicensedController::class, 'update'])->middleware(['can:a.instructors']);
     Route::delete('instructors/{id}/license/{license_id}', [InstructorLicensedController::class, 'destroy'])->middleware(['can:a.instructors']);
 
-    //
     //estudiantes
     Route::resource('students', StudentController::class)->middleware(['can:a.students.admin']);
+    
     //certificados
     Route::get('certificates', [CertificateController::class, 'index'])->middleware(['can:a.certificates']);
 
