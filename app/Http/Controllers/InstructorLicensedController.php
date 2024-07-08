@@ -74,6 +74,7 @@ class InstructorLicensedController extends Controller
 
         $overlap = $this->instructorLicensed
             ->where('course_id', $courseId)
+            ->where('instructor_id', $id)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('start_date', [$startDate, $endDate])
                     ->orWhereBetween('end_date', [$startDate, $endDate])
@@ -119,6 +120,7 @@ class InstructorLicensedController extends Controller
 
         $overlap = $this->instructorLicensed
             ->where('course_id', $courseId)
+            // ->where('instructor_id', $id)
             ->where('id', '!=', $license_id)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('start_date', [$startDate, $endDate])

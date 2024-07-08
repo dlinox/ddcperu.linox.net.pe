@@ -55,6 +55,10 @@ Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
     Route::post('instructors/{id}/license', [InstructorLicensedController::class, 'store'])->middleware(['can:a.instructors']);
     Route::put('instructors/{id}/license/{license_id}', [InstructorLicensedController::class, 'update'])->middleware(['can:a.instructors']);
     Route::delete('instructors/{id}/license/{license_id}', [InstructorLicensedController::class, 'destroy'])->middleware(['can:a.instructors']);
+
+    //
+    //estudiantes
+    Route::resource('students', StudentController::class)->middleware(['can:a.students']);
     //certificados
     Route::get('certificates', [CertificateController::class, 'index'])->middleware(['can:a.certificates']);
 
@@ -63,6 +67,10 @@ Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
     Route::put('certificates/{id}/agency/{certificate_id}', [CertificateController::class, 'update'])->middleware(['can:a.certificates']);
     Route::delete('certificates/{id}/agency/{certificate_id}', [CertificateController::class, 'destroy'])->middleware(['can:a.certificates']);
     // Route::patch('certificates/{id}/change-state',  [CertificateController::class, 'changeState'])->middleware(['can:a.certificates']);
+
+    Route::get('certificates/{id}/agency/{certificate_id}/details', [CertificateController::class, 'certificateDetails'])->middleware(['can:a.certificates']);
+
+
 });
 
 Route::middleware('auth')->name('s.')->prefix('s')->group(function () {

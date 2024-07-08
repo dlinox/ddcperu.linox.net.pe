@@ -28,8 +28,9 @@ class UserSeeder extends Seeder
                 'role' => '001',
                 'agency_id' => null,
                 'profile_id' => \App\Models\Administrator::create($admin)->id,
-                
+
             ],
+
         ];
 
         foreach ($users as $user) {

@@ -54,6 +54,18 @@
                 </template>
 
                 <template v-slot:action="{ item }">
+
+                    <v-btn
+                        icon="mdi-eye"
+                        variant="outlined"
+                        density="comfortable"
+                        class="me-1"
+                        color="black"
+                         @click="router.get(url + '/' + item.id + '/details')"
+                    >
+                    </v-btn>
+
+
                     <BtnDialog title="Editar" width="500px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn

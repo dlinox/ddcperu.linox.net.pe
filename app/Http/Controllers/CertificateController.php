@@ -22,7 +22,6 @@ class CertificateController extends Controller
         $this->certificate = new Certificate();
     }
 
-
     public function index(Request $request)
     {
 
@@ -86,6 +85,67 @@ class CertificateController extends Controller
                 ],
                 'headers' => $this->certificate->headersCertificates,
             ]
+        );
+    }
+
+    public function certificateDetails(Request $request, $id, $certificate_id)
+    {
+        $perPage = $request->input('perPage', 10);
+
+        $query = $this->certificate->query();
+
+        $query->where('certificates.id', $certificate_id);
+
+        $query->select(
+            'certificate_details.id',
+            'certificates.created_at',
+            'certificate_details.number',
+            // 'certificate_details.updated_at',
+            'certificate_details.status',
+            'student_certificates.start_date',
+            'student_certificates.end_date',
+            'student_certificates.is_approved',
+            'courses.id as course_id',
+            'courses.name as course',
+            'students.id as student_id',
+            DB::raw('concat_ws(" ", students.document_number, students.name, students.paternal_surname, students.maternal_surname) as student'),
+            'instructors.id as instructor_id',
+            DB::raw('concat_ws(" ", instructors.instructor_id, instructors.name, instructors.last_name) as instructor'),
+        )
+            ->join('certificate_details', 'certificates.id', '=', 'certificate_details.certificate_id')
+            ->leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
+            ->leftJoin('courses', 'student_certificates.course_id', '=', 'courses.id')
+            ->leftjoin('students', 'student_certificates.student_id', '=', 'students.id')
+            ->leftjoin('instructors', 'student_certificates.instructor_id', '=', 'instructors.id')
+            // ->leftjoin('students', 'student_certificates.student_id', '=', 'students.id')
+
+        ;
+
+
+        if ($request->has('search')) {
+            $query->where('courses.name', 'LIKE', "%{$request->search}%")
+                ->orWhere('students.name', 'LIKE', "%{$request->search}%")
+                ->orWhere('students.document_number', 'LIKE', "%{$request->search}%")
+                ->orWhere('instructors.name', 'LIKE', "%{$request->search}%")
+                ->orWhere('instructors.instructor_id', 'LIKE', "%{$request->search}%")
+                ->orWhere('certificate_details.number', 'LIKE', "%{$request->search}%");
+        }
+
+        $items = $query->paginate($perPage)->appends($request->query());
+
+        return inertia(
+            'admin/certificates/details',
+            [
+                'title' => 'Certificados',
+                'subtitle' => 'Gestión de Certificados',
+                'items' => $items,
+                'filters' => [
+                    'search' => $request->search,
+                    'perPage' => $perPage,
+                ],
+                'headers' => $this->certificate->headersAgency
+            ]
+
         );
     }
 

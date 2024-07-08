@@ -28,10 +28,9 @@ $table->string('name');
     ];
 
     public $headers =  [
-        ['text' => "ID", 'value' => "id"],
         ['text' => "Código", 'value' => "code"],
         ['text' => "Nombre", 'value' => "name"],
-        // ['text' => "Descripción", 'value' => "description"],
+        ['text' => "Descripción", 'value' => "description"],
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
 

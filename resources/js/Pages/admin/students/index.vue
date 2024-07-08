@@ -48,7 +48,6 @@
                     }}
                 </template>
 
-
                 <template v-slot:item.link="{ item }">
                     <v-btn
                         icon="mdi-link-variant"
@@ -60,7 +59,6 @@
                         :disabled="!item.link"
                     ></v-btn>
                 </template>
-
 
                 <template v-slot:action="{ item }">
                     <BtnDialog title="Editar" width="500px">
@@ -127,10 +125,11 @@ const props = defineProps({
     items: Object,
     headers: Object,
     filters: Object,
+    agencies: Array,
 });
 
 const primaryKey = "id";
-const url = "/s/students";
+const url = "/a/students";
 
 const formStructure = [
     {
@@ -148,7 +147,6 @@ const formStructure = [
         ],
         itemValue: "id",
         itemTitle: "title",
-
     },
     {
         key: "document_number",
@@ -205,7 +203,6 @@ const formStructure = [
         colMd: 6,
         default: "",
     },
-
     {
         key: "link",
         label: "Enlace",
@@ -213,6 +210,17 @@ const formStructure = [
         required: false,
         cols: 12,
         default: "",
+    },
+    {
+        key: "agency_id",
+        label: "Agencia",
+        type: "combobox",
+        required: true,
+        cols: 12,
+        default: null,
+        options: props.agencies,
+        itemValue: "id",
+        itemTitle: "name",
     },
 ];
 </script>

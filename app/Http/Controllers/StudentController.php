@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
 use App\Models\Student;
 use App\Models\StudentCertificate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use function Laravel\Prompts\select;
 
 class StudentController extends Controller
 {
@@ -25,8 +28,18 @@ class StudentController extends Controller
 
         $user = Auth::user();
 
-        //solo se muestran los estudiantes de la agencia del usuario logueado
-        $query->where('agency_id', $user->agency_id);
+        $agencies = [];
+        if ($user->agency_id) {
+            $query->where('agency_id', $user->agency_id);
+            $view = 'agency/students/index';
+        } else {
+            $view = 'admin/students/index';
+            $agencies = Agency::select('id', 'name')->get();
+
+            // al header se le agrega la agencia
+            $this->student->headers[] = ['text' => 'Agencia', 'value' => 'agency_name'];
+        }
+
 
         if ($request->has('search')) {
             $query->where('name', 'LIKE', "%{$request->search}%");
@@ -35,7 +48,7 @@ class StudentController extends Controller
         $items = $query->paginate($perPage)->appends($request->query());
 
         return inertia(
-            'agency/students/index',
+            $view,
             [
                 'title' => 'Estudiantes',
                 'subtitle' => 'Gestión de estudiantes',
@@ -45,6 +58,7 @@ class StudentController extends Controller
                     'perPage' => $perPage,
                 ],
                 'headers' => $this->student->headers,
+                'agencies' => $agencies,
             ]
 
         );
@@ -75,8 +89,11 @@ class StudentController extends Controller
         );
 
         try {
-            //la agencia se obtiene del usuario logueado
-            $request->merge(['agency_id' => auth()->user()->agency_id]);
+            //si no se tiene una asignada se toma la agencia del usuario logueado
+            if (!$request->has('agency_id')) {
+                $request->merge(['agency_id' => auth()->user()->agency_id]);
+            }
+
             $this->student->create($request->all());
             return redirect()->back()->with('success', 'Estudiante creado correctamente');
         } catch (\Exception $e) {

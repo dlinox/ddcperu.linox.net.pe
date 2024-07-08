@@ -32,6 +32,8 @@ return new class extends Migration
             $table->boolean('is_enabled')->default(true);
             //agencia que registro al estudiante
             $table->foreignId('agency_id')->constrained('agencies');
+            //link del estudiante
+            $table->string('link')->nullable();
             //el document_number y el agency_id deben ser unicos
             $table->unique(['document_number', 'agency_id']);
             $table->timestamps();

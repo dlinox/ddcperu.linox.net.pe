@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RejectedCertificate;
 use App\Models\StudentCertificate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +89,19 @@ class StudentCertificateController extends Controller
         } else {
             //actualizar el estado del certificado
             $studentCertificate->certificate->updateStatus('000');
+            //eliminar el certificado del estudiante
+            $studentCertificate->delete();
+
+            //crear un registro en la tabla rejected_certificates
+            $rejectedCertificate = [
+                'number' => $studentCertificate->certificate->number,
+                'instructor_id' => auth()->user()->profile_id,
+                'student_id' => $studentCertificate->student_id,
+                'course_id' => $studentCertificate->course_id,
+                'reason' => 'Certificado rechazado por el instructor'
+            ];
+
+            RejectedCertificate::create($rejectedCertificate);
         }
 
 

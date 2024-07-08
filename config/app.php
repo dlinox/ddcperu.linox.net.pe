@@ -90,6 +90,14 @@ return [
             'group' => null,
         ],
         [
+            'title' => "Estudiantes",
+            'value' => "students",
+            'icon' => "mdi-account-group",
+            'to' => "/a/students",
+            'can' => 'a.students',
+            'group' => null,
+        ],
+        [
             'title' => "Certificados",
             'value' => "certificates",
             'icon' => "mdi-certificate",
@@ -178,6 +186,11 @@ return [
         [
             'name' => 'a.administrators',
             'menu' => 'Gestion de Administradores',
+            'type' => '001'
+        ],
+        [
+            'name' => 'a.students',
+            'menu' => 'Gestion de Estudiantes',
             'type' => '001'
         ],
         [

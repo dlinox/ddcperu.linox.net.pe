@@ -18,6 +18,7 @@ class Student extends Model
         'email',
         'phone_number',
         'agency_id',
+        'link',
         'is_enabled'
     ];
 
@@ -30,6 +31,22 @@ class Student extends Model
         'is_enabled' => 'boolean',
     ];
 
+    protected $appends = ['agency_name'];
+
+    //agency_name
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+
+    //agency_name
+    public function getAgencyNameAttribute()
+    {
+        return $this->agency ? $this->agency->name : null;
+    }
+
+
+
     public $headers = [
         ['text' => "ID", 'value' => "id"],
         ['text' => "Tipo de documento", 'value' => "document_type"],
@@ -39,5 +56,6 @@ class Student extends Model
         ['text' => "Apellido materno", 'value' => "maternal_surname"],
         ['text' => "Correo", 'value' => "email"],
         ['text' => "Teléfono", 'value' => "phone_number"],
+        ['text' => "Enlace", 'value' => "link"],
     ];
 }

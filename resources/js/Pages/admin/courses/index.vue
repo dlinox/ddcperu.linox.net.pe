@@ -148,5 +148,13 @@ const formStructure = [
         cols: 12,
         default: "",
     },
+    {
+        key: "description",
+        label: "Descripción",
+        type: "textarea",
+        required: true,
+        cols: 12,
+        default: "",
+    },
 ];
 </script>
