@@ -174,7 +174,7 @@
     </AdminLayout>
 </template>
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import { router, usePage, Head } from "@inertiajs/vue3";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import HeadingPage from "@/components/HeadingPage.vue";

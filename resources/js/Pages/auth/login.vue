@@ -4,7 +4,7 @@
             class="w-100 h-screen d-flex justify-center align-center"
             @submit.prevent="signInHandler"
         >
-            <v-card width="400"> 
+            <v-card width="400" class="px-3 py-5"> 
                 <v-card-item>
                     <v-img
                         class="mx-auto"
@@ -64,6 +64,17 @@ const form = useForm({
 });
 
 const signInHandler = async () => {
-    form.post("/auth/sign-in");
+    form.post("/auth/sign-in",{
+        onSuccess: () => {
+            console.log("Ingresado...");
+        },
+
+        onError: () => {
+            form.password = "";
+
+        },
+    });
 };
+
+
 </script>

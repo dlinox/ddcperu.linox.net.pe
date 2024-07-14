@@ -8,6 +8,7 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\InstructorLicensedController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentCertificateController;
 use App\Http\Controllers\StudentController;
 
@@ -70,6 +71,19 @@ Route::middleware('auth')->name('a.')->prefix('a')->group(function () {
 
     Route::get('certificates/{id}/agency/{certificate_id}/details', [CertificateController::class, 'certificateDetails'])->middleware(['can:a.certificates']);
 
+
+    //reportes
+    Route::get('reports',  [ReportController::class, 'index'])->middleware(['can:a.reports']);
+    
+    
+    Route::get('reports/certificates/instructors',  [ReportController::class, 'instructors'])->middleware(['can:a.reports']);
+    Route::get('reports/certificates/instructors/{id}',  [ReportController::class, 'certificatesInstructor'])->middleware(['can:a.reports']);
+    Route::post('reports/certificates/instructors/{id}/export',  [ReportController::class, 'certificatesInstructorExport'])->middleware(['can:a.reports']);
+    
+    Route::get('reports/certificates/agencies',  [ReportController::class, 'agencies'])->middleware(['can:a.reports']);
+    Route::get('reports/certificates/agencies/{id}',  [ReportController::class, 'certificatesAgency'])->middleware(['can:a.reports']);
+        Route::post('reports/certificates/agencies/{id}/export',  [ReportController::class, 'certificatesAgencyExport'])->middleware(['can:a.reports']);
+    
 
 });
 

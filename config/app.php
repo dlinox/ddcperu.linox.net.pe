@@ -106,6 +106,29 @@ return [
             'group' => null,
         ],
         [
+            'title' => "Reportes de Certificados",
+            'value' => "reports",
+            'icon' => "mdi-file-chart",
+            'to' => "/a/reports",
+            'can' => 'a.reports',
+            'group' => [
+                [
+                    'title' => "Agencias",
+                    'value' => "students",
+                    'icon' => "mdi-account-group",
+                    'to' => "/a/reports/certificates/agencies",
+                    'can' => 'a.reports',
+                ],
+                [
+                    'title' => "Instructors",
+                    'value' => "certificates",
+                    'icon' => "mdi-certificate",
+                    'to' => "/a/reports/certificates/instructors",
+                    'can' => 'a.reports',
+                ]
+            ]
+        ],
+        [
             'title' => "Usuarios",
             'value' => "users",
             'icon' => "mdi-account-group",
@@ -182,6 +205,12 @@ return [
             'name' => 'a.certificates',
             'menu' => 'Gestion de Certificados',
             'type' => '001'
+        ],
+
+        [
+            'name' => 'a.reports',
+            'menu' => 'Reportes',
+            'type' => '001',
         ],
         [
             'name' => 'a.administrators',

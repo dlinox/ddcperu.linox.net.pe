@@ -1,26 +1,7 @@
 <template>
     <AdminLayout>
         <HeadingPage :title="title" :subtitle="subtitle">
-            <template #actions>
-                <BtnDialog title="Registrar" width="800px">
-                    <template v-slot:activator="{ dialog }">
-                        <v-btn
-                            @click="dialog"
-                            prepend-icon="mdi-plus"
-                            variant="flat"
-                        >
-                            Nueva
-                        </v-btn>
-                    </template>
-                    <template v-slot:content="{ dialog }">
-                        <create
-                            :form-structure="formStructure"
-                            @on-cancel="dialog"
-                            :url="url"
-                        />
-                    </template>
-                </BtnDialog>
-            </template>
+          
         </HeadingPage>
 
         <v-card>

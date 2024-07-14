@@ -72,4 +72,18 @@ class Certificate extends Model
         ['text' => "Fecha de creacion", 'value' => "created_at"],
         // ['text' => "Fecha de actualizacion", 'value' => "updated_at"],
     ];
+
+    public $headersInstructor = [
+
+        ['text' => "Numero", 'value' => "number"],
+        ['text' => "Curso", 'value' => "course"],
+        ['text' => "Estudiante", 'value' => "student"],
+        ['text' => "Sub agencia", 'value' => "agency"],
+        ['text' => "Fecha de inicio", 'value' => "start_date"],
+        ['text' => "Fecha de fin", 'value' => "end_date"],
+        // ['text' => "Estado", 'value' => "status"],
+        ['text' => "Aprobado", 'value' => "is_approved"],
+        ['text' => "Fecha de creacion", 'value' => "created_at"],
+        // ['text' => "Fecha de actualizacion", 'value' => "updated_at"],
+    ];
 }

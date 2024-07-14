@@ -260,17 +260,3 @@ const changePassword = async () => {
     });
 };
 </script>
-
-<style>
-/* #inspire {
-    background-image: url("/assets/bg/header-bg.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-position: top;
-    background-size: 100%;
-} */
-
-/* #appmain {
-    background-color: rgba(255, 255, 255, 0.8);
-} */
-</style>
