@@ -41,9 +41,6 @@ class AdminController extends Controller
             $certificates = CertificateDetail::count();
         }
 
-
-
-
         return inertia(
             'admin/index',
             [

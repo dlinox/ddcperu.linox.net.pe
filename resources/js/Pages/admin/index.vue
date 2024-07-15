@@ -170,7 +170,7 @@
                 </v-col>
             </v-row>
 
-            <v-row v-else>
+            <v-row  v-if="user.role !== 'Administrador'">
                 <v-col cols="12" sm="6">
                     <v-card>
                         <v-toolbar density="compact" color="primary">
