@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 /hggobpeadmin.hg.gob.pe
 php.ini
+vendor.zip
