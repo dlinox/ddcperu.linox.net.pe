@@ -55,6 +55,7 @@
                             :label="field.label"
                             :disabled="field.disabled"
                             :rules="field.required ? [isRequired] : []"
+                            :clearable="field.clearable ? field.clearable : false"
                         ></v-select>
                     </template>
                     <template v-else-if="field.type === 'number'">

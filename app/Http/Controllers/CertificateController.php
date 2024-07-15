@@ -30,7 +30,9 @@ class CertificateController extends Controller
         $query = $this->agency->query();
 
         if ($request->has('search')) {
-            $query->where('name', 'LIKE', "%{$request->search}%");
+            $query->where('name', 'LIKE', "%{$request->search}%")
+                ->orWhere('code_nsc', 'LIKE', "%{$request->search}%")
+                ->orWhere('ruc', 'LIKE', "%{$request->search}%");
         }
 
         $items = $query->paginate($perPage)->appends($request->query());
@@ -156,7 +158,6 @@ class CertificateController extends Controller
             $request->validate(
                 [
                     'range_start' => 'required|numeric',
-                    //validar que el rango final sea mayor o igual al rango inicial
                     'range_end' => 'required|numeric|gte:range_start',
                 ],
                 [
@@ -168,7 +169,7 @@ class CertificateController extends Controller
             $rangeStart = $request->range_start;
             $rangeEnd = $request->range_end;
             $overlap = $this->certificate
-                ->where('agency_id', $id)
+                // ->where('agency_id', $id)
                 ->where(function ($query) use ($rangeStart, $rangeEnd) {
                     $query->whereBetween('range_start', [$rangeStart, $rangeEnd])
                         ->orWhereBetween('range_end', [$rangeStart, $rangeEnd])
@@ -350,7 +351,6 @@ class CertificateController extends Controller
             'certificate_details.id',
             'certificates.created_at',
             'certificate_details.number',
-            // 'certificate_details.updated_at',
             'certificate_details.status',
             'student_certificates.start_date',
             'student_certificates.end_date',
@@ -366,10 +366,7 @@ class CertificateController extends Controller
             ->leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
             ->leftJoin('courses', 'student_certificates.course_id', '=', 'courses.id')
             ->leftjoin('students', 'student_certificates.student_id', '=', 'students.id')
-            ->leftjoin('instructors', 'student_certificates.instructor_id', '=', 'instructors.id')
-            // ->leftjoin('students', 'student_certificates.student_id', '=', 'students.id')
-
-        ;
+            ->leftjoin('instructors', 'student_certificates.instructor_id', '=', 'instructors.id');
 
 
         if ($request->has('search')) {
@@ -391,12 +388,13 @@ class CertificateController extends Controller
                 'items' => $items,
                 'filters' => [
                     'search' => $request->search,
-                    //   'perPage' => $perPage,
+                    'perPage' => $perPage,
                 ],
                 'headers' => $this->certificate->headersAgency,
                 'students' => Student::select('id', DB::raw("CONCAT(document_number,' - ', name, ' ', paternal_surname, ' ', maternal_surname) as name"))->where('agency_id', auth()->user()->agency_id)->get(),
                 'instructors' => Instructor::select('id', DB::raw("CONCAT(instructor_id,' - ', name, ' ', last_name) as name"))->where('agency_id', auth()->user()->agency_id)->get(),
                 'courses' => Course::select('id', 'name')->where('is_enabled', true)->get(),
+                'instructorsActive' => Instructor::instructorActiveCourses(),
             ]
 
         );

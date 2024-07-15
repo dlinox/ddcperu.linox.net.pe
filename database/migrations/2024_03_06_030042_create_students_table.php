@@ -21,7 +21,7 @@ return new class extends Migration
             //nombre del estudiante
             $table->string('name');
             //apellido del estudiante
-            $table->string('paternal_surname');
+            $table->string('paternal_surname')->nullable();
             //apellido de la madre del estudiante
             $table->string('maternal_surname')->nullable();
             //correo del estudiante

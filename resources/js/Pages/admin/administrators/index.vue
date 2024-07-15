@@ -161,6 +161,16 @@ const formStructure = [
     },
 
     {
+        key: "phone_number",
+        label: "Teléfono",
+        type: "text",
+        required: true,
+        cols: 12,
+        colMd: 6,
+        default: "",
+    },
+
+    {
         key: "email",
         label: "Correo",
         type: "email",
@@ -170,24 +180,6 @@ const formStructure = [
         default: "",
     },
 
-    {
-        key: "phone_number",
-        label: "Teléfono",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "username",
-        label: "Usuario",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
     {
         key: "password",
         label: "Contraseña",

@@ -39,9 +39,9 @@ class Agency extends Model
 
 
     public $headers =  [
-        ['text' => "Nombre", 'value' => "name"],
-        ['text' => "Codigo", 'value' => "code_nsc"],
+        ['text' => "Codigo NSC", 'value' => "code_nsc"],
         ['text' => "RUC", 'value' => "ruc"],
+        ['text' => "Nombre", 'value' => "name"],
         ['text' => "Denominacion", 'value' => "denomination"],
         ['text' => "Correo", 'value' => "email_institutional"],
         ['text' => "Telefono", 'value' => "phone"],
@@ -55,20 +55,16 @@ class Agency extends Model
     {
         return $this->hasMany(User::class);
     }
-    /*
-             DB::raw("CONCAT(DATE_FORMAT(instructors.license_start, '%d/%m/%Y') , ' - ' ,DATE_FORMAT(instructors.license_end, '%d/%m/%Y')) as validity_period"),
-                DB::raw("DATEDIFF(instructors.license_end, CURDATE()) as days_remaining"),
-    */
+    
     public function getValidityPeriodAttribute()
     {
-        return $this->license_start . ' - ' . $this->license_end;
+        return Date::parse($this->license_start)->format('Y/m/d') . '-' . Date::parse($this->license_end)->format('Y/m/d');
     }
 
     public function getDaysRemainingAttribute()
     {
         $end = Date::parse($this->license_end);
         $now = Date::now()->format('Y-m-d');
-        //si la fecha de vencimiento es menor a la fecha actual se retorna en negativo
         if ($end->lt($now)) {
             return $end->diffInDays($now) * -1;
         }

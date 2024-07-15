@@ -44,7 +44,7 @@
                     <v-chip
                         v-else
                         :color="
-                            item.is_approve === 0
+                            item.is_approved == 0
                                 ? 'orange'
                                 : item.is_approved == 1
                                 ? 'green'
@@ -83,6 +83,7 @@
                                     @on-cancel="dialog"
                                     :form-data="item"
                                     :url="url"
+                                    :instructors="instructorsActive"
                                 />
                             </template>
                         </BtnDialog>
@@ -110,6 +111,7 @@ const props = defineProps({
     students: Array,
     instructors: Array,
     courses: Array,
+    instructorsActive: Array,
 });
 
 const primaryKey = "id";
@@ -134,9 +136,9 @@ const formStructure = [
         required: true,
         cols: 12,
         default: null,
-        options: props.instructors,
-        itemTitle: "name",
-        itemValue: "id",
+        options: [],
+        itemTitle: "title",
+        itemValue: "value",
     },
     {
         key: "student_id",

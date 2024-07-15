@@ -298,13 +298,11 @@ a {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    
 
     position: relative;
 
     z-index: 10;
     overflow: hidden;
-
 
     &::after {
         content: "";

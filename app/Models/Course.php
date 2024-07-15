@@ -34,8 +34,8 @@ $table->string('name');
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
 
-    public function certificates()
+    public function studentCertificates()
     {
-        return $this->hasMany(Certificate::class);
+        return $this->hasMany(StudentCertificate::class);
     }
 }

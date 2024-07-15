@@ -45,10 +45,7 @@ class Student extends Model
         return $this->agency ? $this->agency->name : null;
     }
 
-
-
     public $headers = [
-        ['text' => "ID", 'value' => "id"],
         ['text' => "Tipo de documento", 'value' => "document_type"],
         ['text' => "Número de documento", 'value' => "document_number"],
         ['text' => "Nombre", 'value' => "name"],

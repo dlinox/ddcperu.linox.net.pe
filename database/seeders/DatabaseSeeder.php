@@ -36,20 +36,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        /*
- protected $fillable = [
-        'name',
-        'code_nsc',
-        'ruc',
-        'denomination',
-        'email_institutional',
-        'phone',
-        'license_start',
-        'license_end',
-        'is_enabled'
-    ];
-        */
-
         Agency::create(
             [
                 'name' => 'Agencia 1',

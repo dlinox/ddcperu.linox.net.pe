@@ -87,6 +87,7 @@ class AdministratorController extends Controller
         try {
             //añadir el rol de administrador
             $request->merge(['role' => '001']);
+            $request->merge(['username' => $request->email]);
             $administator = $this->administator->create($request->only($this->administator->getFillable()));
             $user = User::createAccount($request, $administator);
             //asignar permisos del request al usuario
@@ -104,7 +105,7 @@ class AdministratorController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors([
                 'error' => 'Ocurrió un error al crear el administrador',
-                'message' => $e->getMessage()
+                'exception' => $e->getMessage()
             ]);
         }
     }

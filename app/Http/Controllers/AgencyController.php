@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AgencyRequest;
+use App\Http\Requests\AgencyStoreRequest;
 use App\Http\Requests\AgencyUpdateRequest;
 use App\Models\Agency;
 use Illuminate\Http\Request;
@@ -17,7 +17,6 @@ class AgencyController extends Controller
         $this->agency = new Agency();
     }
 
-
     public function index(Request $request)
     {
 
@@ -26,7 +25,12 @@ class AgencyController extends Controller
         $query = $this->agency->query();
 
         if ($request->has('search')) {
-            $query->where('name', 'LIKE', "%{$request->search}%");
+            $query->where('name', 'LIKE', "%{$request->search}%")
+                ->orWhere('code_nsc', 'LIKE', "%{$request->search}%")
+                ->orWhere('ruc', 'LIKE', "%{$request->search}%")
+                ->orWhere('denomination', 'LIKE', "%{$request->search}%")
+                ->orWhere('email_institutional', 'LIKE', "%{$request->search}%")
+                ->orWhere('phone', 'LIKE', "%{$request->search}%");
         }
 
         $items = $query->paginate($perPage)->appends($request->query());
@@ -49,8 +53,7 @@ class AgencyController extends Controller
         );
     }
 
-
-    public function store(AgencyRequest $request)
+    public function store(AgencyStoreRequest $request)
     {
         try {
             $data = $request->all();
@@ -82,8 +85,6 @@ class AgencyController extends Controller
     public function destroy(string $id)
     {
         try {
-
-
             $agency = Agency::findOrFail($id);
             //si tiene alguna relacion no se puede eliminar
             if ($agency->users()->count() > 0) {
@@ -91,7 +92,6 @@ class AgencyController extends Controller
                     'alert' => 'No se puede eliminar la agencia, tiene usuarios relacionados'
                 ]);
             }
-
             $agency->delete();
             return redirect()->back()->with('success', 'Agencia eliminada correctamente');
         } catch (\Exception $e) {

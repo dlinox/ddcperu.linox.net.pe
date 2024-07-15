@@ -45,8 +45,9 @@ class Certificate extends Model
     }
 
     public $headers =  [
-        ['text' => "Nombre", 'value' => "name"],
+        ['text' => "Codigo NSC", 'value' => "code_nsc"],
         ['text' => "RUC", 'value' => "ruc"],
+        ['text' => "Nombre", 'value' => "name"],
         ['text' => "Periodo de validacion", 'value' => "validity_period"],
         ['text' => "Vencimiento de licencia", 'value' => "days_remaining"],
     ];

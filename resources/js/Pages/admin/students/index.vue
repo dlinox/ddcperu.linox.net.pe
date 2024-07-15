@@ -61,7 +61,7 @@
                 </template>
 
                 <template v-slot:action="{ item }">
-                    <BtnDialog title="Editar" width="500px">
+                    <BtnDialog title="Editar" width="800px">
                         <template v-slot:activator="{ dialog }">
                             <v-btn
                                 color="info"
@@ -169,7 +169,7 @@ const formStructure = [
         key: "paternal_surname",
         label: "Apellido paterno",
         type: "text",
-        required: true,
+        required: false,
         cols: 12,
         colMd: 6,
         default: "",

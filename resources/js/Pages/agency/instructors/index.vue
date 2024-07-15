@@ -150,35 +150,35 @@ const url = "/s/instructors";
 
 const formStructure = [
     {
-        key: "instructor_id",
-        label: "Instructor ID",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 4,
-        default: "",
-    },
-
-    {
         key: "document_type",
         label: "Tipo de documento",
         type: "select",
         required: true,
         cols: 12,
-        colMd: 4,
+        colMd: 3,
         default: "001",
         options: [
             { value: "001", title: "DNI" },
-            { value: "002", title: "Carnet de extranjería" },
-            { value: "003", title: "Pasaporte" },
+            // { value: "002", title: "Carnet de extranjería" },
+            // { value: "003", title: "Pasaporte" },
         ],
         itemValue: "id",
         itemTitle: "title",
+        clearable: false,
+    },
+    {
+        key: "document_number",
+        label: "Número de documento",
+        type: "text",
+        required: true,
+        cols: 12,
+        colMd: 5,
+        default: "",
     },
 
     {
-        key: "document_number",
-        label: "DNI",
+        key: "instructor_id",
+        label: "Instructor ID",
         type: "text",
         required: true,
         cols: 12,
@@ -202,17 +202,6 @@ const formStructure = [
 
         default: "",
     },
-
-    {
-        key: "email",
-        label: "Correo",
-        type: "email",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-
     {
         key: "phone_number",
         label: "Teléfono",
@@ -223,9 +212,9 @@ const formStructure = [
         default: "",
     },
     {
-        key: "username",
-        label: "Usuario",
-        type: "text",
+        key: "email",
+        label: "Correo",
+        type: "email",
         required: true,
         cols: 12,
         colMd: 6,
@@ -235,25 +224,6 @@ const formStructure = [
         key: "password",
         label: "Contraseña",
         type: "password",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-
-    {
-        key: "license_start",
-        label: "Fecha de inicio de licencia",
-        type: "date",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "license_end",
-        label: "Fecha de fin de licencia",
-        type: "date",
         required: true,
         cols: 12,
         colMd: 6,

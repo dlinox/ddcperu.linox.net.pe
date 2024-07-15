@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agency;
 use App\Models\Instructor;
+use App\Models\StudentCertificate;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,10 +28,9 @@ class InstructorController extends Controller
             ->join('agencies', 'instructors.agency_id', '=', 'agencies.id')
             ->select(
                 DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name ) as full_name"),
-
                 //validity_period
-                DB::raw("CONCAT(DATE_FORMAT(instructors.license_start, '%d/%m/%Y') , ' - ' ,DATE_FORMAT(instructors.license_end, '%d/%m/%Y')) as validity_period"),
-                DB::raw("DATEDIFF(instructors.license_end, CURDATE()) as days_remaining"),
+                // DB::raw("CONCAT(DATE_FORMAT(instructors.license_start, '%d/%m/%Y') , ' - ' ,DATE_FORMAT(instructors.license_end, '%d/%m/%Y')) as validity_period"),
+                // DB::raw("DATEDIFF(instructors.license_end, CURDATE()) as days_remaining"),
                 'instructors.*',
                 'users.id as user_id',
                 'users.username',
@@ -74,10 +74,7 @@ class InstructorController extends Controller
                 'name' => 'required',
                 'last_name' => 'required',
                 'phone_number' => 'required',
-                'license_start' => 'required',
-                'license_end' => 'required',
                 'email' => 'required|email',
-                'username' => 'required',
                 'agency_id' => 'required',
                 'password' => 'required',
             ],
@@ -87,11 +84,8 @@ class InstructorController extends Controller
                 'name.required' => 'El campo nombre es obligatorio',
                 'last_name.required' => 'El campo apellido es obligatorio',
                 'phone_number.required' => 'El campo teléfono es obligatorio',
-                'license_start.required' => 'El campo fecha de inicio de licencia es obligatorio',
-                'license_end.required' => 'El campo fecha de fin de licencia es obligatorio',
                 'email.required' => 'El campo correo es obligatorio',
                 'email.email' => 'El campo correo debe ser un correo válido',
-                'username.required' => 'El campo usuario es obligatorio',
                 'agency_id.required' => 'El campo agencia es obligatorio',
                 'password.required' => 'El campo contraseña es obligatorio',
             ]
@@ -99,11 +93,9 @@ class InstructorController extends Controller
 
         DB::beginTransaction();
         try {
-            //añadir el rol de instructor
             $request->merge(['role' => '003']);
+            $request->merge(['username' => $request->email]);
             $instructor = $this->instructor->create($request->only($this->instructor->getFillable()));
-
-            //asinar permisos de type 003
             $permissions = collect(config('app.permissions'))->where('type', '003')->pluck('name');
             $user = User::createAccount($request, $instructor);
             $user->givePermissionTo($permissions);
@@ -113,7 +105,7 @@ class InstructorController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors([
                 'error' => 'Ocurrió un error al crear el instructor',
-                'message' => $e->getMessage()
+                'exception' => $e->getMessage()
             ]);
         }
     }
@@ -127,10 +119,7 @@ class InstructorController extends Controller
                 'name' => 'required',
                 'last_name' => 'required',
                 'phone_number' => 'required',
-                'license_start' => 'required',
-                'license_end' => 'required',
                 'email' => 'required|email',
-                'username' => 'required',
                 'agency_id' => 'required',
             ],
             [
@@ -139,24 +128,19 @@ class InstructorController extends Controller
                 'name.required' => 'El campo nombre es obligatorio',
                 'last_name.required' => 'El campo apellido es obligatorio',
                 'phone_number.required' => 'El campo teléfono es obligatorio',
-                'license_start.required' => 'El campo fecha de inicio de licencia es obligatorio',
-                'license_end.required' => 'El campo fecha de fin de licencia es obligatorio',
                 'email.required' => 'El campo correo es obligatorio',
                 'email.email' => 'El campo correo debe ser un correo válido',
-                'username.required' => 'El campo usuario es obligatorio',
                 'agency_id.required' => 'El campo agencia es obligatorio',
             ]
         );
 
         DB::beginTransaction();
         try {
+
+            $request->merge(['username' => $request->email]);
             $instructor = $this->instructor->find($request->id);
             $instructor->update($request->only($this->instructor->getFillable()));
-
-
-            $user = User::updateAccount($request, $instructor);
-            //$permissions = collect(config('app.permissions'))->where('type', '003')->pluck('name');
-            //$user->givePermissionTo($permissions);
+            User::updateAccount($request, $instructor);
 
             DB::commit();
             return redirect()->back()->with('success', 'Instructor actualizado correctamente');
@@ -164,7 +148,7 @@ class InstructorController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors([
                 'error' => 'Ocurrió un error al actualizar el instructor',
-                'message' => $e->getMessage()
+                'exception' => $e->getMessage()
             ]);
         }
     }
@@ -173,6 +157,15 @@ class InstructorController extends Controller
     {
         DB::beginTransaction();
         try {
+
+
+            if (StudentCertificate::where('instructor_id', $id)->exists()) {
+                return redirect()->back()->withErrors([
+                    'error' => 'El instructor tiene certificados asociados',
+                    'exception' => 'El instructor tiene certificados asociados, no se puede eliminar'
+                ]);
+            }
+
             $instructor = $this->instructor->find($id);
             $instructor->delete();
             User::deleteAccount($id);
@@ -182,7 +175,7 @@ class InstructorController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors([
                 'error' => 'Ocurrió un error al eliminar el instructor',
-                'message' => $e->getMessage()
+                'exception' => $e->getMessage()
             ]);
         }
     }
@@ -210,9 +203,9 @@ class InstructorController extends Controller
             ->join('agencies', 'instructors.agency_id', '=', 'agencies.id')
             ->select(
                 DB::raw("CONCAT(instructors.name , ' ' ,instructors.last_name ) as full_name"),
-                DB::raw("CONCAT(DATE_FORMAT(instructors.license_start, '%d/%m/%Y') , ' - ' ,DATE_FORMAT(instructors.license_end, '%d/%m/%Y')) as validity_period"),
+                // DB::raw("CONCAT(DATE_FORMAT(instructors.license_start, '%d/%m/%Y') , ' - ' ,DATE_FORMAT(instructors.license_end, '%d/%m/%Y')) as validity_period"),
                 //dias restantes de la fecha de vencimiento
-                DB::raw("DATEDIFF(instructors.license_end, CURDATE()) as days_remaining"),
+                // DB::raw("DATEDIFF(instructors.license_end, CURDATE()) as days_remaining"),
                 'instructors.*',
                 'users.id as user_id',
                 'users.username',

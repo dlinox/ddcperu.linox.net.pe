@@ -93,18 +93,18 @@ class CourseController extends Controller
             $course = Course::find($id);
 
             //validar que no este relacionado con un certificado
-            if ($course->certificates->count() > 0) {
+            if ($course->studentCertificates->count() > 0) {
                 return redirect()->back()->with([
                     'alert' => 'No se puede eliminar el curso, tiene certificados relacionados',
                 ]);
             }
-
 
             $course->delete();
             return redirect()->back()->with('success', 'Curso eliminado correctamente');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors([
                 'error' => 'Ocurrió un error al eliminar el curso',
+                'exception' => $e->getMessage()
             ]);
         }
     }

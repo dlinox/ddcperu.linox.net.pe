@@ -5,6 +5,16 @@
         @onCancel="$emit('onCancel')"
         @onSumbit="submit"
     >
+        <template #field.quantity>
+            Cantidad de certificados:
+            <strong>
+                {{
+                    (form.range_end ? form.range_end : 0) -
+                    (form.range_start ? form.range_start : 0) +
+                    1
+                }}
+            </strong>
+        </template>
     </SimpleForm>
 </template>
 
@@ -13,17 +23,12 @@ import { ref } from "vue";
 import SimpleForm from "@/components/SimpleForm.vue";
 import { useForm } from "@inertiajs/vue3";
 const emit = defineEmits(["onCancel", "onSubmit"]);
-import { isRequired } from "@/helpers/validations.js";
 const props = defineProps({
     formData: {
         type: Object,
         default: (props) =>
             props.formStructure?.reduce((acc, item) => {
                 acc[item.key] = item.default;
-                //el password no se debe enviar en el formulario cuando se esta editando
-                if (item.key === "password" && props.edit) {
-                    delete acc[item.key];
-                }
                 return acc;
             }, {}),
     },
@@ -39,19 +44,29 @@ const props = defineProps({
 
 const form = useForm({ ...props.formData });
 
-const addRange = () => {
-    form.ranges.push({ range_start: "", range_end: "" });
-};
-
-const removeRange = (index) => {
-    form.ranges.splice(index, 1);
-};
-
 const submit = async () => {
-    if (props.edit) {
-        form.put(props.url, option);
+    console.log(form.quantity);
+
+    let quantity = form.range_end - form.range_start + 1;
+
+    if (quantity > 100) {
+        if (
+            confirm(
+                "¿Está seguro que desea generar " + quantity + " certificados?"
+            )
+        ) {
+            if (props.edit) {
+                form.put(props.url, option);
+            } else {
+                form.post(props.url, option);
+            }
+        }
     } else {
-        form.post(props.url, option);
+        if (props.edit) {
+            form.put(props.url, option);
+        } else {
+            form.post(props.url, option);
+        }
     }
 };
 

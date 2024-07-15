@@ -16,13 +16,37 @@
                 :rules="[isRequired]"
             ></v-combobox>
         </template>
+
+        <template v-slot:field.course_id="{ _field }">
+            <v-combobox
+                v-model="form.course_id"
+                :items="_field.options"
+                :label="_field.label"
+                :itemValue="_field.itemValue"
+                :itemTitle="_field.itemTitle"
+                :return-object="false"
+
+                @update:modelValue="onSelectRole"
+            ></v-combobox>
+        </template>
+
+        <template v-slot:field.instructor_id="{ _field }">
+            <v-combobox
+                v-model="form.instructor_id"
+                :items="instructorsOptions"
+                :label="_field.label"
+                :itemValue="_field.itemValue"
+                :itemTitle="_field.itemTitle"
+                :return-object="false"
+            ></v-combobox>
+        </template>
     </SimpleForm>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import SimpleForm from "@/components/SimpleForm.vue";
 import { useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
 const emit = defineEmits(["onCancel", "onSubmit"]);
 import { isRequired } from "@/helpers/validations.js";
 const props = defineProps({
@@ -47,11 +71,21 @@ const props = defineProps({
     },
     url: String,
 
+    instructors: Array,
     numbers: Array,
 });
 
 const form = useForm({ ...props.formData });
 
+const instructorsOptions = ref(props.instructors);
+
+const onSelectRole = (value) => {
+    console.log(value);
+    instructorsOptions.value = props.instructors.filter(
+        (instructor) => instructor.course_id === value
+    );
+
+};
 
 const submit = async () => {
     if (props.edit) {

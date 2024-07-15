@@ -80,9 +80,16 @@
                         density="comfortable"
                         class="me-1"
                         color="black"
-                        @click="router.get(url + '/' + item[`${primaryKey}`] + '/license')"
+                        @click="
+                            router.get(
+                                url + '/' + item[`${primaryKey}`] + '/license'
+                            )
+                        "
                     >
-                        <v-icon size="18" icon="mdi-card-account-details-outline"></v-icon>
+                        <v-icon
+                            size="18"
+                            icon="mdi-card-account-details-outline"
+                        ></v-icon>
                     </v-btn>
 
                     <BtnDialog title="Editar" width="800px">
@@ -159,21 +166,12 @@ const url = "/a/instructors";
 
 const formStructure = [
     {
-        key: "instructor_id",
-        label: "Instructor ID",
-        type: "text",
-        required: true,
-        cols: 12,
-        default: "",
-    },
-
-    {
         key: "document_type",
         label: "Tipo de documento",
         type: "select",
         required: true,
         cols: 12,
-        colMd: 6,
+        colMd: 3,
         default: "001",
         options: [
             { value: "001", title: "DNI" },
@@ -182,6 +180,7 @@ const formStructure = [
         ],
         itemValue: "id",
         itemTitle: "title",
+        clearable: false,
     },
     {
         key: "document_number",
@@ -189,9 +188,20 @@ const formStructure = [
         type: "text",
         required: true,
         cols: 12,
-        colMd: 6,
+        colMd: 5,
         default: "",
     },
+
+    {
+        key: "instructor_id",
+        label: "Instructor ID",
+        type: "text",
+        required: true,
+        cols: 12,
+        colMd: 4,
+        default: "",
+    },
+
     {
         key: "name",
         label: "Nombre",
@@ -211,6 +221,16 @@ const formStructure = [
     },
 
     {
+        key: "phone_number",
+        label: "Teléfono",
+        type: "text",
+        required: true,
+        cols: 12,
+        colMd: 6,
+        default: "",
+    },
+
+    {
         key: "email",
         label: "Correo",
         type: "email",
@@ -221,24 +241,6 @@ const formStructure = [
     },
 
     {
-        key: "phone_number",
-        label: "Teléfono",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "username",
-        label: "Usuario",
-        type: "text",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
         key: "password",
         label: "Contraseña",
         type: "password",
@@ -248,24 +250,6 @@ const formStructure = [
         default: "",
     },
 
-    {
-        key: "license_start",
-        label: "Fecha de inicio de licencia",
-        type: "date",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
-    {
-        key: "license_end",
-        label: "Fecha de fin de licencia",
-        type: "date",
-        required: true,
-        cols: 12,
-        colMd: 6,
-        default: "",
-    },
     {
         //linkde instractor
         key: "instructor_link",

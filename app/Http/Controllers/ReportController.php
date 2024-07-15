@@ -118,10 +118,14 @@ class ReportController extends Controller
         $query->select(
             'id',
             'name',
+            'ruc',
+            'code_nsc'
         );
 
         if ($request->has('search')) {
-            $query->where('name', 'LIKE', "%{$request->search}%");
+            $query->where('name', 'LIKE', "%{$request->search}%")
+                ->orWhere('ruc', 'LIKE', "%{$request->search}%")
+                ->orWhere('code_nsc', 'LIKE', "%{$request->search}%");
         }
 
         $items = $query->paginate($perPage)->appends($request->query());
@@ -137,8 +141,10 @@ class ReportController extends Controller
                     'perPage' => $perPage,
                 ],
                 'headers' => [
+                    ['text' => "Código NSC", 'value' => "code_nsc"],
+                    ['text' => "RUC", 'value' => "ruc"],
                     ['text' => "Nombre", 'value' => "name"],
-                    
+
                 ]
             ]
         );

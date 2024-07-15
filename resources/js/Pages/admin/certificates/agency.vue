@@ -54,17 +54,15 @@
                 </template>
 
                 <template v-slot:action="{ item }">
-
                     <v-btn
                         icon="mdi-eye"
                         variant="outlined"
                         density="comfortable"
                         class="me-1"
                         color="black"
-                         @click="router.get(url + '/' + item.id + '/details')"
+                        @click="router.get(url + '/' + item.id + '/details')"
                     >
                     </v-btn>
-
 
                     <BtnDialog title="Editar" width="500px">
                         <template v-slot:activator="{ dialog }">
@@ -148,6 +146,13 @@ const formStructure = [
         type: "text",
         label: "Rango final",
         colMd: 6,
+    },
+    {
+        key: "quantity",
+        type: "number",
+        label: "Cantidad",
+        colMd: 12,
+        default: 0,
     },
 ];
 </script>

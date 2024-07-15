@@ -1,5 +1,6 @@
 <template>
-    <AdminLayout>
+    <AdminLayout v-slot="{ headTitle }">
+
         <HeadingPage :title="title" :subtitle="subtitle">
             <template #actions>
                 <BtnDialog title="Registrar" width="500px">
@@ -9,7 +10,7 @@
                             prepend-icon="mdi-plus"
                             variant="flat"
                         >
-                            Nueva
+                            Nuevo
                         </v-btn>
                     </template>
                     <template v-slot:content="{ dialog }">
@@ -116,6 +117,7 @@ import BtnDialog from "@/components/BtnDialog.vue";
 import DialogConfirm from "@/components/DialogConfirm.vue";
 import DataTable from "@/components/DataTable.vue";
 import { router } from "@inertiajs/core";
+import { Head } from "@inertiajs/vue3";
 import create from "./create.vue";
 
 const props = defineProps({

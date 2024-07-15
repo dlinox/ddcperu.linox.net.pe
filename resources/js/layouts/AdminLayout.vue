@@ -1,5 +1,5 @@
 <template>
-    <Head title="DDC - ADMIN" />
+    
     <v-app id="inspire">
         <v-app-bar class="border-0" color="primary" elevation="0">
             <v-btn
@@ -59,7 +59,7 @@
         </v-navigation-drawer>
 
         <v-main>
-            <slot />
+            <slot :headTitle="title" />
         </v-main>
 
         <v-snackbar v-model="snackbar" multi-line color="success" vertical>
@@ -207,6 +207,8 @@ const flash = computed(() => usePage().props?.flash);
 const alert = computed(() => usePage().props?.flash?.alert);
 //error desconocido
 const error = computed(() => usePage().props?.errors);
+
+const title = ref("Home");
 
 const snackbar = ref(false);
 const snackbarError = ref(false);

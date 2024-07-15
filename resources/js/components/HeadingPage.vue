@@ -1,6 +1,6 @@
 <template>
     <v-toolbar color="primary" elevation="0" class="border-0">
-        <!-- <v-btn icon class="hidden-xs-only" @click="router.visit(-1)">
+        <!-- <v-btn icon color="white" @click="router.back
             <v-icon>mdi-arrow-left</v-icon>
         </v-btn> -->
 
@@ -19,6 +19,7 @@
     </v-toolbar>
 </template>
 <script setup>
+import { router } from "@inertiajs/core";
 const props = defineProps({
     title: {
         type: String,
