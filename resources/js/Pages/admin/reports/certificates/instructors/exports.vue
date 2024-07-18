@@ -79,7 +79,7 @@ const getDataExport = () => {
                         sheetData: page.props.flash.data,
                         sheetName: "Reporte",
                         sheetFilter: [
-                            // "created_at",
+                            "created_at",
                             "is_approved",
                             "number",
                             "course",
@@ -89,7 +89,7 @@ const getDataExport = () => {
                             "agency",
                         ],
                         sheetHeader: [
-                            // "Fecha de creación",
+                            "Fecha de creación",
                             "Aprobado",
                             "Número",
                             "Curso",

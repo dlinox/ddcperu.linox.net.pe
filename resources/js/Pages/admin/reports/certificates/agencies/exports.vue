@@ -56,7 +56,7 @@ const getDataExport = () => {
                         sheetData: page.props.flash.data,
                         sheetName: "Reporte",
                         sheetFilter: [
-                            // "created_at",
+                            "created_at",
                             "is_approved",
                             "number",
                             "course",
@@ -66,7 +66,7 @@ const getDataExport = () => {
                             "end_date",
                         ],
                         sheetHeader: [
-                            // "Fecha de creación",
+                            "Fecha de creación",
                             "Estado",
                             "Número",
                             "Curso",
