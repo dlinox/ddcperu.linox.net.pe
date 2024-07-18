@@ -83,7 +83,11 @@ class ReportController extends Controller
             )->where('role', '003');
 
         if ($request->has('search')) {
-            $query->where('name', 'LIKE', "%{$request->search}%");
+            $query->where('instructors.name', 'LIKE', "%{$request->search}%")
+                ->orWhere('instructors.last_name', 'LIKE', "%{$request->search}%")
+                ->orWhere('instructors.instructor_id', 'LIKE', "%{$request->search}%")
+                ->orWhere('instructors.document_number', 'LIKE', "%{$request->search}%")
+                ->orWhere('agencies.name', 'LIKE', "%{$request->search}%");
         }
 
         $items = $query->paginate($perPage)->appends($request->query());
@@ -303,7 +307,7 @@ class ReportController extends Controller
             $query->where('agencies.id', $request->agency);
         }
 
-        if ($request->has('status') && $request->is_approved != 'all') {
+        if ($request->has('status') && $request->status != 'all') {
             $query->where('student_certificates.is_approved', $request->status);
         }
 
@@ -344,7 +348,7 @@ class ReportController extends Controller
 
         $query->where('agencies.id', $id);
 
-        if ($request->has('status') && $request->is_approved != 'all') {
+        if ($request->has('status') && $request->status != 'all') {
             $query->where('student_certificates.is_approved', $request->status);
         }
 

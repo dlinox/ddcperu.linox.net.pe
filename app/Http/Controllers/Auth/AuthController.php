@@ -25,7 +25,17 @@ class AuthController extends Controller
     {
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect('/a');
+            //is_enabled
+            if (!Auth::user()->is_enabled) {
+                Auth::logout();
+                return back()->withErrors([
+                    "error" => "El usuario se encuentra deshabilitado."
+                ]);
+            }
+            else{
+                return redirect('/a');
+            }
+            // return redirect('/a');
         }
         return back()->withErrors([
             "error" => "Las credenciales no coinciden con nuestros registros."

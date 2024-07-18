@@ -52,7 +52,7 @@ class Instructor extends Model
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
 
-    public static function instructorActiveCourses()
+    public static function instructorActiveCourses($agency)
     {
 
         $instructors = Instructor::select(
@@ -65,6 +65,7 @@ class Instructor extends Model
             ->where('instructor_licenseds.start_date', '<=', DB::raw('CURDATE()'))
             //que los dias restantes sean mayores a 0
             ->where(DB::raw('DATEDIFF(instructor_licenseds.end_date, CURDATE())'), '>', 0)
+            ->where('instructors.agency_id', $agency)
             ->get();
 
         return $instructors;

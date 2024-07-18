@@ -347,6 +347,8 @@ class CertificateController extends Controller
 
         $query->where('certificates.agency_id', auth()->user()->agency_id);
 
+        $agency = auth()->user()->agency_id;
+
         $query->select(
             'certificate_details.id',
             'certificates.created_at',
@@ -394,7 +396,7 @@ class CertificateController extends Controller
                 'students' => Student::select('id', DB::raw("CONCAT(document_number,' - ', name, ' ', paternal_surname, ' ', maternal_surname) as name"))->where('agency_id', auth()->user()->agency_id)->get(),
                 'instructors' => Instructor::select('id', DB::raw("CONCAT(instructor_id,' - ', name, ' ', last_name) as name"))->where('agency_id', auth()->user()->agency_id)->get(),
                 'courses' => Course::select('id', 'name')->where('is_enabled', true)->get(),
-                'instructorsActive' => Instructor::instructorActiveCourses(),
+                'instructorsActive' => Instructor::instructorActiveCourses($agency),
             ]
 
         );

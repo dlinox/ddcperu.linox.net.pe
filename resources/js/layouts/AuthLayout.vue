@@ -5,7 +5,7 @@
     </v-app>
 
     <v-snackbar v-model="snackbarError" color="error">
-        Credenciales incorrectas
+        {{ snackbarMessage }}
         <template v-slot:actions>
             <v-btn
                 color="dark"
@@ -25,6 +25,7 @@ defineProps({
     title: String,
 });
 const snackbarError = ref(false);
+const snackbarMessage = ref("");
 
 const error = computed(() => usePage().props?.errors);
 
@@ -33,6 +34,7 @@ watch(
     (newValue) => {
         if (newValue.error) {
             snackbarError.value = true;
+            snackbarMessage.value = newValue.error;
         } else {
             snackbarError.value = false;
         }

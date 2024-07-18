@@ -186,6 +186,12 @@ class InstructorController extends Controller
         $instructor = Instructor::find($id);
         $instructor->is_enabled = !$instructor->is_enabled;
         $instructor->save();
+
+        $account = User::where('profile_id', $id)
+            ->where('role', '003')
+            ->first();
+        $account->is_enabled = $instructor->is_enabled;
+        $account->save();
         return redirect()->back()->with('success', 'Estado del instructor actualizado correctamente');
     }
 

@@ -113,14 +113,14 @@ return [
             'can' => 'a.reports',
             'group' => [
                 [
-                    'title' => "Agencias",
+                    'title' => "Sub agencias",
                     'value' => "students",
                     'icon' => "mdi-account-group",
                     'to' => "/a/reports/certificates/agencies",
                     'can' => 'a.reports',
                 ],
                 [
-                    'title' => "Instructors",
+                    'title' => "Instructores",
                     'value' => "certificates",
                     'icon' => "mdi-certificate",
                     'to' => "/a/reports/certificates/instructors",

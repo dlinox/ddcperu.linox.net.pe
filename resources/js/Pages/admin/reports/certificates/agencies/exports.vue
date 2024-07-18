@@ -37,7 +37,7 @@ const options = ref({
 });
 
 const isApprovedItems = [
-    { title: "Ambos", value: "all" },
+    { title: "Todos", value: "all" },
     { title: "Disponible", value: null },
     { title: "Pendiente", value: 0 },
     { title: "Aprobado", value: 1 },
