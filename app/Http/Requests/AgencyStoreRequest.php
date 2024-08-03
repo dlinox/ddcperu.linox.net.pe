@@ -25,10 +25,10 @@ class AgencyStoreRequest extends FormRequest
         return [
             'code_nsc' => ['required', 'unique:agencies,code_nsc'],
             'name' => ['required', 'unique:agencies,name'],
-            'ruc' => ['required', 'digits:11', 'unique:agencies,ruc'],
+            'ruc' => ['required', 'unique:agencies,ruc'],
             'denomination' => ['required', 'max:255'],
             'email_institutional' => ['required', 'email', 'unique:agencies,email_institutional'],
-            'phone' => ['required', 'unique:agencies,phone', 'digits:9'],
+            'phone' => ['required', 'unique:agencies,phone'],
             'license_start' => ['required', 'date'],
             'license_end' => ['required', 'date', 'after:license_start'],
 
@@ -43,7 +43,7 @@ class AgencyStoreRequest extends FormRequest
             'name.required' => 'El nombre es requerido',
             'name.unique' => 'El nombre ya existe',
             'ruc.required' => 'El RUC es requerido',
-            'ruc.digits' => 'El RUC debe tener 11 dígitos',
+
             'ruc.unique' => 'El RUC ya existe',
             'denomination.required' => 'La denominación es requerida',
             'denomination.max' => 'La denominación no debe exceder los 255 caracteres',
@@ -51,7 +51,6 @@ class AgencyStoreRequest extends FormRequest
             'email_institutional.email' => 'El correo institucional debe ser un correo válido',
             'email_institutional.unique' => 'El correo institucional ya existe',
             'phone.required' => 'El teléfono es requerido',
-            'phone.digits' => 'El teléfono debe tener 9 dígitos',
             'phone.unique' => 'El teléfono ya existe',
             'license_start.required' => 'La fecha de inicio de licencia es requerida',
             'license_start.date' => 'La fecha de inicio de licencia debe ser una fecha válida',
