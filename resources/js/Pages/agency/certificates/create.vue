@@ -17,20 +17,16 @@
             ></v-combobox>
         </template>
 
-        <template v-slot:field.course_id="{ _field }">
-            <v-combobox
-                v-model="form.course_id"
-                :items="_field.options"
-                :label="_field.label"
-                :itemValue="_field.itemValue"
-                :itemTitle="_field.itemTitle"
-                :return-object="false"
-
-                @update:modelValue="onSelectRole"
-            ></v-combobox>
-        </template>
-
         <template v-slot:field.instructor_id="{ _field }">
+            <v-alert
+                v-if="!instructorsOptions.length"
+                type="warning"
+                variant="tonal"
+                class="mb-3"
+                density="compact"
+            >
+                No hay instructores disponibles, para este curso.
+            </v-alert>
             <v-combobox
                 v-model="form.instructor_id"
                 :items="instructorsOptions"
@@ -38,6 +34,7 @@
                 :itemValue="_field.itemValue"
                 :itemTitle="_field.itemTitle"
                 :return-object="false"
+                :rules="[isRequired]"
             ></v-combobox>
         </template>
     </SimpleForm>
@@ -77,14 +74,13 @@ const props = defineProps({
 
 const form = useForm({ ...props.formData });
 
-const instructorsOptions = ref(props.instructors);
+const instructorsOptions = ref([]);
 
 const onSelectRole = (value) => {
     console.log(value);
     instructorsOptions.value = props.instructors.filter(
         (instructor) => instructor.course_id === value
     );
-
 };
 
 const submit = async () => {
@@ -107,4 +103,10 @@ const option = {
         console.log("onFinish");
     },
 };
+
+const init = () => {
+    onSelectRole(form.course_id);
+};
+
+init();
 </script>

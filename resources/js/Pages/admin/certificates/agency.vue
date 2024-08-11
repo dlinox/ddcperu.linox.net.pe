@@ -111,6 +111,7 @@
                 </template>
             </DataTable>
         </v-card>
+    
     </AdminLayout>
 </template>
 <script setup>
@@ -126,6 +127,7 @@ const props = defineProps({
     title: String,
     subtitle: String,
     agency: Object,
+    courses: Array,
     items: Object,
     headers: Object,
     filters: Object,
@@ -135,6 +137,15 @@ const url = `/a/certificates/${props.agency.id}/agency`;
 const primaryKey = "id";
 
 const formStructure = [
+    {
+        key: "course_id",
+        type: "combobox",
+        label: "Curso",
+        colMd: 12,
+        options: props.courses,
+        itemTitle: "name",
+        itemValue: "id",
+    },
     {
         key: "range_start",
         type: "text",

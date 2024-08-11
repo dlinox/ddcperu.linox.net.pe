@@ -22,6 +22,8 @@ return new class extends Migration
             $table->integer('quantity');
             //estado del certificado
             $table->string('is_enabled')->default(true);
+            //id del curso
+            $table->foreignId('course_id')->constrained('courses');
             //id de la agencia
             $table->foreignId('agency_id')->constrained('agencies');
             //id del usuario

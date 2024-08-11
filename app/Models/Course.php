@@ -34,6 +34,16 @@ $table->string('name');
         ['text' => "Estado", 'value' => "is_enabled"],
     ];
 
+
+    public function scopeEnabled($query)
+    {
+        return $query->where('is_enabled', true);
+    }
+    public function scopeForSelect($query)
+    {
+        return $query->select('id', 'name');
+    }
+
     public function studentCertificates()
     {
         return $this->hasMany(StudentCertificate::class);

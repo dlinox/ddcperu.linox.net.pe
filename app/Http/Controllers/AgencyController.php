@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AgencyStoreRequest;
 use App\Http\Requests\AgencyUpdateRequest;
 use App\Models\Agency;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class AgencyController extends Controller
@@ -48,6 +49,7 @@ class AgencyController extends Controller
                 ],
                 'headers' => $this->agency->headers,
                 'permissions' => config('app.permissions'),
+                
             ]
 
         );

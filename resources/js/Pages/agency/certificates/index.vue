@@ -114,21 +114,9 @@ const props = defineProps({
     instructorsActive: Array,
 });
 
-const primaryKey = "id";
 const url = "/s/certificates";
 
 const formStructure = [
-    {
-        key: "course_id",
-        label: "Curso",
-        type: "combobox",
-        required: true,
-        cols: 12,
-        default: null,
-        options: props.courses,
-        itemTitle: "name",
-        itemValue: "id",
-    },
     {
         key: "instructor_id",
         label: "Instructor",
@@ -140,6 +128,7 @@ const formStructure = [
         itemTitle: "title",
         itemValue: "value",
     },
+
     {
         key: "student_id",
         label: "Estudiante",

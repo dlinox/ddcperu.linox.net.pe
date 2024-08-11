@@ -11,10 +11,11 @@ class Certificate extends Model
 
 
     protected $fillable = [
-        'agency_id',
         'range_start',
         'range_end',
         'quantity',
+        'course_id',
+        'agency_id',
         'user_id',
         'is_enabled'
     ];
@@ -23,6 +24,8 @@ class Certificate extends Model
         'is_enabled' => 'boolean',
         'created_at' => 'datetime:d/m/Y',
     ];
+
+
 
     public function agency()
     {
@@ -53,7 +56,7 @@ class Certificate extends Model
     ];
 
     public $headersCertificates =  [
-
+        ['text' => "Curso", 'value' => "course"],
         ['text' => "Rango Inicial", 'value' => "range_start"],
         ['text' => "Rango Final", 'value' => "range_end"],
         ['text' => "Cantidad", 'value' => "quantity"],

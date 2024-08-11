@@ -16,10 +16,13 @@ class CertificateController extends Controller
 {
     protected $certificate;
     protected $agency;
+
+    protected $course;
     public function __construct()
     {
         $this->agency = new Agency();
         $this->certificate = new Certificate();
+        $this->course = new Course();
     }
 
     public function index(Request $request)
@@ -69,6 +72,16 @@ class CertificateController extends Controller
                 ->orWhere('range_end', 'LIKE', "%{$request->search}%");
         }
 
+        $query->select(
+            'certificates.id',
+            'courses.id as course_id',
+            'courses.name as course',
+            'range_start',
+            'range_end',
+            'quantity',
+            'certificates.created_at',
+        );
+        $query->join('courses', 'certificates.course_id', '=', 'courses.id');
         $query->where('agency_id', $id);
 
         $items = $query->paginate($perPage)->appends($request->query());
@@ -86,6 +99,7 @@ class CertificateController extends Controller
                     'perPage' => $perPage,
                 ],
                 'headers' => $this->certificate->headersCertificates,
+                'courses' => $this->course->forSelect()->enabled()->get(),
             ]
         );
     }
@@ -159,9 +173,11 @@ class CertificateController extends Controller
                 [
                     'range_start' => 'required|numeric',
                     'range_end' => 'required|numeric|gte:range_start',
+                    'course_id' => 'required',
                 ],
                 [
                     'range_end.gte' => 'El rango final debe ser mayor o igual al rango inicial',
+                    'course_id.required' => 'El curso es requerido',
                 ]
             );
 
@@ -190,6 +206,7 @@ class CertificateController extends Controller
             $certificate = $this->certificate->create(
                 [
                     'agency_id' => $id,
+                    'course_id' => $request->course_id,
                     'range_start' => $request->range_start,
                     'range_end' => $request->range_end,
                     'quantity' => $request->range_end - $request->range_start + 1,
@@ -226,11 +243,13 @@ class CertificateController extends Controller
 
             $request->validate(
                 [
+                    'course_id' => 'required',
                     'range_start' => 'required|numeric',
                     //validar que el rango final sea mayor o igual al rango inicial
                     'range_end' => 'required|numeric|gte:range_start',
                 ],
                 [
+                    'course_id.required' => 'El curso es requerido',
                     'range_end.gte' => 'El rango final debe ser mayor o igual al rango inicial',
                 ]
             );
@@ -262,6 +281,7 @@ class CertificateController extends Controller
             $certificate = Certificate::findOrFail($certificate_id);
 
             $certificate->update([
+                'course_id' => $request->course_id,
                 'range_start' => $request->range_start,
                 'range_end' => $request->range_end,
                 'quantity' => $request->range_end - $request->range_start + 1,
@@ -363,10 +383,11 @@ class CertificateController extends Controller
             DB::raw('concat_ws(" ", students.document_number, students.name, students.paternal_surname, students.maternal_surname) as student'),
             'instructors.id as instructor_id',
             DB::raw('concat_ws(" ", instructors.instructor_id, instructors.name, instructors.last_name) as instructor'),
+            //json
         )
             ->join('certificate_details', 'certificates.id', '=', 'certificate_details.certificate_id')
             ->leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
-            ->leftJoin('courses', 'student_certificates.course_id', '=', 'courses.id')
+            ->leftJoin('courses', 'certificates.course_id', '=', 'courses.id')
             ->leftjoin('students', 'student_certificates.student_id', '=', 'students.id')
             ->leftjoin('instructors', 'student_certificates.instructor_id', '=', 'instructors.id');
 

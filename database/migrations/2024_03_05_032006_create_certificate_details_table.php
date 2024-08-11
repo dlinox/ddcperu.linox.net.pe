@@ -18,8 +18,10 @@ return new class extends Migration
     {
         Schema::create('certificate_details', function (Blueprint $table) {
             $table->id();
+
             $table->char('number', 20)->unique();
             $table->char('status', 3)->default('000');
+            // $table->foreignId('course_id')->constrained('courses');
             $table->foreignId('certificate_id')->constrained('certificates');
             $table->timestamps();
         });

@@ -242,6 +242,7 @@ class ReportController extends Controller
         $query->where('agencies.id', $id);
 
         $query->select(
+
             'certificate_details.id',
             'certificates.created_at',
             'certificate_details.number',
@@ -259,7 +260,7 @@ class ReportController extends Controller
         )
             ->join('certificate_details', 'certificates.id', '=', 'certificate_details.certificate_id')
             ->leftjoin('student_certificates', 'certificate_details.id', '=', 'student_certificates.certificate_id')
-            ->leftJoin('courses', 'student_certificates.course_id', '=', 'courses.id')
+            ->leftJoin('courses', 'certificates.course_id', '=', 'courses.id')
             ->leftjoin('students', 'student_certificates.student_id', '=', 'students.id')
             ->leftjoin('instructors', 'student_certificates.instructor_id', '=', 'instructors.id')
             ->leftJoin('agencies', 'certificates.agency_id', '=', 'agencies.id')
