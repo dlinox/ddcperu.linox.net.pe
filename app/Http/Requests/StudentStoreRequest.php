@@ -30,7 +30,7 @@ class StudentStoreRequest extends FormRequest
             'maternal_surname' => 'required_without:paternal_surname',
             'email' => 'required|email|unique:students,email,NULL,id,agency_id,' . $this->agency_id,
             'link' => 'nullable|url',
-            'phone_number' => 'required|digits:9',
+            'phone_number' => 'required',
         ];
     }
 

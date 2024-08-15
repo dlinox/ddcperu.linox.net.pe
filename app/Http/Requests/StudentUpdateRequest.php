@@ -28,7 +28,7 @@ class StudentUpdateRequest extends FormRequest
             'paternal_surname' => 'required_without:maternal_surname',
             'maternal_surname' => 'required_without:paternal_surname',
             'email' => 'required|email|unique:students,email,' . $this->id . ',id,agency_id,' . $this->agency_id,
-            'phone_number' => 'required|digits:9',
+            'phone_number' => 'required',
             'link' => 'nullable|url',
         ];
     }

@@ -22,7 +22,7 @@ class UserRequest extends FormRequest
             'name' => 'required|string|max:60',
             'paternal_surname' => 'required|string|max:60',
             'maternal_surname' => 'required|string|max:60',
-            'phone_number' => 'required|digits:9',
+            'phone_number' => 'required',
             'document_number' => 'required|digits:8|unique:users,document_number,' . $userId,
             'email' => 'required|string|max:60|unique:users,email,' . $userId,
             'role' => 'required|string|in:Super Admin,Administrador,Operador',
