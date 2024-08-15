@@ -21,7 +21,7 @@ class AdministratorRequest extends FormRequest
             'document_number' => 'required|min:8|unique:administrators,document_number,' . $this->id,
             'name' => 'required',
             'last_name' => 'required',
-            'phone_number' => 'required|digits:9',
+            'phone_number' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->id . ',profile_id',
             'role' => 'required',
         ];
@@ -36,7 +36,6 @@ class AdministratorRequest extends FormRequest
             'name.required' => 'El nombre es requerido',
             'last_name.required' => 'El apellido es requerido',
             'phone_number.required' => 'El teléfono es requerido',
-            'phone_number.digits' => 'El teléfono debe tener 9 dígitos',
             'username.required' => 'El nombre de usuario es requerido',
             'username.unique' => 'El nombre de usuario ya existe',
             'email.required' => 'El correo es requerido',
