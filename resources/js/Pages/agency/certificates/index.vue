@@ -91,6 +91,10 @@
                 </template>
             </DataTable>
         </v-card>
+        <pre>
+            {{ students }}
+
+        </pre>
     </AdminLayout>
 </template>
 <script setup>

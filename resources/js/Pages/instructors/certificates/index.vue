@@ -19,7 +19,6 @@
                     </div>
                 </template>
 
-    
 
                 <template v-slot:item.certificate="{ item }">
                     {{ item.certificate.number }}
@@ -45,7 +44,7 @@
                             >
                                 {{
                                     item.is_approved === 0
-                                        ? "Perndiente"
+                                        ? "Pendiente"
                                         : item.is_approved === 1
                                         ? "Aprobado"
                                         : "Rechazado"
@@ -99,11 +98,8 @@
 <script setup>
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import HeadingPage from "@/components/HeadingPage.vue";
-import BtnDialog from "@/components/BtnDialog.vue";
-import DialogConfirm from "@/components/DialogConfirm.vue";
 import DataTable from "@/components/DataTable.vue";
 import { router } from "@inertiajs/core";
-import create from "./create.vue";
 
 const props = defineProps({
     title: String,
